@@ -1,7 +1,5 @@
 package serveur;
-import java.util.Date;
-import java.util.HashMap;
- 
+
 public class Serveur {
 	
     class CompteEnBanque {
@@ -34,7 +32,7 @@ public class Serveur {
  
     HashMap<String, CompteEnBanque> comptes;
  
-    public BanqueSimple() {
+    public Serveur() {
         comptes = new HashMap<String, CompteEnBanque>();
     }
  
@@ -63,7 +61,7 @@ public class Serveur {
     }
  
     public static void main(String[] args) {
-        BanqueSimple s = new BanqueSimple();
+        Serveur s = new Serveur();
         s.creerCompte("ABC1234", 1000);
         s.ajouter("ABC1234", 100);
         s.retirer("ABC1234", 30);
@@ -71,5 +69,4 @@ public class Serveur {
         Date date = s.getDerniereOperation("ABC1234");
         System.out.println("ABC1234 -> " + solde + " " + date);
     }
- 
 }
