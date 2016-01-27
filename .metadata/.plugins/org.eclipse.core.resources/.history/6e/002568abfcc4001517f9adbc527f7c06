@@ -1,6 +1,0 @@
-package gestionProtocole;
-import java.io.*;
-
-public class GestionProtocoleClient {
-
-}
