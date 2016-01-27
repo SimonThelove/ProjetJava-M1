@@ -13,7 +13,7 @@ public class GestionProtocoleServeur {
         super();
         this.serveur = serveur;
     }
- 
+
     public String requete(String entreeSocket){
         String[] req = entreeSocket.split(" ");
         switch(req[0]){
