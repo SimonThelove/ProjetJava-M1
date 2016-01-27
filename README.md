@@ -18,5 +18,3 @@
 #
 # SI VOUS VOULEZ PLUS DE DETAILS (comme un rappel des commandes Git)
 # DITES LE MOI, JE LES AJOUTERAI ICI
-#
-#
