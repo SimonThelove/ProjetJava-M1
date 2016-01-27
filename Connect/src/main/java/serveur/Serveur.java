@@ -12,15 +12,18 @@ public class Serveur {
 		test = sgbd.recupererMail(adresseMail);
 		if (test == true){
 			// Adresse mail deja existante = Echec creation
-			return "MSG| Mail déjà existant.||";
+			return "Mail déjà existant.";
 		}
 		else {
 			// VerificationMotDePasse
 			// test = verifierMotDePasse(motDePasse);
 			if (!test) {
-			return "MSG| Votre mot de passe n'est pas sécurisé.||";
+			return "Votre mot de passe n'est pas sécurisé.";
 			}
-			else return "MSG| ";
+			else {
+				
+				return "Votre compte a bien été créé, vous pouvez maintenant vous connecter.";
+			}
 		}
 	}
 /*    class CompteEnBanque {
