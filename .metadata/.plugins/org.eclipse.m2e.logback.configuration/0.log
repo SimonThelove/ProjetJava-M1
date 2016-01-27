@@ -815,3 +815,35 @@
 2016-01-27 14:25:10,140 [Worker-5] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Yohann\Desktop\Github\ProjetJava-M1\Connect\src\main\resources
 2016-01-27 14:25:10,146 [Worker-5] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
 2016-01-27 14:25:10,148 [Worker-5] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Yohann\Desktop\Github\ProjetJava-M1\Connect\src\test\resources
+2016-01-27 14:30:20,351 [Worker-10] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+2016-01-27 14:30:20,376 [Worker-10] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Yohann\Desktop\Github\ProjetJava-M1\Connect\src\main\resources
+2016-01-27 14:30:20,382 [Worker-10] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+2016-01-27 14:30:20,385 [Worker-10] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Yohann\Desktop\Github\ProjetJava-M1\Connect\src\test\resources
+2016-01-27 14:30:35,454 [Worker-5] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+2016-01-27 14:30:35,461 [Worker-5] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Yohann\Desktop\Github\ProjetJava-M1\Connect\src\main\resources
+2016-01-27 14:30:35,468 [Worker-5] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+2016-01-27 14:30:35,476 [Worker-5] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Yohann\Desktop\Github\ProjetJava-M1\Connect\src\test\resources
+2016-01-27 14:31:03,079 [Worker-4] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+2016-01-27 14:31:03,082 [Worker-4] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Yohann\Desktop\Github\ProjetJava-M1\Connect\src\main\resources
+2016-01-27 14:31:03,088 [Worker-4] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+2016-01-27 14:31:03,092 [Worker-4] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Yohann\Desktop\Github\ProjetJava-M1\Connect\src\test\resources
+2016-01-27 14:31:24,891 [Worker-0] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+2016-01-27 14:31:24,896 [Worker-0] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Yohann\Desktop\Github\ProjetJava-M1\Connect\src\main\resources
+2016-01-27 14:31:24,901 [Worker-0] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+2016-01-27 14:31:24,906 [Worker-0] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Yohann\Desktop\Github\ProjetJava-M1\Connect\src\test\resources
+2016-01-27 14:31:38,672 [Worker-2] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+2016-01-27 14:31:38,681 [Worker-2] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Yohann\Desktop\Github\ProjetJava-M1\Connect\src\main\resources
+2016-01-27 14:31:38,689 [Worker-2] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+2016-01-27 14:31:38,692 [Worker-2] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Yohann\Desktop\Github\ProjetJava-M1\Connect\src\test\resources
+2016-01-27 14:44:19,275 [Worker-17] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+2016-01-27 14:44:19,280 [Worker-17] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Yohann\Desktop\Github\ProjetJava-M1\Connect\src\main\resources
+2016-01-27 14:44:19,285 [Worker-17] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+2016-01-27 14:44:19,287 [Worker-17] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Yohann\Desktop\Github\ProjetJava-M1\Connect\src\test\resources
+2016-01-27 14:48:39,349 [Worker-22] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+2016-01-27 14:48:39,353 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Yohann\Desktop\Github\ProjetJava-M1\Connect\src\main\resources
+2016-01-27 14:48:39,358 [Worker-22] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+2016-01-27 14:48:39,361 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Yohann\Desktop\Github\ProjetJava-M1\Connect\src\test\resources
+2016-01-27 14:49:35,228 [Worker-20] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+2016-01-27 14:49:35,232 [Worker-20] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Yohann\Desktop\Github\ProjetJava-M1\Connect\src\main\resources
+2016-01-27 14:49:35,242 [Worker-20] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+2016-01-27 14:49:35,245 [Worker-20] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Yohann\Desktop\Github\ProjetJava-M1\Connect\src\test\resources
