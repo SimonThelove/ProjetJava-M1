@@ -1,8 +1,29 @@
 package serveur;
+import informations.SGBD;
 
 public class Serveur {
 	
-    class CompteEnBanque {
+	SGBD sgbd;
+	
+	public String creerCompte(String nom, String prenom, String adresseMail, String motDePasse) {
+		boolean test = false;
+		
+		// ControleMail
+		test = sgbd.recupererMail(adresseMail);
+		if (test == true){
+			// Adresse mail deja existante = Echec creation
+			return "MSG| Mail déjà existant.||";
+		}
+		else {
+			// VerificationMotDePasse
+			// test = verifierMotDePasse(motDePasse);
+			if (!test) {
+			return "MSG| Votre mot de passe n'est pas sécurisé.||";
+			}
+			else return "MSG| ";
+		}
+	}
+/*    class CompteEnBanque {
         private double solde;
         private Date derniereOperation;
  
@@ -69,4 +90,5 @@ public class Serveur {
         Date date = s.getDerniereOperation("ABC1234");
         System.out.println("ABC1234 -> " + solde + " " + date);
     }
+*/
 }
