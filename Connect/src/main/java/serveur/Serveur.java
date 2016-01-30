@@ -5,12 +5,15 @@ public class Serveur {
 	
 	SGBD sgbd;
 	
+	// varibles de test
+	boolean test = false;
+	
+	// Méthode de création d'un compte sur le serveur d'annuaire
 	public String creerCompte(String nom, String prenom, String adresseMail, String motDePasse) {
-		boolean test = false;
 		
 		// ControleMail
 		test = sgbd.recupererMail(adresseMail);
-		if (test == true){
+		if (test){
 			// Adresse mail deja existante = Echec creation
 			return "Mail déjà existant.";
 		}
@@ -26,6 +29,30 @@ public class Serveur {
 			}
 		}
 	}
+	
+	// Méthode de connexion au serveur d'annuaire
+	public String seConnecter(String adresseMail, String motDePasse){
+		
+		// ControleMail
+				test = sgbd.recupererMail(adresseMail);
+				if (!test){
+					// Adresse mail non existante = Echec connexion
+					return "Mail déjà existant.";
+				}
+				else {
+					// VerificationMotDePasse
+					// test = verifierMotDePasse(motDePasse);
+					if (!test) {
+					return "Votre mot de passe n'est pas sécurisé.";
+					}
+					else {
+						
+						return "Votre compte a bien été créé, vous pouvez maintenant vous connecter.";
+					}
+				}
+	}
+	
+	
 /*    class CompteEnBanque {
         private double solde;
         private Date derniereOperation;
