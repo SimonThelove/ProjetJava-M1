@@ -1,3 +1,4 @@
+package client;
 import java.io.*;
 import java.net.*;
 
@@ -23,7 +24,7 @@ public class Client {
 					quitter();
 				default:
 					clearConsole();
-					System.out.println("Veuillez choisir une opération existante.");
+					System.out.println("Veuillez choisir une opï¿½ration existante.");
 					scanner.nextLine();
 					System.out.println();
 			}
@@ -68,7 +69,7 @@ public class Client {
 	}
 	
 	static void quitter() {
-	    System.out.println("Programme terminée!");
+	    System.out.println("Programme terminï¿½e!");
 	  }
     }
 	
