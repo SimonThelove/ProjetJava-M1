@@ -7,8 +7,6 @@ public class Serveur {
 	
 	// varibles de test
 	boolean test = false;
-	String chaineTestee;
-	String tableauTeste[];
 
 	// Méthode de création d'un compte sur le serveur d'annuaire
 	public String creerCompte(String nom, String prenom, String adresseMail, String motDePasse) {
@@ -59,11 +57,15 @@ public class Serveur {
 		return "Vous vous êtes bien déconnecté.";
 	}
 
-	public String modifierInformations(String chaineTestee){
+	public String modifierInformations(String[] chaineTestee){
 		
 		// ControleChamps
-		
-		
+		for(int i = 1; i == 7; i ++){
+			test = chaineTestee[i].isEmpty();
+			if (test) {
+				// ...STOP...
+			}
+		}
 		
 		return "";
 	}
