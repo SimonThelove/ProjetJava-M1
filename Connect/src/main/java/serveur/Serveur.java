@@ -3,10 +3,12 @@ import informations.SGBD;
 
 public class Serveur {
 	
-	SGBD sgbd;
+	private SGBD sgbd;
+	
+	private String requete;
 	
 	// varibles de test
-	boolean test = false;
+	private boolean test = false;
 
 	// Méthode de création d'un compte sur le serveur d'annuaire
 	public String creerCompte(String nom, String prenom, String adresseMail, String motDePasse) {
@@ -19,12 +21,18 @@ public class Serveur {
 		}
 		else {
 			// VerificationMotDePasse
-//test = verifierMotDePasse(motDePasse);
+			test = sgbd.verifierMotDePasse(motDePasse);
 			if (!test) {
 				return "Votre mot de passe n'est pas sécurisé.";
 			}
 			else {
-//sgbd.setRequeteCreation(adresseMail,motDePasse, nom, prenom);
+				// Assemblage des données pour requête SQL
+				requete = "NOM = "+ nom +" AND PRENOM = "+ prenom;
+				requete += " AND ADRESSEMAIL = "+ adresseMail +" & MOTDEPASSE = "+ motDePasse +";";
+				
+				// Traitement de la requête par le SGBD
+				sgbd.setRequeteCreation(requete);
+				
 				return "Votre compte a bien été créé, vous pouvez maintenant vous connecter.";
 			}
 		}
@@ -41,7 +49,7 @@ public class Serveur {
 				}
 				else {
 					// ControleMotDePasse
-//test = recupererMotDePasse(motDePasse);
+					test = sgbd.recupererMotDePasse(motDePasse);
 					if (!test) {
 						return "Votre mot de passe est incorrect.";
 					}
@@ -57,16 +65,37 @@ public class Serveur {
 		return "Vous vous êtes bien déconnecté.";
 	}
 
-	public String modifierInformations(String[] chaineTestee){
+	// Méthode de modification des informations sur le compte connecté
+	public String modifierInformations(String[] chaine){
 		
-		// ControleChamps
-		for(int i = 1; i == 7; i ++){
-			test = chaineTestee[i].isEmpty();
-			if (test) {
-				// ...STOP...
-			}
+		// Assemblage de la requête SQL
+		// Assemblage des N-1 premiers termes
+		for(int n = 1; n <= 11; n += 2){
+			requete += chaine[n] + " = " + chaine[n+1] + " AND ";
 		}
+		// Ajout du dernier terme à la requête
+		requete += chaine[11] + " =  " + chaine[12] + ";";
 		
-		return "";
+		// Traitement de la requête par le SGBD
+		sgbd.setRequeteModification(requete);
+		
+		return "Vos modifications ont été prises en compte.";
+	}
+	
+	// Méthode de consultation d'un profil utilisateur
+	public String consulter(String adresseMail) {
+		String infosProfil;
+		
+		// ControleDroits
+		if(sgbd.isAdmin()){
+			// Récupération de toutes les informations du profil
+			infosProfil = sgbd.getAllInfos();
+		}
+		else {
+			// Récupération des informations visibles du profil
+			infosProfil = sgbd.getVisibleInfos();
+		}
+
+		return infosProfil;
 	}
 }
