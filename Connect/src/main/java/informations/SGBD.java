@@ -10,6 +10,7 @@ public class SGBD {
 	private String requete;
 	
 	private String reponse;
+	private String[] resultats;
 	
 	// Méthode de récupération du mail
 	public boolean recupererMail(String adresseMail){
@@ -72,6 +73,12 @@ public class SGBD {
 	// Récupération des informations d'un profil utilisateur (selon visibilité)
 	public String getVisibleInfos(){
 		return "";
+	}
+	
+	// Requête de recherche d'utilisateurs selon des mots clés
+	public String[] getUtilisateurs(String[] motsCles) {
+		
+		return resultats;
 	}
 	
 }

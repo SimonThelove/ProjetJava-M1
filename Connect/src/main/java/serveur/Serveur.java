@@ -98,4 +98,30 @@ public class Serveur {
 
 		return infosProfil;
 	}
+	
+	// Méthode de recherche d'utilisateurs par mots clés
+	public String rechercher(String[] motsCles){
+		
+		String[] resultats = null;
+		
+		// Recherche
+		resultats = sgbd.getUtilisateurs(motsCles);
+		
+		// Retour des résultats de la recherche pour gestionProtocoleServeur
+		switch(resultats.length){
+		case 0 :
+			return "aucun resultat a votre recherche.";
+		case 1 :
+			return resultats[0];
+		default :
+//Trouver un moyen de renvoyer l'information puis les résultats
+			return "plusieurs résultats.";
+		}
+	}
+	
+	// Méthode de recherche d'utilisateurs par méthode avancée
+	public String rechercherChamps(String[] chaine){
+		// ... STOP ...
+		return "";
+	}
 }
