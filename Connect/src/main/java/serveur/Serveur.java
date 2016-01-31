@@ -7,7 +7,6 @@ public class Serveur {
 	
 	private String requete;
 	private String[] resultats;
-	private String infosProfil;
 	
 	// varibles de test
 	private boolean test = false;
@@ -85,24 +84,27 @@ public class Serveur {
 	}
 	
 	// Méthode de consultation d'un profil utilisateur
-	public String consulter(String adresseMail) {
+	public String[] consulter(String adresseMail) {
 		
 		// ControleDroits
 		if(sgbd.isAdmin()){
 			// Récupération de toutes les informations du profil
-			return infosProfil = sgbd.getAllInfos();
+			resultats = sgbd.getAllInfos();
 		}
 		else {
 			// Récupération des informations visibles du profil
-			return infosProfil = sgbd.getVisibleInfos();
+			resultats = sgbd.getVisibleInfos();
 		}
+
+		return resultats;
 	}
 	
 	// Méthode de recherche d'utilisateurs
 	public String[] rechercher(String[] chaine){
 		
 		// Recherche
-		return resultats = sgbd.getUtilisateurs(chaine);
+		resultats = sgbd.getUtilisateurs(chaine);
 		
+		return resultats;
 	}
 }

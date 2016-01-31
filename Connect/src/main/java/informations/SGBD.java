@@ -66,13 +66,15 @@ public class SGBD {
 	}
 	
 	// Récupération des informations d'un profil utilisateur (admin)
-	public String getAllInfos(){
-		return "";
+	public String[] getAllInfos(){
+		
+		return resultats;
 	}
 	
 	// Récupération des informations d'un profil utilisateur (selon visibilité)
-	public String getVisibleInfos(){
-		return "";
+	public String[] getVisibleInfos(){
+		
+		return resultats;
 	}
 	
 	// Requête de recherche d'utilisateurs selon des mots clés
