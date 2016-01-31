@@ -6,6 +6,8 @@ public class Serveur {
 	private SGBD sgbd;
 	
 	private String requete;
+	private String[] resultats;
+	private String infosProfil;
 	
 	// varibles de test
 	private boolean test = false;
@@ -84,44 +86,23 @@ public class Serveur {
 	
 	// Méthode de consultation d'un profil utilisateur
 	public String consulter(String adresseMail) {
-		String infosProfil;
 		
 		// ControleDroits
 		if(sgbd.isAdmin()){
 			// Récupération de toutes les informations du profil
-			infosProfil = sgbd.getAllInfos();
+			return infosProfil = sgbd.getAllInfos();
 		}
 		else {
 			// Récupération des informations visibles du profil
-			infosProfil = sgbd.getVisibleInfos();
+			return infosProfil = sgbd.getVisibleInfos();
 		}
-
-		return infosProfil;
 	}
 	
-	// Méthode de recherche d'utilisateurs par mots clés
-	public String rechercher(String[] motsCles){
-		
-		String[] resultats = null;
+	// Méthode de recherche d'utilisateurs
+	public String[] rechercher(String[] chaine){
 		
 		// Recherche
-		resultats = sgbd.getUtilisateurs(motsCles);
+		return resultats = sgbd.getUtilisateurs(chaine);
 		
-		// Retour des résultats de la recherche pour gestionProtocoleServeur
-		switch(resultats.length){
-		case 0 :
-			return "aucun resultat a votre recherche.";
-		case 1 :
-			return resultats[0];
-		default :
-//Trouver un moyen de renvoyer l'information puis les résultats
-			return "plusieurs résultats.";
-		}
-	}
-	
-	// Méthode de recherche d'utilisateurs par méthode avancée
-	public String rechercherChamps(String[] chaine){
-		// ... STOP ...
-		return "";
 	}
 }
