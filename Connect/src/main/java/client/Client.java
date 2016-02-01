@@ -9,75 +9,81 @@ public class Client {
 
 	public static void main(String[] args)
     {
-		int choix;   
+		int choix;
+		System.out.println("Bienvenue dans Connect !");
 		do {
-			choix = menu();
+			choix = menuAnonyme();
 			switch (choix) {
 				case 1:
-					//creerCompte();
+					//menuInscription();
 					break;
 				case 2:
-
+					//menuIdentification();
 					break;
 				case 3:
-
+					/*do {
+						menuRechercher();
+					 } while ((choix != 1) && (choix != 2) && (choix != 3));*/
 					break;
 				case 4:
 					quitter();
 				default:
-					clearConsole();
 					System.out.println("Veuillez choisir une action existante.");
 					sc.nextLine();
-					System.out.println();
+					choix = menuAnonyme();
 			}
-	    } while (choix < 4);
+	    } while ((choix != 1) && (choix != 2) && (choix != 3) && (choix != 4));
     }
 	
-	
-	private static void quitter() {
-		System.out.println("Programme terminé");
-		
-	}
-	static int menu(){
+	static int menuAnonyme(){
 	    int choix = 0;
-	    sc = new Scanner(System.in); 
-	    System.out.println();
-	    System.out.println();
-	    System.out.println("1. S'inscrire");
+	    sc = new Scanner(System.in);
+	   
+	    System.out.println("\n\n1. S'inscrire");
 	    System.out.println("2. S'identifier");
 	    System.out.println("3. Rechercher (en tant qu'anonyme)");
 	    System.out.println("4. Quitter");
-	    while ((choix != 1) && (choix != 2) && (choix != 3) && (choix != 4)) {
-	    	choix = sc.nextInt();
-	       
-
-			System.out.println("Vous avez saisi : " + sc); 
-			sc.nextInt();
-	    }
-	    // se debarasser du \n 
-	    sc.nextLine();
+	    
+    	choix = sc.nextInt();
+	 
 	    return choix;
 	  }
+/*
+	static menuInscription(){
+	   
+	    System.out.println("\n\n--> INSCRIPTION\n");
+	    System.out.println("Nom : ");
+	    System.out.println("Prenom : ");
+	    System.out.println("Mail : ");
+	    System.out.println("Mot de passe : ");
+	 
+	    return ;
+	  }
 	
-	
-	private static void clearConsole()
-	{
-	    try
-	    {
-	        final String os = System.getProperty("os.name");
-
-	        if (os.contains("Windows"))
-	        {
-	            Runtime.getRuntime().exec("cls");
-	        }
-	        else
-	        {
-	            Runtime.getRuntime().exec("clear");
-	        }
-	    }
-	    catch (final Exception e)
-	    {
-	        //  Handle any exceptions.
-	    }
+	static  menuIdentification(){
+	   
+	    System.out.println("\n\n--> Identification\n");
+	    System.out.println("Nom d'utilisateur (votre mail) : ");
+	    System.out.println("Mot de passe : ");
+	 
+	    return ;
+	  }
+	  
+	  static  menuRechercher(){
+	    int choix = 0;
+	    sc = new Scanner(System.in);
+	   
+	    System.out.println("\n\n--> Recherche\n");
+	    System.out.println("1. Rechercher par mots clés");
+	    System.out.println("2. Recherche avancée");
+	    System.out.println("3. Revenir au menu principal");
+	 	
+	 	choix = sc.nextInt();
+	 	
+	    return ;
+	  }
+	*/
+	private static void quitter() {
+		System.exit(0);
 	}
 }
