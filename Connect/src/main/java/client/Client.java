@@ -79,7 +79,7 @@ public class Client {
 	    System.out.println("3. Revenir au menu principal");
 	 	
 	 	choix = sc.nextInt();
-	 	
+	 	//test
 	    return ;
 	  }
 	*/
