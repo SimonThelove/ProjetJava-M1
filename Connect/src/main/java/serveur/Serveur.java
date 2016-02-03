@@ -7,46 +7,52 @@ public class Serveur {
 	
 	private String requete;
 	private String[] resultats;
+	private boolean test = false;
 	
-	// Constructeurs
+	// Constructeurs : boolean test
+	public boolean isTest() {
+		return test;
+	}
+	public void setTest(boolean test) {
+		this.test = test;
+	}
+	
+	// Constructeurs :  String requete
 	public String getRequete() {
 		return requete;
 	}
-
 	public void setRequete(String requete) {
 		this.requete = requete;
 	}
 
-	public String[] getResultats() {
+	// Constructeurs : String[] resultats
+	public String[] getResultats(String[] resultats) {
 		return resultats;
 	}
-
 	public void setResultats(String[] resultats) {
 		this.resultats = resultats;
 	}
 	
-	// varibles de test
-	private boolean test = false;
 
 	// Méthode de création d'un compte sur le serveur d'annuaire
 	public String creerCompte(String nom, String prenom, String adresseMail, String motDePasse) {
 		
 		// ControleMail
-		test = sgbd.recupererMail(adresseMail);
-		if (test){
+		setTest(sgbd.recupererMail(adresseMail));
+		if (isTest()){
 			// Adresse mail deja existante = Echec creation
 			return "Mail déjà existant.";
 		}
 		else {
 			// VerificationMotDePasse
-			test = sgbd.verifierMotDePasse(motDePasse);
-			if (!test) {
+			setTest(sgbd.verifierMotDePasse(motDePasse));
+			if (!isTest()) {
 				return "Votre mot de passe n'est pas sécurisé.";
 			}
 			else {
 				// Assemblage des données pour requête SQL
 				requete = "NOM = "+ nom +" AND PRENOM = "+ prenom;
-				requete += " AND MAIL = "+ adresseMail +" AND MOTDEPASSE = "+ motDePasse +";";
+				requete += " AND MAIL = "+ adresseMail +" AND MDP = "+ motDePasse +";";
 				
 				// Traitement de la requête par le SGBD
 				sgbd.setRequeteCreation(requete);
@@ -60,15 +66,15 @@ public class Serveur {
 	public String seConnecter(String adresseMail, String motDePasse){
 		
 		// ControleMail
-				test = sgbd.recupererMail(adresseMail);
-				if (!test){
+				setTest(sgbd.recupererMail(adresseMail));
+				if (!isTest()){
 					// Adresse mail non existante = Echec connexion
 					return "Utilisateur inconnu.";
 				}
 				else {
 					// ControleMotDePasse
-					test = sgbd.recupererMotDePasse(motDePasse);
-					if (!test) {
+					setTest(sgbd.recupererMotDePasse(motDePasse));
+					if (!isTest()) {
 						return "Votre mot de passe est incorrect.";
 					}
 					else {
@@ -86,16 +92,8 @@ public class Serveur {
 	// Méthode de modification des informations sur le compte connecté
 	public String modifierInformations(String[] chaine){
 		
-		// Assemblage de la requête SQL
-		// Assemblage des N-1 premiers termes
-		for(int n = 1; n <= 11; n += 2){
-			requete += chaine[n] + " = " + chaine[n+1] + " AND ";
-		}
-		// Ajout du dernier terme à la requête
-		requete += chaine[11] + " =  " + chaine[12] + ";";
-		
-		// Traitement de la requête par le SGBD
-		sgbd.setRequeteModification(requete);
+		// Modification des informations
+		sgbd.setRequeteModification(chaine);
 		
 		return "Vos modifications ont été prises en compte.";
 	}
@@ -106,11 +104,11 @@ public class Serveur {
 		// ControleDroits
 		if(sgbd.isAdmin()){
 			// Récupération de toutes les informations du profil
-			resultats = sgbd.getAllInfos();
+			setResultats(sgbd.getAllInfos());
 		}
 		else {
 			// Récupération des informations visibles du profil
-			resultats = sgbd.getVisibleInfos();
+			setResultats(sgbd.getVisibleInfos());
 		}
 	}
 	
@@ -118,6 +116,6 @@ public class Serveur {
 	public void rechercher(String[] chaine){
 		
 		// Recherche
-		resultats = sgbd.getUtilisateurs(chaine);
+		setResultats(sgbd.getUtilisateurs(chaine));
 	}
 }
