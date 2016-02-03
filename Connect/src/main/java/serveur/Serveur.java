@@ -8,6 +8,23 @@ public class Serveur {
 	private String requete;
 	private String[] resultats;
 	
+	// Constructeurs
+	public String getRequete() {
+		return requete;
+	}
+
+	public void setRequete(String requete) {
+		this.requete = requete;
+	}
+
+	public String[] getResultats() {
+		return resultats;
+	}
+
+	public void setResultats(String[] resultats) {
+		this.resultats = resultats;
+	}
+	
 	// varibles de test
 	private boolean test = false;
 
@@ -29,7 +46,7 @@ public class Serveur {
 			else {
 				// Assemblage des données pour requête SQL
 				requete = "NOM = "+ nom +" AND PRENOM = "+ prenom;
-				requete += " AND ADRESSEMAIL = "+ adresseMail +" & MOTDEPASSE = "+ motDePasse +";";
+				requete += " AND MAIL = "+ adresseMail +" AND MOTDEPASSE = "+ motDePasse +";";
 				
 				// Traitement de la requête par le SGBD
 				sgbd.setRequeteCreation(requete);
@@ -84,7 +101,7 @@ public class Serveur {
 	}
 	
 	// Méthode de consultation d'un profil utilisateur
-	public String[] consulter(String adresseMail) {
+	public void consulter(String adresseMail) {
 		
 		// ControleDroits
 		if(sgbd.isAdmin()){
@@ -95,16 +112,12 @@ public class Serveur {
 			// Récupération des informations visibles du profil
 			resultats = sgbd.getVisibleInfos();
 		}
-
-		return resultats;
 	}
 	
 	// Méthode de recherche d'utilisateurs
-	public String[] rechercher(String[] chaine){
+	public void rechercher(String[] chaine){
 		
 		// Recherche
 		resultats = sgbd.getUtilisateurs(chaine);
-		
-		return resultats;
 	}
 }
