@@ -2,32 +2,96 @@ package gestionProtocole;
 import java.io.*;
 import java.net.*;
 import client.Client;
+import socketsTCP.SocketClient;
 
 public class GestionProtocoleClient {
-
 	private Client client;
+	private String message;
+	private SocketClient soc;
+	private String nbElement;
 	
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
 	public GestionProtocoleClient(Client client) {
 		super();
 		this.client = client;
 	}
+
+	public void setRequeteCrea(String nom, String prenom, String mail, String motDePasse){
+		message = "CREA|" + nom + "|" + prenom + "|" + mail + "|" + motDePasse + "||";
+		message = soc.socket(message);
+		message = decoupage(message);
+	}
 	
-	public String requete(String entreeSocket){
-        String[] req = entreeSocket.split(" ");
+	public void setRequeteConx(String mail, String motDePasse){
+		message = "CONX|" + mail + "|" + motDePasse + "||";
+		message = soc.socket(message);
+	}
+
+	public void setRequeteRechMotsCles(String motCles){
+		message = "RECH|MOTSCLES|" + motCles + "||";
+		message = soc.socket(message);
+		//Test pour savoir les variable renseigné
+		
+		
+	}
+
+	public void setRequeteRechNom(String nom, String prenom, String mail, String diplome, String annee, String competences){
+		message = "RECH|NOM|";
+		message = soc.socket(message);
+
+		//Test pour savoir les variable renseigné
+	}
+
+	public void setRequeteCons(String mail){
+		message = "CONS|" + mail +"||";
+		message = soc.socket(message);
+
+		//Test pour savoir les variable renseigné
+	}
+	
+	public void setRequeteModi(String nom, String prenom, String motDePasse, String diplome, String annee, String competences){
+		message = "MODI|";
+		message = soc.socket(message);
+
+		//Test pour savoir les variable renseigné
+	}
+
+	public void setRequeteDeco(String mail, String motDePasse){
+		message = "DECO";
+		message = soc.socket(message);
+
+	}
+	
+	
+	public String decoupage(String reponse){
+        String[] req = reponse.split(" ");
         switch(req[0]){
-        case "CREA":
+        case "MSG":
             try {
-                serveur.creerCompte(req[1], Double.parseDouble(req[2]));
-                return "MSG|Votre compte a bien Ã©tÃ© crÃ©Ã©, vous pouvez maintenant vous connecter.";
+                message = req[1];
             } catch (NumberFormatException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
-                return "MSG| Erreur format";
+                message = "Erreur format";
             }
-        case "CONX":
-                return "POS " + serveur.getSolde(req[1]) + serveur.getDerniereOperation(req[1]);
-             
-        case "MODI":
+            break;
+        case "INFO":
+        	try {
+                nbElement = req[1];
+            } catch (NumberFormatException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+                message = "Erreur format";
+            }
+            break;
+        case "LIST":
             try {
                 serveur.ajouter(req[1], Double.parseDouble(req[2]));
                 return "OK";
@@ -36,19 +100,21 @@ public class GestionProtocoleClient {
                 e.printStackTrace();
                 return "MSG| Erreur format";
             }
-        case "CONS":
+            break;
+        case "PROF":
             try {
-                serveur.retirer(req[1], Double.parseDouble(req[2]));
-                return "OK";
+            	message = "---------------------------------\n";
+            	message = "";
+            	message = "---------------------------------\n";
             } catch (NumberFormatException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
-                return "MSG| Erreur format";
+                message = "Erreur format";
             }
+            break;
         default :
-            return "MSG|Erreur dans votre choix";
+            message = "Erreur dans votre choix";
         }
-    }
-	
-	
+        for (int i=0; i<nbElement; i++)
+    }	
 }
