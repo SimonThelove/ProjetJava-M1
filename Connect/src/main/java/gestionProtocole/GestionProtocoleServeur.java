@@ -14,6 +14,11 @@ public class GestionProtocoleServeur {
         this.serveur = serveur;
     }
 
+<<<<<<< HEAD
+=======
+    //TEST PUSH DEPUIS ECLIPSE
+    
+>>>>>>> parent of b6cd074... test push 2 (desole pour le spam x))
     public String requete(String entreeSocket){
         String[] req = entreeSocket.split("|");
         switch(req[0]){
