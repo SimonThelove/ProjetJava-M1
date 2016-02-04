@@ -14,7 +14,7 @@ public class GestionProtocoleServeur {
         this.serveur = serveur;
     }
 
-    //TEST PUSH DEPUIS ECLIPSE
+    //TEST PUSH DEPUIS ECLIPSE 2
     
     public String requete(String entreeSocket){
         String[] req = entreeSocket.split("|");
