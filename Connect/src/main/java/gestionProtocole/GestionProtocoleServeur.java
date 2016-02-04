@@ -15,10 +15,15 @@ public class GestionProtocoleServeur {
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     //TEST PUSH DEPUIS ECLIPSE
     
 >>>>>>> parent of b6cd074... test push 2 (desole pour le spam x))
+=======
+    //TEST PUSH DEPUIS ECLIPSE 2
+    
+>>>>>>> parent of 7651bb4... debug projet local
     public String requete(String entreeSocket){
         String[] req = entreeSocket.split("|");
         switch(req[0]){
@@ -44,11 +49,11 @@ public class GestionProtocoleServeur {
         case "MODI":
             try {
                 serveur.modifierInformations(req[1], Double.parseDouble(req[2]));
-                return "MSG|Vos informations ont bien ete mises à jour.";
+                return "MSG|Vos informations ont bien ete mises ï¿½ jour.";
             } catch (NumberFormatException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
-                return "MSG|Erreur lors de la mise à jour de vos informations.";
+                return "MSG|Erreur lors de la mise ï¿½ jour de vos informations.";
             }
         case "CONS":
             try {
