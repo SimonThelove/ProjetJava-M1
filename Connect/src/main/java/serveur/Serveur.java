@@ -50,12 +50,8 @@ public class Serveur {
 				return "Votre mot de passe n'est pas sécurisé.";
 			}
 			else {
-				// Assemblage des données pour requête SQL
-				requete = "NOM = "+ nom +" AND PRENOM = "+ prenom;
-				requete += " AND MAIL = "+ adresseMail +" AND MDP = "+ motDePasse +";";
-				
 				// Traitement de la requête par le SGBD
-				sgbd.setRequeteCreation(requete);
+				sgbd.setRequeteCreation(nom, prenom, adresseMail, motDePasse);
 				
 				return "Votre compte a bien été créé, vous pouvez maintenant vous connecter.";
 			}
