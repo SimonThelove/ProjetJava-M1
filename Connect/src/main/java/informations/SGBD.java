@@ -15,7 +15,7 @@ public class SGBD {
 	private ResultSetMetaData rsmd;
 
 	private String reponse;
-	private String[] resultats;
+	private String[] resultats = null;
 	
 	// Compteur pour les boucles de recherche
 	private int i;
@@ -33,7 +33,7 @@ public class SGBD {
 	public String[] getResultats() {
 		return resultats;
 	}
-	public void setResultats(String[] resultats) {
+	public void setResultats(ResultSet rslt, ResultSetMetaData rsmd) {
 		// Initialisation du compteur et du nombre de résultats SQL
 		i = 0;
 		resultats[0] = 0;
@@ -59,11 +59,10 @@ public class SGBD {
 	}
 
 	// Requête de consultaiton de la base de données
-	public void setRequeteConsultation(String requeteConsultation) {
-		// Création de la requête
+	public void setRequeteConsultation(String[] chaine) {
 
 		// On fabrique le début la requête
-		req = " SELECT * FROM informations WHERE (";
+		requeteConsultation = " SELECT * FROM informations WHERE (";
 
 		if (chaine[1] == "MOTSCLES") {
  			// On stocke les mots clés dans un tableau
@@ -73,44 +72,44 @@ public class SGBD {
  			// On regarde le nombre de mots clés et on bricole
         		// Pour MAIL
  			for (i = 0; i <= (mots.length - 1); i++) {
- 				req += "mail LIKE '%" + mots[i] + "%' OR ";
+ 				requeteConsultation += "mail LIKE '%" + mots[i] + "%' OR ";
  			}
  			// Pour NOM
  			for (i = 0; i <= (mots.length - 1); i++) {
- 				req += "nom LIKE '%" + mots[i] + "%' OR ";
+ 				requeteConsultation += "nom LIKE '%" + mots[i] + "%' OR ";
  			}
  			// Pour PRENOM
  			for (i = 0; i <= (mots.length - 1); i++) {
- 				req += "prenom LIKE '%" + mots[i] + "%' OR ";
+ 				requeteConsultation += "prenom LIKE '%" + mots[i] + "%' OR ";
  			}
  			// Pour TELEPHONE
  			for (i = 0; i <= (mots.length - 1); i++) {
- 				req += "telephone LIKE '%" + mots[i] + "%' OR ";
+ 				requeteConsultation += "telephone LIKE '%" + mots[i] + "%' OR ";
  			}
  			// Pour DIPLOMES
  			for (i = 0; i <= (mots.length - 1); i++) {
- 				req += "diplomes LIKE '%" + mots[i] + "%' OR ";
+ 				requeteConsultation += "diplomes LIKE '%" + mots[i] + "%' OR ";
  			}
  			// Pour ANNEE_DIPLOMATION
  			for (i = 0; i <= (mots.length - 1); i++) {
- 				req += "annee_diplomation LIKE '%" + mots[i] + "%' OR ";
+ 				requeteConsultation += "annee_diplomation LIKE '%" + mots[i] + "%' OR ";
  			}
  
  			// On y colle la fin (On recherche tous les mots clés sauf le dernier)
  			for (i = 0; i <= (mots.length - 2); i++) {
- 				req += "competences LIKE '%" + mots[i] + "%' OR ";
+ 				requeteConsultation += "competences LIKE '%" + mots[i] + "%' OR ";
  			}
  			// On finit par rechercher le dernier mot clé en clôturant la requête
- 			req += "competences LIKE '%" + mots[i] + "%');";
+ 			requeteConsultation += "competences LIKE '%" + mots[i] + "%');";
  	
  
 		} else 	{
    			// Recherche par champs => on sait où chercher et on simplifie la fabrication de la requête
    			for (i = 1; i < (chaine.length - 2); i+= 2) {
-    				req += chaine[i] + " LIKE '%" + chaine[i+1] + "%' AND ";
+    				requeteConsultation += chaine[i] + " LIKE '%" + chaine[i+1] + "%' AND ";
 		   	}
     			// On finit la requête avec l'ajout du dernier champ
-		 	req+= chaine[i] + " LIKE '%" + chaine[i+1] + "%');";
+		 	requeteConsultation += chaine[i] + " LIKE '%" + chaine[i+1] + "%');";
 		 }
 	}
 	
@@ -163,10 +162,10 @@ public class SGBD {
 	}
 	
 	// Requête de vérification des droits d'accès aux informations des utilisateurs
-	public boolean isAdmin(){
+	public boolean isAdmin(String adresseMail){
 		
-		//testVerification = requête SQL getTypeCompte
-		if (testVerification){
+		rslt = st.executeQuery("SELECT mail FROM ADMINISTRATEURS WHERE mail = '" + adresseMail +"';");
+		if (rslt.next() != null){
 			return true;
 		} else {
 			return false;
@@ -174,14 +173,51 @@ public class SGBD {
 	}
 	
 	// Récupération des informations d'un profil utilisateur (admin)
-	public String[] getAllInfos(){
+	public String[] getAllInfos(String adresseMail){
+		
+		// On fabrique les informations à transmettre
+		String[] req;
+		req[1] = "MAIL";
+		req[2] = adresseMail;
+		setRequeteConsultation(req);
+		
+		// On l'exécute sur la BDD et on récupère les informations sur ces résultats
+		rslt = st.executeQuery(requeteConsultation);
+		rsmd = rslt.getMetaData();
+
+		// On standardise les résultats
+		setResultats(rslt,rsmd);
 		
 		return resultats;
 	}
 	
 	// Récupération des informations d'un profil utilisateur (selon visibilité)
-	public String[] getVisibleInfos(){
+	public String[] getVisibleInfos(string adresseMail){
 		
+		// On fabrique les informations à transmettre
+		String[] req;
+		req[1] = "MAIL";
+		req[2] = adresseMail;
+		setRequeteConsultation(req);
+		
+		// On l'exécute sur la BDD et on récupère les informations sur ces résultats
+		rslt = st.executeQuery(requeteConsultation);
+		rsmd = rslt.getMetaData();
+
+		// On standardise les résultats
+		setResultats(rslt,rsmd);
+		
+		if (resultats != null) {
+			// On regarde quelles informations sont visibles aux anonymes
+			rslt = st.executeQuery("SELECT infos_visibles_anonymes FROM visibilite WHERE mail = '" + adresseMail + "';");
+		
+			// On adapte le contenu de resultats (bricolage)
+			while(rslt.next()){
+				String temp = rslt.getString("infos_visibles_anonymes");
+				String[] split = temp.split(",");
+				// Comparaison resultats ET split
+			}
+		}
 		return resultats;
 	}
 	
@@ -196,7 +232,7 @@ public class SGBD {
 		rsmd = rslt.getMetaData();
 
 		// On standardise les résultats
-		setResultats();
+		setResultats(rslt,rsmd);
 
 		return resultats;
 	}
