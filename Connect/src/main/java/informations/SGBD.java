@@ -33,7 +33,7 @@ public class SGBD {
 	public String[] getResultats() {
 		return resultats;
 	}
-	public void setResultats(ResultSet rslt, ResultSetMetaData rsmd) {
+	public void setResultats(ResultSet rslt, ResultSetMetaData rsmd, String[] visibilite) {
 		// Initialisation du compteur et du nombre de résultats SQL
 		i = 0;
 		resultats[0] = 0;
@@ -186,13 +186,18 @@ public class SGBD {
 		rsmd = rslt.getMetaData();
 
 		// On standardise les résultats
-		setResultats(rslt,rsmd);
+		setResultats(rslt,rsmd,null);
 		
 		return resultats;
 	}
 	
 	// Récupération des informations d'un profil utilisateur (selon visibilité)
 	public String[] getVisibleInfos(string adresseMail){
+		
+		// On déclare un tableau local de gestion de la visibilité
+		// ainsi qu'un compteur pour ce tableau
+		String[][] split;
+		int i = 0;
 		
 		// On fabrique les informations à transmettre
 		String[] req;
@@ -203,21 +208,17 @@ public class SGBD {
 		// On l'exécute sur la BDD et on récupère les informations sur ces résultats
 		rslt = st.executeQuery(requeteConsultation);
 		rsmd = rslt.getMetaData();
-
-		// On standardise les résultats
-		setResultats(rslt,rsmd);
 		
-		if (resultats != null) {
-			// On regarde quelles informations sont visibles aux anonymes
-			rslt = st.executeQuery("SELECT infos_visibles_anonymes FROM visibilite WHERE mail = '" + adresseMail + "';");
-		
-			// On adapte le contenu de resultats (bricolage)
-			while(rslt.next()){
-				String temp = rslt.getString("infos_visibles_anonymes");
-				String[] split = temp.split(",");
-				// Comparaison resultats ET split
-			}
+		// Gestion de la visibilité
+		ResultSet visible = st.executeQuery("SELECT infos_visibles_anonymes FROM visibilite WHERE mail = '" + adresseMail + "';");
+		while (visible.next()) {
+			split[i] = (visible.getString("infos_visibles_anonymes")).split(",");
+			i ++;
 		}
+		
+		// On standardise les résultats
+		setResultats(rslt,rsmd,split);
+		
 		return resultats;
 	}
 	
@@ -232,7 +233,7 @@ public class SGBD {
 		rsmd = rslt.getMetaData();
 
 		// On standardise les résultats
-		setResultats(rslt,rsmd);
+		setResultats(rslt,rsmd,null);
 
 		return resultats;
 	}
