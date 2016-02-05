@@ -17,28 +17,35 @@ public class GestionProtocoleServeur {
     
     public String requete(String entreeSocket){
         String[] req = entreeSocket.split("|");
-        switch(req[0]){
-        case "CREA":
-                serveur.creerCompte(req[1], Double.parseDouble(req[2]));
-          
-        case "CONX":
-                serveur.seConnecter(req[1], Double.parseDouble(req[2]));
-                
-        case "MODI":
-                serveur.modifierInformations(req[1], Double.parseDouble(req[2]));
-               
-        case "CONS":
-                serveur.rechercherChamps(req[1], Double.parseDouble(req[2]));
-             
-        case "RECH":
-        	serveur.rechercher(req[1], Double.parseDouble(req[2]));
+        switch(req[0])
+        {
+	        case "CREA":
+	            setReponse("MSG|" + serveur.creerCompte(req[2], req[4], req[6], req[8]));
+	      
+		    case "CONX":
+	            setReponse("MSG|" + serveur.seConnecter(req[2], req[4]));
+		            
+		    case "MODI":
+	            setReponse("MSG|" + serveur.modifierInformations(req));
 
-        case "DECO":
-        	serveur.seDeconnecter(req[1], Double.parseDouble(req[2]));
-               
-        default :
-            return "MSG|Erreur dans votre choix";
+		    case "CONS":
+	            setReponse("MSG|" + serveur.consulter(req[2]));
+
+		    case "RECH":
+	            setReponse("MSG|" + serveur.rechercher(req));
+
+		    case "DECO":
+	            setReponse("MSG|" + serveur.seDeconnecter());
+
         }
     }
+
+	public String getReponse() {
+		return reponse;
+	}
+
+	public void setReponse(String reponse) {
+		this.reponse = reponse;
+	}
 
 }
