@@ -4,9 +4,6 @@ import java.sql.*;
 
 public class SGBD {
 	
-	private boolean testRecuperation;
-	private boolean testVerification;
-	
 	private String requeteCreation;
 	private String requeteModification;
 	private String requeteConsultation;
@@ -137,35 +134,31 @@ public class SGBD {
 	
 	// Méthode de récupération du mail
 	public boolean recupererMail(String adresseMail){
-		
-		//testRecuperation = Requete SQL getMail
-		if (testRecuperation){
-			return true;
-		} else
-			return false;
+	
+            	rslt = st.executeQuery("SELECT mail FROM UTILISATEURS WHERE mail = '" + adresseMail + "'");
+            	if (rslt != null)
+            		return true;
+            	else
+            		return false;
 	}
 	
 	// Méthode de vérification du mot de passe (politique de sécurité des mots de passe)
 	public boolean verifierMotDePasse(String motDePasse){
 		
-		//testVerification = politique de sécurité des mots de passe
-		if (testVerification){
-			return true;
-		} else {
-			return false;
-		}
+    		if (int taille = motDePasse.length() >= 6)
+    			return true;
+    		else
+    			return false;
 	}
 	
 	// Méthode de récupération du mot de passe
 	public boolean recupererMotDePasse(String motDePasse){
 		
-		//testRecuperation = requete SQL getMotDePasse
-		if (testRecuperation){
-			return true;
-		}
-		else {
-			return false;
-		}
+            	rslt = st.executeQuery("SELECT mdp FROM UTILISATEURS WHERE mdp = '" + motDePasse + "'");
+            	if (rslt != null)
+            		return true;
+            	else
+            		return false;
 	}
 	
 	// Requête de vérification des droits d'accès aux informations des utilisateurs
