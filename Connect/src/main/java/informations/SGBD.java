@@ -115,9 +115,10 @@ public class SGBD {
 	}
 	
 	// Requête de création dans la base de données
-	public void setRequeteCreation(String requete) {
-		// A MODIFIER POUR QUE CA MARCHE
-		this.requeteCreation = requete;
+	public void setRequeteCreation(String nom, String prenom, String adresseMail, String motDePasse) {
+		this.requeteCreation  = "INSERT INTO UTILISATEURS (mail, mdp) VALUES ('" + adresseMail+ "','" + motDePasse + "'); ";
+		this.requeteCreation += "INSERT INTO INFORMATIONS (nom, prenom) VALUES ('" + nom + "','" + prenom + "'); ";
+		this.requeteCreation += "INSERT INTO VISIBILITE VALUES ('',''," + adresseMail + ");";
 	}
 
 	// Requête de modification dans la base de données
@@ -200,4 +201,15 @@ public class SGBD {
 		return resultats;
 	}
 	
+	// Mise à jour de la BDD
+	// Creation ou Modification
+	public int executeUpdate(String type) {
+		if (type == "CREA") {
+			i = st.executeUpdate(requeteCreation);
+			return i;
+		} else if (type == "MODI") {
+			i = st.executeUpdate(requeteModificaiotn);
+			return i;
+		}
+	}
 }
