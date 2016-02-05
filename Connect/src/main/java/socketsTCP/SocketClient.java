@@ -2,6 +2,7 @@ package socketsTCP;
 import java.io.*;
 import java.net.*;
 
+
 public class SocketClient {
 	
 	 public String socket(String message){

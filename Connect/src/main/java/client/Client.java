@@ -7,7 +7,7 @@ import gestionProtocole.GestionProtocoleClient;
 public class Client {
 	private Scanner sc = new Scanner(System.in);
 	private int choix;
-	private GestionProtocoleClient gp;
+	private GestionProtocoleClient gp = new GestionProtocoleClient(null);
 	
 	public GestionProtocoleClient getGp() {
 		return gp;
@@ -62,7 +62,7 @@ public class Client {
 	    String motDePasse = sc.nextLine();
 	    
 	    //Appelle à la concaténation de la requète creerCompte
-	    gp.setRequeteCrea(nom, prenom, mail, motDePasse);
+	    gp.requeteCrea(nom, prenom, mail, motDePasse);
 	    return gp.getMessage();
 	  }
 	
@@ -75,7 +75,7 @@ public class Client {
 	    String motDePasse = sc.nextLine();
 	    
 	    //Appelle à la concaténation de la requète connexion
-	    gp.setRequeteConx(mail, motDePasse);
+	    gp.requeteConx(mail, motDePasse);
 	    return gp.getMessage();
 	  }
 	  
@@ -103,7 +103,7 @@ public class Client {
 	    String motsCles = sc.nextLine();
 	    
 	    //Appelle à la concaténation de la requète rechercherMotsCles
-	    gp.setRequeteRechMotsCles(motsCles);
+	    gp.requeteRechMotsCles(motsCles);
 	    return gp.getMessage();
 	  }
 	
@@ -123,7 +123,7 @@ public class Client {
 	    System.out.print("Compétence : ");
 	    String competence = sc.nextLine();//Vider l'entrée clavier
 	    //Appelle à la concaténation de la requète rechercherAvancee
-	    gp.setRequeteRechNom(nom, prenom, mail, nomDiplome, anneeDiplome, competence);
+	    gp.requeteRechNom(nom, prenom, mail, nomDiplome, anneeDiplome, competence);
 	    return gp.getMessage();
 	  }
 	

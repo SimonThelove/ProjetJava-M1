@@ -7,7 +7,7 @@ import socketsTCP.SocketClient;
 public class GestionProtocoleClient {
 	private Client client;
 	private String message;
-	private SocketClient soc;
+	private SocketClient soc = new SocketClient();
 	private String nbElement;
 	
 	public String getMessage() {
@@ -24,62 +24,73 @@ public class GestionProtocoleClient {
 	}
 
 	//Méthode de concaténation de la requète creerCompte
-	public void setRequeteCrea(String nom, String prenom, String mail, String motDePasse){
+	public void requeteCrea(String nom, String prenom, String mail, String motDePasse){
 		message = "CREA|" + nom + "|" + prenom + "|" + mail + "|" + motDePasse + "||";
+		//Envoit du message à SocketClient
 		message = soc.socket(message);
+		//Appelle à la méthode pour créer un affichage ordonné au client
 		message = decoupage(message);
 	}
 	
 	//Méthode de concaténation de la requète connexion
-	public void setRequeteConx(String mail, String motDePasse){
+	public void requeteConx(String mail, String motDePasse){
 		message = "CONX|" + mail + "|" + motDePasse + "||";
+		//Envoit du message à SocketClient
 		message = soc.socket(message);
+		//Appelle à la méthode pour créer un affichage ordonné au client
+		message = decoupage(message);
 	}
 
 	//Méthode de concaténation de la requète rechercherMotsCles
-	public void setRequeteRechMotsCles(String motCles){
+	public void requeteRechMotsCles(String motCles){
 		message = "RECH|MOTSCLES|" + motCles + "||";
+		//Envoit du message à SocketClient
 		message = soc.socket(message);
-		//Test pour savoir les variable renseigné
-		
-		
+		//Appelle à la méthode pour créer un affichage ordonné au client
+		message = decoupage(message);
 	}
 
 	//Méthode de concaténation de la requète RechercherAvancee
-	public void setRequeteRechNom(String nom, String prenom, String mail, String diplome, String annee, String competences){
+	public void requeteRechNom(String nom, String prenom, String mail, String diplome, String annee, String competences){
 		message = "RECH|NOM|";
+		//Envoit du message à SocketClient
 		message = soc.socket(message);
-
-		//Test pour savoir les variable renseigné
+		//Appelle à la méthode pour créer un affichage ordonné au client
+		message = decoupage(message);
 	}
 
 	//Méthode de concaténation de la requète consultation
-	public void setRequeteCons(String mail){
+	public void requeteCons(String mail){
 		message = "CONS|" + mail +"||";
+		//Envoit du message à SocketClient
 		message = soc.socket(message);
-
-		//Test pour savoir les variable renseigné
+		//Appelle à la méthode pour créer un affichage ordonné au client
+		message = decoupage(message);
 	}
 	
 	//Méthode de concaténation de la requète modification
-	public void setRequeteModi(String nom, String prenom, String motDePasse, String diplome, String annee, String competences){
+	public void requeteModi(String nom, String prenom, String motDePasse, String diplome, String annee, String competences){
 		message = "MODI|";
+		//Envoit du message à SocketClient
 		message = soc.socket(message);
-
-		//Test pour savoir les variable renseigné
+		//Appelle à la méthode pour créer un affichage ordonné au client
+		message = decoupage(message);
 	}
 
 	//Méthode de concaténation de la requète deconnexion
-	public void setRequeteDeco(String mail, String motDePasse){
+	public void requeteDeco(String mail, String motDePasse){
 		message = "DECO";
+		//Envoit du message à SocketClient
 		message = soc.socket(message);
-
+		//Appelle à la méthode pour créer un affichage ordonné au client
+		message = decoupage(message);
 	}
 	
 	//Méthode pour créer la réponse à afficher d'une requète
 	public String decoupage(String reponse){
         String[] req = reponse.split(" ");
         switch(req[0]){
+        //Recupère le message à afficher au client
         case "MSG":
             try {
                 message = req[1];
@@ -89,30 +100,29 @@ public class GestionProtocoleClient {
                 message = "Erreur format";
             }
             break;
-        case "INFO":
-        	try {
-                nbElement = req[1];
-            } catch (NumberFormatException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-                message = "Erreur format";
-            }
-            break;
+        //Affiche la liste simplifiée des profils
         case "LIST":
             try {
-                serveur.ajouter(req[1], Double.parseDouble(req[2]));
-                return "OK";
+            	/*
+            	nbElement = req[1];
+            	int k = 2;
+            	message = "----------------------------------------\n";
+            	for(int i=0; i>nbElement; i++)
+            	{
+            		
+            	}*/
             } catch (NumberFormatException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
-                return "MSG| Erreur format";
+                
             }
             break;
+        //Affiche un profil
         case "PROF":
             try {
-            	message = "---------------------------------\n";
+        		message = "----------------------------------------\n";
             	message = "";
-            	message = "---------------------------------\n";
+        		message = "----------------------------------------\n";
             } catch (NumberFormatException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -122,6 +132,6 @@ public class GestionProtocoleClient {
         default :
             message = "Erreur dans votre choix";
         }
-        for (int i=0; i<nbElement; i++)
+        return message;
     }	
 }
