@@ -23,17 +23,20 @@ public class GestionProtocoleClient {
 		this.client = client;
 	}
 
+	//Méthode de concaténation de la requète creerCompte
 	public void setRequeteCrea(String nom, String prenom, String mail, String motDePasse){
 		message = "CREA|" + nom + "|" + prenom + "|" + mail + "|" + motDePasse + "||";
 		message = soc.socket(message);
 		message = decoupage(message);
 	}
 	
+	//Méthode de concaténation de la requète connexion
 	public void setRequeteConx(String mail, String motDePasse){
 		message = "CONX|" + mail + "|" + motDePasse + "||";
 		message = soc.socket(message);
 	}
 
+	//Méthode de concaténation de la requète rechercherMotsCles
 	public void setRequeteRechMotsCles(String motCles){
 		message = "RECH|MOTSCLES|" + motCles + "||";
 		message = soc.socket(message);
@@ -42,6 +45,7 @@ public class GestionProtocoleClient {
 		
 	}
 
+	//Méthode de concaténation de la requète RechercherAvancee
 	public void setRequeteRechNom(String nom, String prenom, String mail, String diplome, String annee, String competences){
 		message = "RECH|NOM|";
 		message = soc.socket(message);
@@ -49,6 +53,7 @@ public class GestionProtocoleClient {
 		//Test pour savoir les variable renseigné
 	}
 
+	//Méthode de concaténation de la requète consultation
 	public void setRequeteCons(String mail){
 		message = "CONS|" + mail +"||";
 		message = soc.socket(message);
@@ -56,6 +61,7 @@ public class GestionProtocoleClient {
 		//Test pour savoir les variable renseigné
 	}
 	
+	//Méthode de concaténation de la requète modification
 	public void setRequeteModi(String nom, String prenom, String motDePasse, String diplome, String annee, String competences){
 		message = "MODI|";
 		message = soc.socket(message);
@@ -63,13 +69,14 @@ public class GestionProtocoleClient {
 		//Test pour savoir les variable renseigné
 	}
 
+	//Méthode de concaténation de la requète deconnexion
 	public void setRequeteDeco(String mail, String motDePasse){
 		message = "DECO";
 		message = soc.socket(message);
 
 	}
 	
-	
+	//Méthode pour créer la réponse à afficher d'une requète
 	public String decoupage(String reponse){
         String[] req = reponse.split(" ");
         switch(req[0]){
