@@ -1,5 +1,7 @@
 package informations;
 
+import java.sql.*;
+
 public class SGBD {
 	
 	private boolean testRecuperation;
@@ -8,15 +10,25 @@ public class SGBD {
 	private String requeteCreation;
 	private String requeteModification;
 	private String requeteConsultation;
+	
+	// Déclaration de variables globales pour executer le SQL
+	private Connection con = DriverManager.getConnection("jdbc:mysql-stri.alwaysdata.net","stri","STRISTRI");
+	private Statement st = con.createStatement();
+	private ResultSet rslt;
+	private ResultSetMetaData rsmd;
 
 	private String reponse;
 	private String[] resultats;
+	
+	// Compteur pour les boucles de recherche
+	private int i;
 	
 	// Constructeurs : String reponse
 	public String getReponse() {
 		return reponse;
 	}
 	public void setReponse(String reponse) {
+		// A MODIFIER ou CONFIRMER UTILITE DE LA VARIABLE
 		this.reponse = reponse;
 	}
 
@@ -25,22 +37,95 @@ public class SGBD {
 		return resultats;
 	}
 	public void setResultats(String[] resultats) {
-		this.resultats = resultats;
+		// Initialisation du compteur et du nombre de résultats SQL
+		i = 0;
+		resultats[0] = 0;
+
+		// On parcourt les résultats SQL
+		while (rslt.next()) {
+			// On parcourt les champs de chaque résultat SQL
+			// tant qu'il y a des colonnes dans lle ResultSet (start 1)
+			while ((i-1) <= rsmd.getColumnCount()) {
+				// On teste le contenu de chaque colonne
+				if (rslt.getString(i+1) != null) {
+					// On remplit le tableau resultats
+					resultats[i+1] = rsmd.getColumnLabel(i+1);
+					resultats[i+2] = rslt.getString(i+1);
+					// On avance dans resultats et sur la ligne du ResultSet
+					i += 2;
+					// On implémente le nombre résultats SQL dans resultats[0]
+					// en utilisant le numéro de ligne de ResultSet comme référence (start 1)
+					resultats[0] = (String)rslt.getRow();
+				}
+			}
+		}
 	}
 
 	// Requête de consultaiton de la base de données
 	public void setRequeteConsultation(String requeteConsultation) {
-		this.requeteConsultation = requeteConsultation;
+		// Création de la requête
+
+		// On fabrique le début la requête
+		req = " SELECT * FROM informations WHERE (";
+
+		if (chaine[1] == "MOTSCLES") {
+ 			// On stocke les mots clés dans un tableau
+ 			// Le séparateur est un espace (logique de saisie)
+			String[] mots = chaine[2].split(" ");
+ 	
+ 			// On regarde le nombre de mots clés et on bricole
+        		// Pour MAIL
+ 			for (i = 0; i <= (mots.length - 1); i++) {
+ 				req += "mail LIKE '%" + mots[i] + "%' OR ";
+ 			}
+ 			// Pour NOM
+ 			for (i = 0; i <= (mots.length - 1); i++) {
+ 				req += "nom LIKE '%" + mots[i] + "%' OR ";
+ 			}
+ 			// Pour PRENOM
+ 			for (i = 0; i <= (mots.length - 1); i++) {
+ 				req += "prenom LIKE '%" + mots[i] + "%' OR ";
+ 			}
+ 			// Pour TELEPHONE
+ 			for (i = 0; i <= (mots.length - 1); i++) {
+ 				req += "telephone LIKE '%" + mots[i] + "%' OR ";
+ 			}
+ 			// Pour DIPLOMES
+ 			for (i = 0; i <= (mots.length - 1); i++) {
+ 				req += "diplomes LIKE '%" + mots[i] + "%' OR ";
+ 			}
+ 			// Pour ANNEE_DIPLOMATION
+ 			for (i = 0; i <= (mots.length - 1); i++) {
+ 				req += "annee_diplomation LIKE '%" + mots[i] + "%' OR ";
+ 			}
+ 
+ 			// On y colle la fin (On recherche tous les mots clés sauf le dernier)
+ 			for (i = 0; i <= (mots.length - 2); i++) {
+ 				req += "competences LIKE '%" + mots[i] + "%' OR ";
+ 			}
+ 			// On finit par rechercher le dernier mot clé en clôturant la requête
+ 			req += "competences LIKE '%" + mots[i] + "%');";
+ 	
+ 
+		} else 	{
+   			// Recherche par champs => on sait où chercher et on simplifie la fabrication de la requête
+   			for (i = 1; i < (chaine.length - 2); i+= 2) {
+    				req += chaine[i] + " LIKE '%" + chaine[i+1] + "%' AND ";
+		   	}
+    			// On finit la requête avec l'ajout du dernier champ
+		 	req+= chaine[i] + " LIKE '%" + chaine[i+1] + "%');";
+		 }
 	}
 	
 	// Requête de création dans la base de données
-	public void setRequeteCreation(String requeteCreation) {
-		this.requeteCreation = requeteCreation;
+	public void setRequeteCreation(String requete) {
+		// A MODIFIER POUR QUE CA MARCHE
+		this.requeteCreation = requete;
 	}
 
 	// Requête de modification dans la base de données
 	public void setRequeteModification(String[] chaine) {
-		
+		// A MODIFIER CAR CA NE VA PAS DU TOUT MARCHER COMME CA
 		// Assemblage de la requête SQL
 				// Assemblage des N-1 premiers termes
 				for(int n = 1; n <= 11; n += 2){
@@ -109,6 +194,16 @@ public class SGBD {
 	// Requête de recherche d'utilisateurs selon des mots clés
 	public String[] getUtilisateurs(String[] motsCles) {
 		
+		// On fabrique la requête
+		setRequeteConsultation(motsCles);
+	
+		// On l'exécute sur la BDD et on récupère les informations sur ces résultats
+		rslt = st.executeQuery(requeteConsultation);
+		rsmd = rslt.getMetaData();
+
+		// On standardise les résultats
+		setResultats();
+
 		return resultats;
 	}
 	
