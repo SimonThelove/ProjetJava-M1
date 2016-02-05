@@ -8,6 +8,15 @@ public class Serveur {
 	private String requete;
 	private String[] resultats;
 	private boolean test = false;
+	private int valide = 0;
+	
+	// Constructeurs :  int valide
+	public int getValide() {
+		return valide;
+	}
+	public void setValide(int valide) {
+		this.valide = valide;
+	}
 	
 	// Constructeurs : boolean test
 	public boolean isTest() {
@@ -52,8 +61,10 @@ public class Serveur {
 			else {
 				// Traitement de la requête par le SGBD
 				sgbd.setRequeteCreation(nom, prenom, adresseMail, motDePasse);
-				
-				return "Votre compte a bien été créé, vous pouvez maintenant vous connecter.";
+				setValide(sbd.executeUpdate("CREA");
+				if (valide != 0)
+					return "Votre compte a bien été créé, vous pouvez maintenant vous connecter.";
+				else	return "Erreur création : votre compte n'a pas été créé."
 			}
 		}
 	}
@@ -90,8 +101,10 @@ public class Serveur {
 		
 		// Modification des informations
 		sgbd.setRequeteModification(chaine);
-		
-		return "Vos modifications ont été prises en compte.";
+		setValide(sgbd.executeUpdate("MODI"));
+		if (valide != 0)
+			return "Vos modifications ont été prises en compte.";
+		else	return "Erreur modification : vos modifications n'ont pas été prises en compte."
 	}
 	
 	// Méthode de consultation d'un profil utilisateur
