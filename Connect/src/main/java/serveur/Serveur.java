@@ -95,7 +95,8 @@ public class Serveur {
 	}
 	
 	// Méthode de consultation d'un profil utilisateur
-	public void consulter(String adresseMail) {
+	public String consulter(String adresseMail) {
+		//SIMON : tu dois faire des return ici...
 		
 		// ControleDroits
 		if(sgbd.isAdmin()){
@@ -109,7 +110,9 @@ public class Serveur {
 	}
 	
 	// Méthode de recherche d'utilisateurs
-	public void rechercher(String[] chaine){
+	public String rechercher(String[] chaine){
+		
+		//idem, manque returns...
 		
 		// Recherche
 		setResultats(sgbd.getUtilisateurs(chaine));
