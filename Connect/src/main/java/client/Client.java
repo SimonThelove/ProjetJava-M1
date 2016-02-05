@@ -8,6 +8,14 @@ public class Client {
 	private Scanner sc = new Scanner(System.in);
 	private int choix;
 	private GestionProtocoleClient gp;
+	public GestionProtocoleClient getGp() {
+		return gp;
+	}
+
+	public void setGp(GestionProtocoleClient gp) {
+		this.gp = gp;
+	}
+
 	public Scanner getSc() {
 		return sc;
 	}
