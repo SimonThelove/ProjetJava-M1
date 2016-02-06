@@ -9,8 +9,9 @@ public class SGBD {
 	private String requeteConsultation;
 	
 	// Déclaration de variables globales pour executer le SQL
-	private Connection con = DriverManager.getConnection("jdbc:mysql-stri.alwaysdata.net","stri","STRISTRI");
-	private Statement st = con.createStatement();
+	/* Chargement du driver JDBC pour MySQL */
+	private Connection con;
+	private Statement st;
 	private ResultSet rslt;
 	private ResultSetMetaData rsmd;
 
@@ -19,6 +20,17 @@ public class SGBD {
 	
 	// Compteur pour les boucles de recherche
 	private int i;
+	
+	// Connexion à la  BDD
+	public void bdd() throws SQLException {
+		try {
+		    Class.forName( "com.mysql.jdbc.Driver" );
+		} catch ( ClassNotFoundException e ) {
+		    // Gérer les éventuelles erreurs ici.
+		}
+		con = DriverManager.getConnection("jdbc:mysql-stri.alwaysdata.net","stri","STRISTRI");
+		st = con.createStatement();
+	}
 	
 	// Constructeurs : String reponse
 	public String getReponse() {

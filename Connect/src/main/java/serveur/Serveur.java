@@ -1,4 +1,6 @@
 package serveur;
+import java.sql.SQLException;
+
 import informations.SGBD;
 
 public class Serveur {
@@ -44,7 +46,7 @@ public class Serveur {
 	
 
 	// Méthode de création d'un compte sur le serveur d'annuaire
-	public String creerCompte(String nom, String prenom, String adresseMail, String motDePasse) {
+	public String creerCompte(String nom, String prenom, String adresseMail, String motDePasse) throws SQLException {
 		
 		// ControleMail
 		setTest(sgbd.recupererMail(adresseMail));
@@ -70,7 +72,7 @@ public class Serveur {
 	}
 	
 	// Méthode de connexion au serveur d'annuaire
-	public String seConnecter(String adresseMail, String motDePasse){
+	public String seConnecter(String adresseMail, String motDePasse) throws SQLException{
 		
 		// ControleMail
 				setTest(sgbd.recupererMail(adresseMail));
@@ -108,11 +110,11 @@ public class Serveur {
 	}
 	
 	// Méthode de consultation d'un profil utilisateur
-	public String consulter(String adresseMail) {
+	public void consulter(String adresseMail) throws SQLException {
 		//SIMON : tu dois faire des return ici...
 		
 		// ControleDroits
-		if(sgbd.isAdmin()){
+		if(sgbd.isAdmin(adresseMail)){
 			// Récupération de toutes les informations du profil
 			setResultats(sgbd.getAllInfos(adresseMail));
 		}
@@ -123,7 +125,7 @@ public class Serveur {
 	}
 	
 	// Méthode de recherche d'utilisateurs
-	public void rechercher(String[] chaine){
+	public void rechercher(String[] chaine) throws SQLException{
 		
 		//idem, manque returns...
 		
