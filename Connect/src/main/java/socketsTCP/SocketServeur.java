@@ -2,11 +2,15 @@ package socketsTCP;
 import java.net.*;
 import java.io.*;
 import gestionProtocole.GestionProtocoleServeur;
+import serveur.Serveur;
 
 public class SocketServeur extends Object {
  
   /** Port par dÃ©faut */
   public final static int portEcho = 12314;
+  
+  // Variable serveur
+  private Serveur serveur;
      
   /**
   * @param args the command line arguments
@@ -57,9 +61,9 @@ public class SocketServeur extends Object {
               sortieSocket = new PrintStream(connexionCourante.getOutputStream());
               entreeSocket = new BufferedReader(new InputStreamReader(connexionCourante.getInputStream()));
               
-              // Réception client
+              // Rï¿½ception client
               String retour = entreeSocket.readLine();
-              // Traitement requête
+              // Traitement requï¿½te
               reponse = gp.requete(retour);
               // Envoi au client
               sortieSocket.println(reponse);
