@@ -8,6 +8,15 @@ public class Serveur {
 	private String requete;
 	private String[] resultats;
 	private boolean test = false;
+	private int valide = 0;
+	
+	// Constructeurs :  int valide
+	public int getValide() {
+		return valide;
+	}
+	public void setValide(int valide) {
+		this.valide = valide;
+	}
 	
 	// Constructeurs : boolean test
 	public boolean isTest() {
@@ -50,14 +59,12 @@ public class Serveur {
 				return "Votre mot de passe n'est pas sécurisé.";
 			}
 			else {
-				// Assemblage des données pour requête SQL
-				requete = "NOM = "+ nom +" AND PRENOM = "+ prenom;
-				requete += " AND MAIL = "+ adresseMail +" AND MDP = "+ motDePasse +";";
-				
 				// Traitement de la requête par le SGBD
-				sgbd.setRequeteCreation(requete);
-				
-				return "Votre compte a bien été créé, vous pouvez maintenant vous connecter.";
+				sgbd.setRequeteCreation(nom, prenom, adresseMail, motDePasse);
+				setValide(sbd.executeUpdate("CREA");
+				if (valide != 0)
+					return "Votre compte a bien été créé, vous pouvez maintenant vous connecter.";
+				else	return "Erreur création : votre compte n'a pas été créé."
 			}
 		}
 	}
@@ -94,12 +101,15 @@ public class Serveur {
 		
 		// Modification des informations
 		sgbd.setRequeteModification(chaine);
-		
-		return "Vos modifications ont été prises en compte.";
+		setValide(sgbd.executeUpdate("MODI"));
+		if (valide != 0)
+			return "Vos modifications ont été prises en compte.";
+		else	return "Erreur modification : vos modifications n'ont pas été prises en compte."
 	}
 	
 	// Méthode de consultation d'un profil utilisateur
-	public void consulter(String adresseMail) {
+	public String consulter(String adresseMail) {
+		//SIMON : tu dois faire des return ici...
 		
 		// ControleDroits
 		if(sgbd.isAdmin()){
@@ -113,7 +123,9 @@ public class Serveur {
 	}
 	
 	// Méthode de recherche d'utilisateurs
-	public void rechercher(String[] chaine){
+	public String rechercher(String[] chaine){
+		
+		//idem, manque returns...
 		
 		// Recherche
 		setResultats(sgbd.getUtilisateurs(chaine));

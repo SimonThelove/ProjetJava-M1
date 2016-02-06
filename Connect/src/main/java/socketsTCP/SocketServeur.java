@@ -1,11 +1,9 @@
 package socketsTCP;
 import java.net.*;
 import java.io.*;
- 
-/**
- * LIGNE 59 : Mettre √† jour la r√©ponse avec GestionProtocole
- */
-public class Stream extends Object {
+import gestionProtocole.GestionProtocoleServeur;
+
+public class SocketServeur extends Object {
  
   /** Port par d√©faut */
   public final static int portEcho = 12314;
@@ -13,12 +11,15 @@ public class Stream extends Object {
   /**
   * @param args the command line arguments
   */
-  public static void main (String args[]) {
+  public void socket () {
+	  
     ServerSocket    leServeur = null;
     Socket          connexionCourante;
     BufferedReader  entreeSocket;
     PrintStream     sortieSocket;
-    String          reponse;
+    String 			reponse;
+    
+    GestionProtocoleServeur gp = new GestionProtocoleServeur(serveur);
      
     try {
       leServeur = new ServerSocket(portEcho);
@@ -52,12 +53,16 @@ public class Stream extends Object {
         try {
           int b = 0;
           while (b != -1) {
+        	  
               sortieSocket = new PrintStream(connexionCourante.getOutputStream());
               entreeSocket = new BufferedReader(new InputStreamReader(connexionCourante.getInputStream()));
-          
+              
+              // RÈception client
               String retour = entreeSocket.readLine();
-              //reponse = gp.requete(retour);
-              //sortieSocket.println(reponse);
+              // Traitement requÍte
+              reponse = gp.requete(retour);
+              // Envoi au client
+              sortieSocket.println(reponse);
                
           }
           System.err.println("Fin de connexion");
