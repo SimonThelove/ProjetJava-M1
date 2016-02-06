@@ -19,7 +19,7 @@ public class SGBD {
 	private String[] resultats = null;
 	
 	// Compteur pour les boucles de recherche
-	private int i;
+	private int i, j;
 	
 	// Connexion à la  BDD
 	public void bdd() throws SQLException {
@@ -48,23 +48,56 @@ public class SGBD {
 	public void setResultats(ResultSet rslt, ResultSetMetaData rsmd, String[] visibilite) throws SQLException {
 		// Initialisation du compteur et du nombre de résultats SQL
 		i = 0;
+		j = 0;
 		resultats[0] = "0";
-
-		// On parcourt les résultats SQL
-		while (rslt.next()) {
-			// On parcourt les champs de chaque résultat SQL
-			// tant qu'il y a des colonnes dans lle ResultSet (start 1)
-			while ((i-1) <= rsmd.getColumnCount()) {
-				// On teste le contenu de chaque colonne
-				if (rslt.getString(i+1) != null) {
-					// On remplit le tableau resultats
-					resultats[i+1] = rsmd.getColumnLabel(i+1);
-					resultats[i+2] = rslt.getString(i+1);
+		
+		// Avec contrôle de la visibilité (getVisibleInfos)
+		if (visibilite != null) {
+			// On parcourt les résultats SQL
+			while (rslt.next()) {
+				// On parcourt les champs de chaque résultat SQL
+				// tant qu'il y a des colonnes dans le ResultSet (start 1)
+				while (i < rsmd.getColumnCount()) {
 					// On avance dans resultats et sur la ligne du ResultSet
-					i += 2;
-					// On implémente le nombre résultats SQL dans resultats[0]
-					// en utilisant le numéro de ligne de ResultSet comme référence (start 1)
-					resultats[0] = "" + rslt.getRow() + "";
+					i ++;
+					// On teste le contenu de chaque colonne
+					if (rslt.getString(i) != null) {
+						// On teste le nombre de champs à affecter à resultats
+						if (j < visibilite.length) {
+							// On verifie la visibilite du champ pour l'affecter
+							if (rsmd.getColumnLabel(i) == visibilite[j]) {
+								// On remplit le tableau resultats
+								resultats[i] = rsmd.getColumnLabel(i);
+								resultats[i+1] = rslt.getString(i);
+								// On incrémente j
+								j ++;
+							}
+						}
+						// On implémente le nombre résultats SQL dans resultats[0]
+						// en utilisant le numéro de ligne de ResultSet comme référence (start 1)
+						resultats[0] = "" + rslt.getRow() + "";
+					}
+				}
+			}
+		}
+		// Sans contrôle de la visibilité (getAllInfos)
+		else {
+			// On parcourt les résultats SQL
+			while (rslt.next()) {
+				// On parcourt les champs de chaque résultat SQL
+				// tant qu'il y a des colonnes dans le ResultSet (start 1)
+				while (i < rsmd.getColumnCount()) {
+					// On avance dans resultats et sur la ligne du ResultSet
+					i ++;
+					// On teste le contenu de chaque colonne
+					if (rslt.getString(i) != null) {
+						// On remplit le tableau resultats
+						resultats[i] = rsmd.getColumnLabel(i);
+						resultats[i+1] = rslt.getString(i);
+						// On implémente le nombre résultats SQL dans resultats[0]
+						// en utilisant le numéro de ligne de ResultSet comme référence (start 1)
+						resultats[0] = "" + rslt.getRow() + "";
+					}
 				}
 			}
 		}
@@ -189,7 +222,7 @@ public class SGBD {
 	public String[] getAllInfos(String adresseMail) throws SQLException{
 		
 		// On fabrique les informations à transmettre
-		String[] req = ("|MAIL|" + adresseMail + "").split("|");
+		String[] req = ("CONS|MAIL|" + adresseMail + "").split("|");
 		setRequeteConsultation(req);
 		
 		// On l'exécute sur la BDD et on récupère les informations sur ces résultats
@@ -203,17 +236,14 @@ public class SGBD {
 	}
 	
 	// Récupération des informations d'un profil utilisateur (selon visibilité)
-	public String[] getVisibleInfos(String adresseMail){
+	public String[] getVisibleInfos(String adresseMail) throws SQLException{
 		
-		// On déclare un tableau local de gestion de la visibilité
-		// ainsi qu'un compteur pour ce tableau
-		String[][] split;
-		int i = 0;
+		// On des variables de gestion de la visibilité
+		String temp;
+		String[] split;
 		
 		// On fabrique les informations à transmettre
-		String[] req;
-		req[1] = "MAIL";
-		req[2] = adresseMail;
+		String[] req = ("CONS|MAIL|" + adresseMail + "").split("|");
 		setRequeteConsultation(req);
 		
 		// On l'exécute sur la BDD et on récupère les informations sur ces résultats
@@ -222,10 +252,8 @@ public class SGBD {
 		
 		// Gestion de la visibilité
 		ResultSet visible = st.executeQuery("SELECT infos_visibles_anonymes FROM visibilite WHERE mail = '" + adresseMail + "';");
-		while (visible.next()) {
-			split[i] = (visible.getString("infos_visibles_anonymes")).split(",");
-			i ++;
-		}
+		temp = visible.getString("infos_visibles_anonymes");
+		split = temp.split(",");
 		
 		// On standardise les résultats
 		setResultats(rslt,rsmd,split);
@@ -251,12 +279,12 @@ public class SGBD {
 	
 	// Mise à jour de la BDD
 	// Creation ou Modification
-	public int executeUpdate(String type) {
+	public int executeUpdate(String type) throws SQLException {
 		if (type == "CREA") {
 			i = st.executeUpdate(requeteCreation);
 			return i;
-		} else if (type == "MODI") {
-			i = st.executeUpdate(requeteModificaiotn);
+		} else {
+			i = st.executeUpdate(requeteModification);
 			return i;
 		}
 	}

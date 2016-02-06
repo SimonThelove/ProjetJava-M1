@@ -99,7 +99,7 @@ public class Serveur {
 	}
 
 	// Méthode de modification des informations sur le compte connecté
-	public String modifierInformations(String[] chaine){
+	public String modifierInformations(String[] chaine) throws SQLException{
 		
 		// Modification des informations
 		sgbd.setRequeteModification(chaine);
