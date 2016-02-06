@@ -111,25 +111,22 @@ public class Serveur {
 	
 	// Méthode de consultation d'un profil utilisateur
 	public void consulter(String adresseMail) throws SQLException {
-		//SIMON : tu dois faire des return ici...
 		
 		// ControleDroits
 		if(sgbd.isAdmin(adresseMail)){
 			// Récupération de toutes les informations du profil
-			setResultats(sgbd.getAllInfos(adresseMail));
+			resultats = (sgbd.getAllInfos(adresseMail));
 		}
 		else {
 			// Récupération des informations visibles du profil
-			setResultats(sgbd.getVisibleInfos(adresseMail));
+			resultats = (sgbd.getVisibleInfos(adresseMail));
 		}
 	}
 	
 	// Méthode de recherche d'utilisateurs
 	public void rechercher(String[] chaine) throws SQLException{
-		
-		//idem, manque returns...
-		
+				
 		// Recherche
-		setResultats(sgbd.getUtilisateurs(chaine));
+		resultats = (sgbd.getUtilisateurs(chaine));
 	}
 }
