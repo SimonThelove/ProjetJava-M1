@@ -15,10 +15,10 @@ public class SGBD {
 	private ResultSet rslt;
 	private ResultSetMetaData rsmd;
 
-	private String reponse;
+	private String table;
 	private String[] resultats = null;
 	
-	// Compteur pour les boucles de recherche
+	// Compteurs utilisés pour parcourir les tableaux et résultats
 	private int i, j;
 	
 	// Connexion à la  BDD
@@ -33,12 +33,12 @@ public class SGBD {
 	}
 	
 	// Constructeurs : String reponse
-	public String getReponse() {
-		return reponse;
+	public String getTable() {
+		return table;
 	}
-	public void setReponse(String reponse) {
+	public void setTable(String table) {
 		// A MODIFIER ou CONFIRMER UTILITE DE LA VARIABLE
-		this.reponse = reponse;
+		this.table = table;
 	}
 
 	// Constructeurs : String[] resultats
@@ -166,15 +166,38 @@ public class SGBD {
 	}
 
 	// Requête de modification dans la base de données
-	public void setRequeteModification(String[] chaine) {
-		// A MODIFIER CAR CA NE VA PAS DU TOUT MARCHER COMME CA
-		// Assemblage de la requête SQL
-				// Assemblage des N-1 premiers termes
-				for(int n = 1; n <= 11; n += 2){
-					requeteModification += chaine[n] + " = " + chaine[n+1] + " AND ";
-				}
-				// Ajout du dernier terme à la requête
-				requeteModification += chaine[11] + " =  " + chaine[12] + ";";
+	public void setRequeteModification(String[] chaine, String adresseMail) {
+		
+		// initialisation des variables
+		i = 0;
+		j = 0;
+
+		// Recuperation de la table
+		while(i < chaine.length){				// On parcourt la chaine
+			j = i % 2;
+			if (j == 1) {						// On teste le nom des champs
+				if (chaine[i] == "mdp")			// Le champ mdp n'appartient qu'à la table utilisateurs
+					setTable("utilisateurs");
+				else if (chaine[i] == "infos_visibles_anonymes" || chaine[i] == "infos_visibles_utilisateurs")
+					setTable("visibilite");		// Les champs infos_visibiles > table visibilite
+				else
+					setTable("informations");	// Les autres champs appartiennent à la table informations
+			}
+			i ++;
+		}
+		
+		// Début de la requête
+		requeteModification = "UPDATE " + table + " SET ";
+		
+		// Assemblage des N-1 termes suivants
+		for(i = 1; i < (chaine.length - 2); i += 2){
+			requeteModification += chaine[i] + " = " + chaine[i+1] + ", ";
+		}
+		// Ajout du dernier terme à la requête
+		requeteModification += chaine[i] + " =  " + chaine[i+1];
+		
+		// Ajout de la condition WHERE
+		requeteModification += " WHERE mail = " + adresseMail + ";";
 	}
 	
 	// Méthode de récupération du mail

@@ -99,10 +99,10 @@ public class Serveur {
 	}
 
 	// Méthode de modification des informations sur le compte connecté
-	public String modifierInformations(String[] chaine) throws SQLException{
+	public String modifierInformations(String[] chaine, String adresseMail) throws SQLException{
 		
 		// Modification des informations
-		sgbd.setRequeteModification(chaine);
+		sgbd.setRequeteModification(chaine, adresseMail);
 		setValide(sgbd.executeUpdate("MODI"));
 		if (valide != 0)
 			return "Vos modifications ont été prises en compte.";
@@ -110,7 +110,7 @@ public class Serveur {
 	}
 	
 	// Méthode de consultation d'un profil utilisateur
-	public void consulter(String adresseMail) throws SQLException {
+	public String consulter(String adresseMail) throws SQLException {
 		
 		// ControleDroits
 		if(sgbd.isAdmin(adresseMail)){
@@ -121,12 +121,15 @@ public class Serveur {
 			// Récupération des informations visibles du profil
 			resultats = (sgbd.getVisibleInfos(adresseMail));
 		}
+		return "";
 	}
 	
 	// Méthode de recherche d'utilisateurs
-	public void rechercher(String[] chaine) throws SQLException{
+	public String rechercher(String[] chaine) throws SQLException{
 				
 		// Recherche
 		resultats = (sgbd.getUtilisateurs(chaine));
+		
+		return "";
 	}
 }

@@ -1,8 +1,11 @@
 package gestionProtocole;
 import java.io.*;
 import java.net.*;
+import java.sql.SQLException;
+
 import serveur.Serveur;
  
+
 import java.io.BufferedReader;
  
 public class GestionProtocoleServeur {
@@ -15,7 +18,7 @@ public class GestionProtocoleServeur {
         this.serveur = serveur;
     }
     
-    public String requete(String entreeSocket){
+    public String requete(String entreeSocket) throws SQLException{
         String[] req = entreeSocket.split("|");
         switch(req[0])
         {
@@ -25,8 +28,8 @@ public class GestionProtocoleServeur {
 		    case "CONX":
 	            setReponse("MSG|" + serveur.seConnecter(req[2], req[4]));
 		            
-		    case "MODI":
-	            setReponse("MSG|" + serveur.modifierInformations(req));
+		    case "MODI": // AJOUTER LE MAIL DU CLIENT CONNECTE (condition WHERE du SQL UPDATE)
+	            setReponse("MSG|" + serveur.modifierInformations(req,"adresseMail"));
 
 		    case "CONS":
 	            setReponse("MSG|" + serveur.consulter(req[2]));
@@ -38,6 +41,7 @@ public class GestionProtocoleServeur {
 	            setReponse("MSG|" + serveur.seDeconnecter());
 
         }
+        return reponse;
     }
 
 	public String getReponse() {
