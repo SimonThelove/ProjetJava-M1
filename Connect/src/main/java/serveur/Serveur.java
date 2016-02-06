@@ -61,10 +61,10 @@ public class Serveur {
 			else {
 				// Traitement de la requête par le SGBD
 				sgbd.setRequeteCreation(nom, prenom, adresseMail, motDePasse);
-				setValide(sbd.executeUpdate("CREA");
+				setValide(sgbd.executeUpdate("CREA"));
 				if (valide != 0)
 					return "Votre compte a bien été créé, vous pouvez maintenant vous connecter.";
-				else	return "Erreur création : votre compte n'a pas été créé."
+				else	return "Erreur création : votre compte n'a pas été créé.";
 			}
 		}
 	}
@@ -104,7 +104,7 @@ public class Serveur {
 		setValide(sgbd.executeUpdate("MODI"));
 		if (valide != 0)
 			return "Vos modifications ont été prises en compte.";
-		else	return "Erreur modification : vos modifications n'ont pas été prises en compte."
+		else	return "Erreur modification : vos modifications n'ont pas été prises en compte.";
 	}
 	
 	// Méthode de consultation d'un profil utilisateur
@@ -114,16 +114,16 @@ public class Serveur {
 		// ControleDroits
 		if(sgbd.isAdmin()){
 			// Récupération de toutes les informations du profil
-			setResultats(sgbd.getAllInfos());
+			setResultats(sgbd.getAllInfos(adresseMail));
 		}
 		else {
 			// Récupération des informations visibles du profil
-			setResultats(sgbd.getVisibleInfos());
+			setResultats(sgbd.getVisibleInfos(adresseMail));
 		}
 	}
 	
 	// Méthode de recherche d'utilisateurs
-	public String rechercher(String[] chaine){
+	public void rechercher(String[] chaine){
 		
 		//idem, manque returns...
 		

@@ -33,10 +33,10 @@ public class SGBD {
 	public String[] getResultats() {
 		return resultats;
 	}
-	public void setResultats(ResultSet rslt, ResultSetMetaData rsmd, String[] visibilite) {
+	public void setResultats(ResultSet rslt, ResultSetMetaData rsmd, String[] visibilite) throws SQLException {
 		// Initialisation du compteur et du nombre de résultats SQL
 		i = 0;
-		resultats[0] = 0;
+		resultats[0] = "0";
 
 		// On parcourt les résultats SQL
 		while (rslt.next()) {
@@ -52,7 +52,7 @@ public class SGBD {
 					i += 2;
 					// On implémente le nombre résultats SQL dans resultats[0]
 					// en utilisant le numéro de ligne de ResultSet comme référence (start 1)
-					resultats[0] = (String)rslt.getRow();
+					resultats[0] = "" + rslt.getRow() + "";
 				}
 			}
 		}
@@ -133,7 +133,7 @@ public class SGBD {
 	}
 	
 	// Méthode de récupération du mail
-	public boolean recupererMail(String adresseMail){
+	public boolean recupererMail(String adresseMail) throws SQLException{
 	
             	rslt = st.executeQuery("SELECT mail FROM UTILISATEURS WHERE mail = '" + adresseMail + "'");
             	if (rslt != null)
@@ -144,15 +144,16 @@ public class SGBD {
 	
 	// Méthode de vérification du mot de passe (politique de sécurité des mots de passe)
 	public boolean verifierMotDePasse(String motDePasse){
-		
-    		if (int taille = motDePasse.length() >= 6)
+			int taille = motDePasse.length();
+			
+    		if (taille >= 6)
     			return true;
     		else
     			return false;
 	}
 	
 	// Méthode de récupération du mot de passe
-	public boolean recupererMotDePasse(String motDePasse){
+	public boolean recupererMotDePasse(String motDePasse) throws SQLException{
 		
             	rslt = st.executeQuery("SELECT mdp FROM UTILISATEURS WHERE mdp = '" + motDePasse + "'");
             	if (rslt != null)
@@ -162,10 +163,10 @@ public class SGBD {
 	}
 	
 	// Requête de vérification des droits d'accès aux informations des utilisateurs
-	public boolean isAdmin(String adresseMail){
+	public boolean isAdmin(String adresseMail) throws SQLException{
 		
 		rslt = st.executeQuery("SELECT mail FROM ADMINISTRATEURS WHERE mail = '" + adresseMail +"';");
-		if (rslt.next() != null){
+		if (rslt.next()){
 			return true;
 		} else {
 			return false;
@@ -173,12 +174,10 @@ public class SGBD {
 	}
 	
 	// Récupération des informations d'un profil utilisateur (admin)
-	public String[] getAllInfos(String adresseMail){
+	public String[] getAllInfos(String adresseMail) throws SQLException{
 		
 		// On fabrique les informations à transmettre
-		String[] req;
-		req[1] = "MAIL";
-		req[2] = adresseMail;
+		String[] req = ("|MAIL|" + adresseMail + "").split("|");
 		setRequeteConsultation(req);
 		
 		// On l'exécute sur la BDD et on récupère les informations sur ces résultats
@@ -192,7 +191,7 @@ public class SGBD {
 	}
 	
 	// Récupération des informations d'un profil utilisateur (selon visibilité)
-	public String[] getVisibleInfos(string adresseMail){
+	public String[] getVisibleInfos(String adresseMail){
 		
 		// On déclare un tableau local de gestion de la visibilité
 		// ainsi qu'un compteur pour ce tableau
@@ -223,7 +222,7 @@ public class SGBD {
 	}
 	
 	// Requête de recherche d'utilisateurs selon des mots clés
-	public String[] getUtilisateurs(String[] motsCles) {
+	public String[] getUtilisateurs(String[] motsCles) throws SQLException {
 		
 		// On fabrique la requête
 		setRequeteConsultation(motsCles);
