@@ -2,7 +2,7 @@ package informations;
 
 import java.sql.*;
 
-public class SGBD {
+public class SGBD extends Thread {
 	
 	private String requeteCreation;
 	private String requeteModification;
@@ -300,9 +300,9 @@ public class SGBD {
 		return resultats;
 	}
 	
-	// Mise à jour de la BDD
-	// Creation ou Modification
-	public int executeUpdate(String type) throws SQLException {
+	// Mise à jour de la BDD = Action d'écriture donc besoin de gestion des accès concurrents
+	// Creation ou Modification (Synchronized)
+	public synchronized int executeUpdate(String type) throws SQLException {
 		if (type == "CREA") {
 			i = st.executeUpdate(requeteCreation);
 			return i;

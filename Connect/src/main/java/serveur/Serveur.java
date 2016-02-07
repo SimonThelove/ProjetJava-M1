@@ -2,10 +2,12 @@ package serveur;
 import java.sql.SQLException;
 
 import informations.SGBD;
+import threads.Threads;
 
 public class Serveur {
 	
 	private SGBD sgbd;
+	private Threads th;
 	
 	private String reponse;
 	private String[] resultats;
