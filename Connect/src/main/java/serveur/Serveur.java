@@ -7,7 +7,7 @@ public class Serveur {
 	
 	private SGBD sgbd;
 	
-	private String requete;
+	private String reponse;
 	private String[] resultats;
 	private boolean test = false;
 	private int valide = 0;
@@ -28,12 +28,20 @@ public class Serveur {
 		this.test = test;
 	}
 	
-	// Constructeurs :  String requete
-	public String getRequete() {
-		return requete;
+	// Constructeurs :  String reponse
+	public String getReponse() {
+		return reponse;
 	}
-	public void setRequete(String requete) {
-		this.requete = requete;
+	public void setReponse(String[] resultats) {
+		// Compteur d'implémentation de reponse
+		int i;
+		
+		// Initialisation puis construction de reponse
+		this.reponse = null;
+		for(i = 0; i < (resultats.length - 1); i++){
+			this.reponse += resultats[i] + "|";
+		}
+			this.reponse += resultats[i];
 	}
 
 	// Constructeurs : String[] resultats
@@ -121,7 +129,9 @@ public class Serveur {
 			// Récupération des informations visibles du profil
 			resultats = (sgbd.getVisibleInfos(adresseMail));
 		}
-		return "";
+		// fabrication du retour à Gestion Protocole serveur
+		setReponse(resultats);
+		return reponse;
 	}
 	
 	// Méthode de recherche d'utilisateurs
@@ -130,6 +140,8 @@ public class Serveur {
 		// Recherche
 		resultats = (sgbd.getUtilisateurs(chaine));
 		
-		return "";
+		// fabrication du retour à Gestion Protocole serveur
+		setReponse(resultats);
+		return reponse;
 	}
 }
