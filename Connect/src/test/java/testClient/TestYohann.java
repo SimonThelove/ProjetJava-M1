@@ -23,14 +23,56 @@ public class TestYohann {
 					break;
 				case 2:
 					//Connexion à l'application
-					System.out.println(test.seConnecter());
+					String[] verif = null;
+					String message = null;
+					do
+					{
+						message = test.seConnecter();
+						System.out.println(message);
+						verif = message.split(" ");
+					}while(verif[0] != "Erreur");
 					
-					//-------
-					//Menu client mode connecté
-					
-					
-					//-------
-					break;
+					do {
+						//Appelle du menu connecté
+						test.menuConnecter();
+						test.getSc().nextLine();//Vider l'entrée clavier
+						switch (test.getChoix()) {
+							case 1:
+								do {
+									//Appelle du menu rechercher en mode connecté
+									test.menuRechercher();
+									test.getSc().nextLine();//Vider l'entrée clavier
+									switch (test.getChoix()) {
+										case 1:
+											//Faire une recherche par mots Clés
+											System.out.println(test.rechercherMotsCles());
+											break;
+										case 2:
+											//Faire une recherche avec différents champs à remplir
+											System.out.println(test.rechercherAvancee());
+											break;
+										case 3:
+											//Retour au menu connecté
+											System.out.println("Retour au menu connecté\n");
+											break;
+										default:
+											System.out.println("Veuillez choisir un type de recherche ou retournez au menu connecté");
+									}
+								 } while (test.getChoix() != 3);
+								break;
+							case 2 :
+								//Modifier ses informations
+								System.out.println(test.modifierInfo());
+								break;								
+							case 3 :
+								//Se déconnecter pour revenir au menu principal
+								System.out.println(test.seDeconnecter());
+								break;
+							default:
+								System.out.println("Veuillez choisir une action existante");
+						}
+					}while (test.getChoix() != 3);
+					break;					
 				case 3:
 					do {
 						//Appelle du menu rechercher en mode anonyme

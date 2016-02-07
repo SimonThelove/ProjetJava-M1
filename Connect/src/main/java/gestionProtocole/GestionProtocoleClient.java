@@ -78,7 +78,7 @@ public class GestionProtocoleClient {
 	}
 
 	//Méthode de concaténation de la requète deconnexion
-	public void requeteDeco(String mail, String motDePasse){
+	public void requeteDeco(){
 		message = "DECO";
 		//Envoit du message à SocketClient
 		message = soc.socket(message);

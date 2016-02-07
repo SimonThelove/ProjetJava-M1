@@ -78,13 +78,29 @@ public class Client {
 	    gp.requeteConx(mail, motDePasse);
 	    return gp.getMessage();
 	  }
+	
+	//Méthode du menu connecté
+		public void menuConnecter(){
+		    System.out.println("\n\n1. S'inscrire");
+		    System.out.println("2. S'identifier");
+		    System.out.println("3. Rechercher (en tant qu'anonyme)");
+		    System.out.println("4. Quitter");
+		    System.out.print("\nChoix : ");
+		    try{
+		    	choix = sc.nextInt();
+		    }
+		    catch (Exception e)
+		    {
+		    	System.out.println("Votre choix doit être un nombre.");
+		    }
+	    }
 	  
 	//Méthode du menu Rechercher
 	public void menuRechercher(){   
 	    System.out.println("\n\n--> Recherche\n");
-	    System.out.println("1. Rechercher par mots clés");
-	    System.out.println("2. Recherche avancée");
-	    System.out.println("3. Revenir au menu principal");
+	    System.out.println("1. Rechercher");
+	    System.out.println("2. Modifier mes informations");
+	    System.out.println("3. Se déconnecter");
 	    System.out.print("\nChoix : ");
 	    try{
 	    	choix = sc.nextInt();
@@ -121,11 +137,75 @@ public class Client {
 	    System.out.print("Année de diplomation : ");
 	    String anneeDiplome = sc.nextLine();
 	    System.out.print("Compétence : ");
-	    String competence = sc.nextLine();//Vider l'entrée clavier
+	    String competence = sc.nextLine();
 	    //Appelle à la concaténation de la requète rechercherAvancee
 	    gp.requeteRechNom(nom, prenom, mail, nomDiplome, anneeDiplome, competence);
 	    return gp.getMessage();
 	  }
+	
+	//Méthode de la modification d'information
+		public String modifierInfo(){   
+			char info;
+			String nom = null, prenom = null, motDePasse = null, nomDiplome = null, anneeDiplome = null, competence = null;
+			System.out.println("\n\n--> Modifier ses informations");
+			System.out.print("\nSouhaitez-vous modifier votre Nom ? (o/n) : ");
+			do{
+				info = sc.nextLine().charAt(0);
+			}while ((info != 'o') || (info != 'n'));
+			if(info == '0')
+			{
+				nom = sc.nextLine();
+			}
+		    System.out.print("\nSouhaitez-vous modifier votre Prenom ? (o/n) : ");
+		    do{
+				info = sc.nextLine().charAt(0);
+			}while ((info != 'o') || (info != 'n'));
+			if(info == '0')
+			{
+				prenom = sc.nextLine();
+			}
+			System.out.print("\nSouhaitez-vous modifier votre Mot de passe ? (o/n) : ");
+		    do{
+				info = sc.nextLine().charAt(0);
+			}while ((info != 'o') || (info != 'n'));
+			if(info == '0')
+			{
+				motDePasse = sc.nextLine();
+			}
+		    System.out.print("\nSouhaitez-vous modifier votre Intitulé du diplome ? (o/n) : ");
+		    do{
+				info = sc.nextLine().charAt(0);
+			}while ((info != 'o') || (info != 'n'));
+			if(info == '0')
+			{
+				nomDiplome = sc.nextLine();
+			}
+		    System.out.print("\nSouhaitez-vous modifier votre Année de diplomation ? (o/n) : ");
+		    do{
+				info = sc.nextLine().charAt(0);
+			}while ((info != 'o') || (info != 'n'));
+			if(info == '0')
+			{
+				anneeDiplome = sc.nextLine();
+			}
+		    System.out.print("\nSouhaitez-vous modifier vos Compétences ? (o/n) : ");
+		    do{
+				info = sc.nextLine().charAt(0);
+			}while ((info != 'o') || (info != 'n'));
+			if(info == '0')
+			{
+				competence = sc.nextLine();
+			}
+		    //Appelle à la concaténation de la requète rechercherModification
+		    gp.requeteModi(nom, prenom, motDePasse, nomDiplome, anneeDiplome, competence);
+		    return gp.getMessage();
+		  }
+	
+		//Méthode pour se déconnecter
+		public String seDeconnecter() {
+			gp.requeteDeco();
+			return gp.getMessage();
+		}
 	
 	//Méthode pour quitter l'application
 	public void quitter() {
