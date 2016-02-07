@@ -103,26 +103,47 @@ public class GestionProtocoleClient {
         //Affiche la liste simplifiée des profils
         case "LIST":
             try {
-            	/*
-            	nbElement = req[1];
-            	int k = 2;
-            	message = "----------------------------------------\n";
-            	for(int i=0; i>nbElement; i++)
-            	{
+            	
             		
-            	}*/
-            } catch (NumberFormatException e) {
+            	}
+              catch (NumberFormatException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
-                
             }
             break;
         //Affiche un profil
         case "PROF":
             try {
-        		message = "----------------------------------------\n";
-            	message = "";
-        		message = "----------------------------------------\n";
+            	int i;
+            	message = "----------------------------------------\n";
+            	for(i = 1; i < (reponse.length()) ; i = i+2)
+            	{
+            		switch (req[i])
+            		{
+            			case "NOM" :
+            				message = req[i+1] + " - ";
+            				break;
+            		    case "PRENOM" :
+            		    	message += req[i+1] + " - ";
+                		    break;
+                		case "MAIL" :
+                			message += req[i+1];
+                    		break;
+                		case "DIPLOME" :
+                			message += "\nDiplome obtenu : " + req[i+1] + " (en";
+                			break;
+                		case "ANNEE" :
+                			message += " (en" + req[i+1] + ")";
+                			break;
+                		case "COMPETENCES" :
+                			message += "\nCompétences ; " + req[i+1];
+                            break;        
+            		  default:
+            		    /*Action*/;             
+            		}
+	            	message = req[2] + " - " + req[4] + " - " + req[6] + "\nDiplomé(e) en " + req[8] + " (" + req[10] + ")\nCompétence(s) : " + req[12];
+            	}
+            	message = "----------------------------------------\n";
             } catch (NumberFormatException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
