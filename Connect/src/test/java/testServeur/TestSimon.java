@@ -8,7 +8,7 @@ public class TestSimon {
 		// TODO Auto-generated method stub
 		
 		SocketServeur soc = new SocketServeur();
-		
+		System.out.println("Lancement serveur...");
 		soc.socket();
 	}
 

@@ -14,27 +14,53 @@ public class GestionProtocoleServeur {
         this.serveur = serveur;
     }
     
+<<<<<<< HEAD
     public String requete(String entreeSocket) throws SQLException{
     	System.out.println(entreeSocket);
         String req[] = entreeSocket.split("|");
+=======
+    public String requete(String entreeSocket) {
+        String[] req = entreeSocket.split("[|]");
+>>>>>>> 307d3a0c006005c0ed6bd0c3dbd74a04712465a8
         switch(req[0])
         {
 	        case "CREA":
-	            setReponse("MSG|" + serveur.creerCompte(req[2], req[4], req[6], req[8]));
+				System.out.println("mail : "+ req[2] +" mdp : "+ req[4] +" nom : "+ req[6] +" prenom : "+ req[8]);
+				reponse = ("MSG|" + serveur.creerCompte(req[2], req[4], req[6], req[8]));
 	      
 		    case "CONX":
-	            setReponse("MSG|" + serveur.seConnecter(req[2], req[4]));
+			try {
+				setReponse("MSG|" + serveur.seConnecter(req[2], req[4]));
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		            
 		    case "MODI": // AJOUTER LE MAIL DU CLIENT CONNECTE (condition WHERE du SQL UPDATE)
-	            setReponse("MSG|" + serveur.modifierInformations(req,req[2]));
+			try {
+				setReponse("MSG|" + serveur.modifierInformations(req,req[2]));
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 		    case "CONS":
-		    	temp = (serveur.consulter(req[2]));
+			try {
+				temp = (serveur.consulter(req[2]));
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		    	setResultats(temp);
             	setReponse("PROF|" + resultats);
 
 		    case "RECH":
-	            temp = (serveur.rechercher(req));
+			try {
+				temp = (serveur.rechercher(req));
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	            if (temp[0] == "1")
 	            	requete("CONS|" + temp[1] + "|" + temp[2]);
 	            else {
@@ -46,7 +72,6 @@ public class GestionProtocoleServeur {
 	            setReponse("MSG|" + serveur.seDeconnecter());
 
         }
-        
         return reponse;
     }
 

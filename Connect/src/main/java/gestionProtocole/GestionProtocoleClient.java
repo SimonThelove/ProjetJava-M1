@@ -51,76 +51,80 @@ public class GestionProtocoleClient {
 		this.client = client;
 	}
 
-	//Méthode de concaténation de la requète creerCompte
+	//Mï¿½thode de concatï¿½nation de la requï¿½te creerCompte
 	public void requeteCrea(String nom, String prenom, String mail, String motDePasse){
 		message = "CREA|NOM|" + nom + "|PRENOM|" + prenom + "|MAIL|" + mail + "|MOTDEPASSE|" + motDePasse;
+<<<<<<< HEAD
 		//Envoit du message à SocketClient
+=======
+		System.out.println(message);
+		//Envoit du message ï¿½ SocketClient
+>>>>>>> 307d3a0c006005c0ed6bd0c3dbd74a04712465a8
 		message = soc.socket(message);
-		//Appelle à la méthode pour créer un affichage ordonné au client
+		//Appelle ï¿½ la mï¿½thode pour crï¿½er un affichage ordonnï¿½ au client
 		message = decoupage(message);
 	}
 	
-	//Méthode de concaténation de la requète connexion
+	//Mï¿½thode de concatï¿½nation de la requï¿½te connexion
 	public void requeteConx(String mail, String motDePasse){
 		message = "CONX|MAIL|" + mail + "|MOTDEPASSE|" + motDePasse;
-		//Envoit du message à SocketClient
+		//Envoit du message ï¿½ SocketClient
 		message = soc.socket(message);
-		//Appelle à la méthode pour créer un affichage ordonné au client
+		//Appelle ï¿½ la mï¿½thode pour crï¿½er un affichage ordonnï¿½ au client
 		message = decoupage(message);
 	}
 
-	//Méthode de concaténation de la requète rechercherMotsCles
+	//Mï¿½thode de concatï¿½nation de la requï¿½te rechercherMotsCles
 	public void requeteRechMotsCles(String motCles){
 		message = "RECH|MOTSCLES|" + motCles;
-		//Envoit du message à SocketClient
+		//Envoit du message ï¿½ SocketClient
 		message = soc.socket(message);
-		//Appelle à la méthode pour créer un affichage ordonné au client
+		//Appelle ï¿½ la mï¿½thode pour crï¿½er un affichage ordonnï¿½ au client
 		message = decoupage(message);
 	}
 
-	//Méthode de concaténation de la requète RechercherAvancee
+	//Mï¿½thode de concatï¿½nation de la requï¿½te RechercherAvancee
 	public void requeteRechNom(String nom, String prenom, String mail, String diplome, String annee, String competences){
 		message = "RECH|NOM|" + nom + "|PRENOM|" + prenom + "|MAIL|" + mail + "|DIPLOME|" + diplome + "|ANNEE|" + annee + "|COMPETENCES|" + competences;
-		//Envoit du message à SocketClient
+		//Envoit du message ï¿½ SocketClient
 		message = soc.socket(message);
-		//Appelle à la méthode pour créer un affichage ordonné au client
+		//Appelle ï¿½ la mï¿½thode pour crï¿½er un affichage ordonnï¿½ au client
 		message = decoupage(message);
 	}
 
-	//Méthode de concaténation de la requète consultation
+	//Mï¿½thode de concatï¿½nation de la requï¿½te consultation
 	public void requeteCons(){
 		message = "CONS|" + mailRechercher[choixProfil];
-		//Envoit du message à SocketClient
+		//Envoit du message ï¿½ SocketClient
 		message = soc.socket(message);
-		//Appelle à la méthode pour créer un affichage ordonné au client
+		//Appelle ï¿½ la mï¿½thode pour crï¿½er un affichage ordonnï¿½ au client
 		message = decoupage(message);
 	}
 	
-	//Méthode de concaténation de la requète modification
+	//Mï¿½thode de concatï¿½nation de la requï¿½te modification
 	public void requeteModi(String mail, String nom, String prenom, String motDePasse, String diplome, String annee, String competences){
 		message = "MODI|MAIL|" + mail + "|NOM|" + nom + "|PRENOM|" + prenom + "|MOTDEPASSE|" + motDePasse + "|DIPLOME|"  + diplome + "|ANNEE|" + annee + "|COMPETENCES|" + competences;
-		//Envoit du message à SocketClient
+		//Envoit du message ï¿½ SocketClient
 		message = soc.socket(message);
-		//Appelle à la méthode pour créer un affichage ordonné au client
+		//Appelle ï¿½ la mï¿½thode pour crï¿½er un affichage ordonnï¿½ au client
 		message = decoupage(message);
 	}
 
-	//Méthode de concaténation de la requète deconnexion
+	//Mï¿½thode de concatï¿½nation de la requï¿½te deconnexion
 	public void requeteDeco(){
 		message = "DECO";
-		//Envoit du message à SocketClient
+		//Envoit du message ï¿½ SocketClient
 		message = soc.socket(message);
-		//Appelle à la méthode pour créer un affichage ordonné au client
+		//Appelle ï¿½ la mï¿½thode pour crï¿½er un affichage ordonnï¿½ au client
 		message = decoupage(message);
 	}
 	
-	//Méthode pour créer la réponse à afficher d'une requète
+	//Mï¿½thode pour crï¿½er la rï¿½ponse ï¿½ afficher d'une requï¿½te
 	public String decoupage(String reponse){
-		System.out.println(reponse);
 		nbPersonne = 1;
-        req = reponse.split("|");
+        req = reponse.split("[|]");
         switch(req[0]){
-        //Recupère le message à afficher au client
+        //Recupï¿½re le message ï¿½ afficher au client
         case "MSG":
             try {
                 message = req[1];
@@ -130,7 +134,7 @@ public class GestionProtocoleClient {
                 message = "Erreur format";
             }
             break;
-        //Affiche la liste simplifiée des profils
+        //Affiche la liste simplifiï¿½e des profils
         case "LIST":
             try {
             	int i, j=3;
@@ -175,12 +179,12 @@ public class GestionProtocoleClient {
                 			message += " (en" + req[i+1] + ")";
                 			break;
                 		case "COMPETENCES" :
-                			message += "\nCompétences ; " + req[i+1];
+                			message += "\nCompï¿½tences ; " + req[i+1];
                             break;        
             		  default:
             		    /*Action*/;             
             		}
-	            	message = req[2] + " - " + req[4] + " - " + req[6] + "\nDiplomé(e) en " + req[8] + " (" + req[10] + ")\nCompétence(s) : " + req[12];
+	            	message = req[2] + " - " + req[4] + " - " + req[6] + "\nDiplomï¿½(e) en " + req[8] + " (" + req[10] + ")\nCompï¿½tence(s) : " + req[12];
             	}
             	message += "\n----------------------------------------\n";
             } catch (NumberFormatException e) {
