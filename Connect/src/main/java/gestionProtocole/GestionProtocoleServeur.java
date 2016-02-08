@@ -16,6 +16,7 @@ public class GestionProtocoleServeur {
     
     public String requete(String entreeSocket) {
         String[] req = entreeSocket.split("[|]");
+
         switch(req[0])
         {
 	        case "CREA":
