@@ -53,7 +53,7 @@ public class GestionProtocoleClient {
 
 	//Méthode de concaténation de la requète creerCompte
 	public void requeteCrea(String nom, String prenom, String mail, String motDePasse){
-		message = "CREA|" + nom + "|" + prenom + "|" + mail + "|" + motDePasse;
+		message = "CREA|NOM|" + nom + "|PRENOM|" + prenom + "|MAIL|" + mail + "|MOTDEPASSE|" + motDePasse;
 		//Envoit du message à SocketClient
 		message = soc.socket(message);
 		//Appelle à la méthode pour créer un affichage ordonné au client
@@ -62,7 +62,7 @@ public class GestionProtocoleClient {
 	
 	//Méthode de concaténation de la requète connexion
 	public void requeteConx(String mail, String motDePasse){
-		message = "CONX|" + mail + "|" + motDePasse;
+		message = "CONX|MAIL|" + mail + "|MOTDEPASSE|" + motDePasse;
 		//Envoit du message à SocketClient
 		message = soc.socket(message);
 		//Appelle à la méthode pour créer un affichage ordonné au client
@@ -80,7 +80,7 @@ public class GestionProtocoleClient {
 
 	//Méthode de concaténation de la requète RechercherAvancee
 	public void requeteRechNom(String nom, String prenom, String mail, String diplome, String annee, String competences){
-		message = "RECH|NOM|" + nom + "|" + prenom + "|" + mail + "|" + diplome + "|" + annee + "|" + competences;
+		message = "RECH|NOM|" + nom + "|PRENOM|" + prenom + "|MAIL|" + mail + "|DIPLOME|" + diplome + "|ANNEE|" + annee + "|COMPETENCES|" + competences;
 		//Envoit du message à SocketClient
 		message = soc.socket(message);
 		//Appelle à la méthode pour créer un affichage ordonné au client
@@ -116,6 +116,7 @@ public class GestionProtocoleClient {
 	
 	//Méthode pour créer la réponse à afficher d'une requète
 	public String decoupage(String reponse){
+		System.out.println(reponse);
 		nbPersonne = 1;
         req = reponse.split("|");
         switch(req[0]){
