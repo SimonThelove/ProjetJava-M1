@@ -13,7 +13,7 @@ public class SocketClient {
 		    String retour = null;
 		    
 		    try {
-		      leSocket = new Socket("localhost", 7); // socket sur echo
+		      leSocket = new Socket("localhost", 12314); // socket sur echo
 		      System.err.println("Connecté sur : "+leSocket);
 		      
 		      fluxSortieSocket = new PrintStream(leSocket.getOutputStream());

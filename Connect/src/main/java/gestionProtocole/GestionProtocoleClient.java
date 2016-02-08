@@ -97,8 +97,8 @@ public class GestionProtocoleClient {
 	}
 	
 	//Méthode de concaténation de la requète modification
-	public void requeteModi(String nom, String prenom, String motDePasse, String diplome, String annee, String competences){
-		message = "MODI|";
+	public void requeteModi(String mail, String nom, String prenom, String motDePasse, String diplome, String annee, String competences){
+		message = "MODI|MAIL|" + mail + "|NOM|" + nom + "|PRENOM|" + prenom + "|MOTDEPASSE|" + motDePasse + "|DIPLOME|"  + diplome + "|ANNEE|" + annee + "|COMPETENCES|" + competences;
 		//Envoit du message à SocketClient
 		message = soc.socket(message);
 		//Appelle à la méthode pour créer un affichage ordonné au client
