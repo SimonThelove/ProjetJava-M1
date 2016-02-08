@@ -9,8 +9,9 @@ public class SocketServeur extends Object {
   /** Port par défaut */
   public final static int portEcho = 12314;
   
-  // Variable serveur
+  // Variables serveur
   private Serveur serveur;
+  private String retour = null;
      
   /**
   * @param args the command line arguments
@@ -62,10 +63,9 @@ public class SocketServeur extends Object {
               entreeSocket = new BufferedReader(new InputStreamReader(connexionCourante.getInputStream()));
               
               // R�ception client
-              String retour = entreeSocket.readLine();
+              retour = entreeSocket.readLine();
               // Traitement requ�te
               reponse = gp.requete(retour);
-              System.out.println(reponse);
               // Envoi au client
               sortieSocket.println(reponse);
                
