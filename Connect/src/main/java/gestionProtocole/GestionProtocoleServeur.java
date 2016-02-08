@@ -25,7 +25,7 @@ public class GestionProtocoleServeur {
 	            setReponse("MSG|" + serveur.seConnecter(req[2], req[4]));
 		            
 		    case "MODI": // AJOUTER LE MAIL DU CLIENT CONNECTE (condition WHERE du SQL UPDATE)
-	            setReponse("MSG|" + serveur.modifierInformations(req,"adresseMail"));
+	            setReponse("MSG|" + serveur.modifierInformations(req,req[2]));
 
 		    case "CONS":
 		    	temp = (serveur.consulter(req[2]));
