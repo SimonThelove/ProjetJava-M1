@@ -54,12 +54,9 @@ public class GestionProtocoleClient {
 	//Mï¿½thode de concatï¿½nation de la requï¿½te creerCompte
 	public void requeteCrea(String nom, String prenom, String mail, String motDePasse){
 		message = "CREA|NOM|" + nom + "|PRENOM|" + prenom + "|MAIL|" + mail + "|MOTDEPASSE|" + motDePasse;
-<<<<<<< HEAD
-		//Envoit du message à SocketClient
-=======
+
 		System.out.println(message);
-		//Envoit du message ï¿½ SocketClient
->>>>>>> 307d3a0c006005c0ed6bd0c3dbd74a04712465a8
+		//Envoit du message à SocketClient
 		message = soc.socket(message);
 		//Appelle ï¿½ la mï¿½thode pour crï¿½er un affichage ordonnï¿½ au client
 		message = decoupage(message);

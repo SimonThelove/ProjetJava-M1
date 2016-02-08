@@ -14,19 +14,17 @@ public class GestionProtocoleServeur {
         this.serveur = serveur;
     }
     
-<<<<<<< HEAD
-    public String requete(String entreeSocket) throws SQLException{
-    	System.out.println(entreeSocket);
-        String req[] = entreeSocket.split("|");
-=======
+
     public String requete(String entreeSocket) {
         String[] req = entreeSocket.split("[|]");
->>>>>>> 307d3a0c006005c0ed6bd0c3dbd74a04712465a8
         switch(req[0])
         {
 	        case "CREA":
+	        	serveur.creerCompte(req[2], req[4], req[6], req[8]);
 				System.out.println("mail : "+ req[2] +" mdp : "+ req[4] +" nom : "+ req[6] +" prenom : "+ req[8]);
+				
 				reponse = ("MSG|" + serveur.creerCompte(req[2], req[4], req[6], req[8]));
+				break;
 	      
 		    case "CONX":
 			try {
