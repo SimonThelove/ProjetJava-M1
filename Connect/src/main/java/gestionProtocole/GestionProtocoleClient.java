@@ -54,7 +54,6 @@ public class GestionProtocoleClient {
 	//Méthode de concaténation de la requète creerCompte
 	public void requeteCrea(String nom, String prenom, String mail, String motDePasse){
 		message = "CREA|NOM|" + nom + "|PRENOM|" + prenom + "|MAIL|" + mail + "|MOTDEPASSE|" + motDePasse;
-		System.out.println(message);
 		//Envoit du message à SocketClient
 		message = soc.socket(message);
 		//Appelle à la méthode pour créer un affichage ordonné au client
