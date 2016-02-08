@@ -165,9 +165,9 @@ public class SGBD extends Thread {
 	
 	// Requête de création dans la base de données
 	public void setRequeteCreation(String nom, String prenom, String adresseMail, String motDePasse) {
-		this.requeteCreation  = "INSERT INTO Utilisateurs (mail, mdp) VALUES ('" + adresseMail + "','" + motDePasse + "'); ";
-		this.requeteCreation += " INSERT INTO Informations (nom, prenom) VALUES ('" + nom + "','" + prenom + "'); ";
-		this.requeteCreation += "INSERT INTO Visibilite VALUES ('',''," + adresseMail + ");";
+		this.requeteCreation  = "INSERT INTO UTILISATEURS (mail, mdp) VALUES ('" + adresseMail + "','" + motDePasse + "'); ";
+		this.requeteCreation += "INSERT INTO INFORMATIONS (nom, prenom) VALUES ('" + nom + "','" + prenom + "'); ";
+		this.requeteCreation += " INSERT INTO VISIBILITE VALUES ('',''," + adresseMail + ");";
 	}
 
 	// Requête de modification dans la base de données
@@ -210,7 +210,7 @@ public class SGBD extends Thread {
 	public boolean recupererMail(String adresseMail) throws SQLException{
 		bdd();    	
 		rslt = st.executeQuery("SELECT mail FROM UTILISATEURS WHERE mail = '" + adresseMail + "'");
-            	if (rslt != null) {
+            	if (rslt.next()) {
             		con.close();
             		return true;
             	}
