@@ -1,6 +1,5 @@
 package testClient;
 import client.Client;
-import gestionProtocole.GestionProtocoleClient;
 
 public class TestYohann {
 	

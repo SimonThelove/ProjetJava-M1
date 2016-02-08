@@ -1,6 +1,4 @@
 package client;
-import java.io.*;
-import java.net.*;
 import java.util.Scanner;
 import gestionProtocole.GestionProtocoleClient;
 
@@ -120,6 +118,25 @@ public class Client {
 	    
 	    //Appelle à la concaténation de la requète rechercherMotsCles
 	    gp.requeteRechMotsCles(motsCles);
+	    if(gp.getNbPersonne() == 1)
+	    {
+	    	return gp.getMessage();
+	    }
+	    else
+	    {
+		    try {
+		    	do{
+		    		System.out.println(gp.getMessage());
+		    	}while((gp.getChoixProfil() < 1) && (gp.getChoixProfil() > gp.getNbPersonne()));
+
+		    gp.requeteCons();
+		    return gp.getMessage();
+		    } catch (NumberFormatException e) {
+		    	// TODO Auto-generated catch block
+		    	e.printStackTrace();
+		    	System.out.println("Votre choix doit être un nombre.");
+		    	}
+	    }
 	    return gp.getMessage();
 	  }
 	

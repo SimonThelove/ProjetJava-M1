@@ -1,14 +1,42 @@
 package gestionProtocole;
-import java.io.*;
-import java.net.*;
+import java.util.Scanner;
+
 import client.Client;
 import socketsTCP.SocketClient;
 
 public class GestionProtocoleClient {
 	private Client client;
+	private Scanner sc = new Scanner(System.in);
 	private String message;
 	private SocketClient soc = new SocketClient();
-	private String nbElement;
+	private int nbPersonne;
+	private int choixProfil;
+	private String mailRechercher[];
+	private String req[];
+	
+	public int getChoixProfil() {
+		return choixProfil;
+	}
+
+	public void setChoixProfil(int choixProfil) {
+		this.choixProfil = choixProfil;
+	}
+
+	public int getNbPersonne() {
+		return nbPersonne;
+	}
+
+	public void setNbPersonne(int nbPersonne) {
+		this.nbPersonne = nbPersonne;
+	}
+
+	public String[] getMailRechercher() {
+		return mailRechercher;
+	}
+
+	public void setMailRechercher(String[] mailRechercher) {
+		this.mailRechercher = mailRechercher;
+	}
 	
 	public String getMessage() {
 		return message;
@@ -25,7 +53,7 @@ public class GestionProtocoleClient {
 
 	//Méthode de concaténation de la requète creerCompte
 	public void requeteCrea(String nom, String prenom, String mail, String motDePasse){
-		message = "CREA|" + nom + "|" + prenom + "|" + mail + "|" + motDePasse + "||";
+		message = "CREA|" + nom + "|" + prenom + "|" + mail + "|" + motDePasse;
 		//Envoit du message à SocketClient
 		message = soc.socket(message);
 		//Appelle à la méthode pour créer un affichage ordonné au client
@@ -34,7 +62,7 @@ public class GestionProtocoleClient {
 	
 	//Méthode de concaténation de la requète connexion
 	public void requeteConx(String mail, String motDePasse){
-		message = "CONX|" + mail + "|" + motDePasse + "||";
+		message = "CONX|" + mail + "|" + motDePasse;
 		//Envoit du message à SocketClient
 		message = soc.socket(message);
 		//Appelle à la méthode pour créer un affichage ordonné au client
@@ -43,7 +71,7 @@ public class GestionProtocoleClient {
 
 	//Méthode de concaténation de la requète rechercherMotsCles
 	public void requeteRechMotsCles(String motCles){
-		message = "RECH|MOTSCLES|" + motCles + "||";
+		message = "RECH|MOTSCLES|" + motCles;
 		//Envoit du message à SocketClient
 		message = soc.socket(message);
 		//Appelle à la méthode pour créer un affichage ordonné au client
@@ -52,7 +80,7 @@ public class GestionProtocoleClient {
 
 	//Méthode de concaténation de la requète RechercherAvancee
 	public void requeteRechNom(String nom, String prenom, String mail, String diplome, String annee, String competences){
-		message = "RECH|NOM|";
+		message = "RECH|NOM|" + nom + "|" + prenom + "|" + mail + "|" + diplome + "|" + annee + "|" + competences;
 		//Envoit du message à SocketClient
 		message = soc.socket(message);
 		//Appelle à la méthode pour créer un affichage ordonné au client
@@ -60,8 +88,8 @@ public class GestionProtocoleClient {
 	}
 
 	//Méthode de concaténation de la requète consultation
-	public void requeteCons(String mail){
-		message = "CONS|" + mail +"||";
+	public void requeteCons(){
+		message = "CONS|" + mailRechercher[choixProfil];
 		//Envoit du message à SocketClient
 		message = soc.socket(message);
 		//Appelle à la méthode pour créer un affichage ordonné au client
@@ -88,7 +116,8 @@ public class GestionProtocoleClient {
 	
 	//Méthode pour créer la réponse à afficher d'une requète
 	public String decoupage(String reponse){
-        String[] req = reponse.split(" ");
+		nbPersonne = 1;
+        req = reponse.split("|");
         switch(req[0]){
         //Recupère le message à afficher au client
         case "MSG":
@@ -103,8 +132,17 @@ public class GestionProtocoleClient {
         //Affiche la liste simplifiée des profils
         case "LIST":
             try {
-            	
-            		
+            	int i, j=3;
+        		nbPersonne = Integer.parseInt(req[1]);
+        		message = "Resultats :\n\n";
+                    	for(i = 1; i < (nbPersonne) ; i = i+2, j = j+6)
+        		{
+        			message += req[j] + " - " + req[j+2] + " - " + req[j+4] + "\n";
+        			mailRechercher[i] = req[j+4];
+        		}
+                    		
+        		message += "\nQuel profil souhaitez-vous consulter ? :";
+            	choixProfil = sc.nextInt();
             	}
               catch (NumberFormatException e) {
                 // TODO Auto-generated catch block
@@ -115,13 +153,13 @@ public class GestionProtocoleClient {
         case "PROF":
             try {
             	int i;
-            	message = "----------------------------------------\n";
+            	message = "\n\n----------------------------------------\n";
             	for(i = 1; i < (reponse.length()) ; i = i+2)
             	{
             		switch (req[i])
             		{
             			case "NOM" :
-            				message = req[i+1] + " - ";
+            				message += req[i+1] + " - ";
             				break;
             		    case "PRENOM" :
             		    	message += req[i+1] + " - ";
@@ -143,7 +181,7 @@ public class GestionProtocoleClient {
             		}
 	            	message = req[2] + " - " + req[4] + " - " + req[6] + "\nDiplomé(e) en " + req[8] + " (" + req[10] + ")\nCompétence(s) : " + req[12];
             	}
-            	message = "----------------------------------------\n";
+            	message += "\n----------------------------------------\n";
             } catch (NumberFormatException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
