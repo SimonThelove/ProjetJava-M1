@@ -54,7 +54,6 @@ public class GestionProtocoleClient {
 	//M�thode de concat�nation de la requ�te creerCompte
 	public void requeteCrea(String nom, String prenom, String mail, String motDePasse){
 		message = "CREA|NOM|" + nom + "|PRENOM|" + prenom + "|MAIL|" + mail + "|MOTDEPASSE|" + motDePasse;
-		System.out.println(message);
 		//Envoit du message � SocketClient
 		message = soc.socket(message);
 		//Appelle � la m�thode pour cr�er un affichage ordonn� au client
