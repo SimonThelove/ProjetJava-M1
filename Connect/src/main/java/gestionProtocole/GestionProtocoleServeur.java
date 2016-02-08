@@ -14,20 +14,6 @@ public class GestionProtocoleServeur {
         this.serveur = serveur;
     }
     
-<<<<<<< HEAD
-
-    public String requete(String entreeSocket) {
-        String[] req = entreeSocket.split("[|]");
-        switch(req[0])
-        {
-	        case "CREA":
-	        	serveur.creerCompte(req[2], req[4], req[6], req[8]);
-				System.out.println("mail : "+ req[2] +" mdp : "+ req[4] +" nom : "+ req[6] +" prenom : "+ req[8]);
-				
-				reponse = ("MSG|" + serveur.creerCompte(req[2], req[4], req[6], req[8]));
-				break;
-	      
-=======
     public String requete(String entreeSocket) {
         String[] req = entreeSocket.split("[|]");
 
@@ -37,7 +23,6 @@ public class GestionProtocoleServeur {
 				System.out.println("NOM : "+ req[2] +" PRENOM : "+ req[4] +" MAIL : "+ req[6] +" MDP : "+ req[8]);
 				reponse = ("MSG|" + serveur.creerCompte(req[2], req[4], req[6], req[8]));
 				break;
->>>>>>> 19212b98591b0f34e990da6065f2dc702185d26a
 		    case "CONX":
 			try {
 				setReponse("MSG|" + serveur.seConnecter(req[2], req[4]));
