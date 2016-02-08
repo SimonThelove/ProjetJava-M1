@@ -24,6 +24,7 @@ public class SocketServeur extends Object {
     PrintStream     sortieSocket;
     String 			reponse;
     
+    serveur = new Serveur();
     GestionProtocoleServeur gp = new GestionProtocoleServeur(serveur);
      
     try {

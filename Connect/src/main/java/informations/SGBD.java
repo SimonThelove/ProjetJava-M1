@@ -22,14 +22,19 @@ public class SGBD extends Thread {
 	private int i, j;
 	
 	// Connexion à la  BDD
-	public void bdd() throws SQLException {
+	public void bdd() {
 		try {
-		    Class.forName( "com.mysql.jdbc.Driver" );
-		} catch ( ClassNotFoundException e ) {
-		    // Gérer les éventuelles erreurs ici.
+			con = DriverManager.getConnection("jdbc:mysql://mysql-stri.alwaysdata.net/stri_connect","stri","STRISTRI");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		con = DriverManager.getConnection("jdbc:mysql-stri.alwaysdata.net","stri","STRISTRI");
-		st = con.createStatement();
+		try {
+			st = con.createStatement();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 	}
 	
 	// Constructeurs : String reponse
@@ -160,9 +165,9 @@ public class SGBD extends Thread {
 	
 	// Requête de création dans la base de données
 	public void setRequeteCreation(String nom, String prenom, String adresseMail, String motDePasse) {
-		this.requeteCreation  = "INSERT INTO UTILISATEURS (mail, mdp) VALUES ('" + adresseMail+ "','" + motDePasse + "'); ";
-		this.requeteCreation += "INSERT INTO INFORMATIONS (nom, prenom) VALUES ('" + nom + "','" + prenom + "'); ";
-		this.requeteCreation += "INSERT INTO VISIBILITE VALUES ('',''," + adresseMail + ");";
+		this.requeteCreation  = "INSERT INTO Utilisateurs (mail, mdp) VALUES ('" + adresseMail + "','" + motDePasse + "'); ";
+		this.requeteCreation += " INSERT INTO Informations (nom, prenom) VALUES ('" + nom + "','" + prenom + "'); ";
+		this.requeteCreation += "INSERT INTO Visibilite VALUES ('',''," + adresseMail + ");";
 	}
 
 	// Requête de modification dans la base de données
@@ -203,12 +208,16 @@ public class SGBD extends Thread {
 	
 	// Méthode de récupération du mail
 	public boolean recupererMail(String adresseMail) throws SQLException{
-	
-            	rslt = st.executeQuery("SELECT mail FROM UTILISATEURS WHERE mail = '" + adresseMail + "'");
-            	if (rslt != null)
+		bdd();    	
+		rslt = st.executeQuery("SELECT mail FROM UTILISATEURS WHERE mail = '" + adresseMail + "'");
+            	if (rslt != null) {
+            		con.close();
             		return true;
-            	else
+            	}
+            	else{
+            		con.close();
             		return false;
+            		}
 	}
 	
 	// Méthode de vérification du mot de passe (politique de sécurité des mots de passe)
@@ -223,28 +232,34 @@ public class SGBD extends Thread {
 	
 	// Méthode de récupération du mot de passe
 	public boolean recupererMotDePasse(String motDePasse) throws SQLException{
-		
+		bdd();
             	rslt = st.executeQuery("SELECT mdp FROM UTILISATEURS WHERE mdp = '" + motDePasse + "'");
-            	if (rslt != null)
+            	if (rslt != null){
+            		con.close();
             		return true;
-            	else
+            		}
+            	else {
+            		con.close();
             		return false;
+            	}
 	}
 	
 	// Requête de vérification des droits d'accès aux informations des utilisateurs
 	public boolean isAdmin(String adresseMail) throws SQLException{
-		
+		bdd();
 		rslt = st.executeQuery("SELECT mail FROM ADMINISTRATEURS WHERE mail = '" + adresseMail +"';");
 		if (rslt.next()){
+    		con.close();
 			return true;
 		} else {
+    		con.close();
 			return false;
 		}
 	}
 	
 	// Récupération des informations d'un profil utilisateur (admin)
 	public String[] getAllInfos(String adresseMail) throws SQLException{
-		
+		bdd();
 		// On fabrique les informations à transmettre
 		String[] req = ("CONS|MAIL|" + adresseMail + "").split("|");
 		setRequeteConsultation(req);
@@ -256,12 +271,13 @@ public class SGBD extends Thread {
 		// On standardise les résultats
 		setResultats(rslt,rsmd,null);
 		
+		con.close();
 		return resultats;
 	}
 	
 	// Récupération des informations d'un profil utilisateur (selon visibilité)
 	public String[] getVisibleInfos(String adresseMail) throws SQLException{
-		
+		bdd();
 		// On des variables de gestion de la visibilité
 		String temp;
 		String[] split;
@@ -282,12 +298,13 @@ public class SGBD extends Thread {
 		// On standardise les résultats
 		setResultats(rslt,rsmd,split);
 		
+		con.close();
 		return resultats;
 	}
 	
 	// Requête de recherche d'utilisateurs selon des mots clés
 	public String[] getUtilisateurs(String[] motsCles) throws SQLException {
-		
+		bdd();
 		// On fabrique la requête
 		setRequeteConsultation(motsCles);
 	
@@ -297,18 +314,22 @@ public class SGBD extends Thread {
 
 		// On standardise les résultats
 		setResultats(rslt,rsmd,null);
-
+		
+		con.close();
 		return resultats;
 	}
 	
 	// Mise à jour de la BDD = Action d'écriture donc besoin de gestion des accès concurrents
 	// Creation ou Modification (Synchronized)
 	public synchronized int executeUpdate(String type) throws SQLException {
+		bdd();
 		if (type == "CREA") {
 			i = st.executeUpdate(requeteCreation);
+    		con.close();
 			return i;
 		} else {
 			i = st.executeUpdate(requeteModification);
+    		con.close();
 			return i;
 		}
 	}

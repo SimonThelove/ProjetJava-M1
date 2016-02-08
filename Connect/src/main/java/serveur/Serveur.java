@@ -5,7 +5,7 @@ import informations.SGBD;
 
 public class Serveur {
 	
-	private SGBD sgbd;
+	private SGBD sgbd = new SGBD();
 	
 	private String reponse;
 	private String[] resultats;
@@ -54,7 +54,6 @@ public class Serveur {
 			setTest(sgbd.recupererMail(adresseMail));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			System.out.println("catch mail ...");
 			e.printStackTrace();
 		}
 		if (isTest()){
