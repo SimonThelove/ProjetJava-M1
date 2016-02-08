@@ -65,6 +65,7 @@ public class SocketServeur extends Object {
               String retour = entreeSocket.readLine();
               // Traitement requ�te
               reponse = gp.requete(retour);
+              System.out.println(reponse);
               // Envoi au client
               sortieSocket.println(reponse);
                

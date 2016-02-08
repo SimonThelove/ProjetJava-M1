@@ -15,6 +15,7 @@ public class GestionProtocoleServeur {
     }
     
     public String requete(String entreeSocket) throws SQLException{
+    	System.out.println(entreeSocket);
         String[] req = entreeSocket.split("|");
         switch(req[0])
         {
