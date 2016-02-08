@@ -6,6 +6,7 @@ public class Client {
 	private Scanner sc = new Scanner(System.in);
 	private int choix;
 	private GestionProtocoleClient gp = new GestionProtocoleClient(null);
+	private String mail;
 	
 	public GestionProtocoleClient getGp() {
 		return gp;
@@ -68,7 +69,7 @@ public class Client {
 	public String seConnecter(){
 	    System.out.println("\n\n--> Identification\n");
 	    System.out.print("Nom d'utilisateur (votre mail) : ");
-	    String mail = sc.nextLine();
+	    mail = sc.nextLine();
 	    System.out.print("Mot de passe : ");
 	    String motDePasse = sc.nextLine();
 	    
@@ -124,20 +125,13 @@ public class Client {
 	    }
 	    else
 	    {
-		    try {
 		    	do{
 		    		System.out.println(gp.getMessage());
 		    	}while((gp.getChoixProfil() < 1) && (gp.getChoixProfil() > gp.getNbPersonne()));
 
 		    gp.requeteCons();
 		    return gp.getMessage();
-		    } catch (NumberFormatException e) {
-		    	// TODO Auto-generated catch block
-		    	e.printStackTrace();
-		    	System.out.println("Votre choix doit être un nombre.");
-		    	}
 	    }
-	    return gp.getMessage();
 	  }
 	
 	//Méthode de la recherche avancée
@@ -148,7 +142,7 @@ public class Client {
 	    System.out.print("Prenom : ");
 	    String prenom = sc.nextLine();	
 	    System.out.print("Mail : ");
-	    String mail = sc.nextLine();
+	    String mailRech = sc.nextLine();
 	    System.out.print("Intitulé du diplome : ");
 	    String nomDiplome = sc.nextLine();
 	    System.out.print("Année de diplomation : ");
@@ -156,7 +150,7 @@ public class Client {
 	    System.out.print("Compétence : ");
 	    String competence = sc.nextLine();
 	    //Appelle à la concaténation de la requète rechercherAvancee
-	    gp.requeteRechNom(nom, prenom, mail, nomDiplome, anneeDiplome, competence);
+	    gp.requeteRechNom(nom, prenom, mailRech, nomDiplome, anneeDiplome, competence);
 	    return gp.getMessage();
 	  }
 	
@@ -214,7 +208,7 @@ public class Client {
 				competence = sc.nextLine();
 			}
 		    //Appelle à la concaténation de la requète rechercherModification
-		    gp.requeteModi(nom, prenom, motDePasse, nomDiplome, anneeDiplome, competence);
+		    gp.requeteModi(mail, nom, prenom, motDePasse, nomDiplome, anneeDiplome, competence);
 		    return gp.getMessage();
 		  }
 	
