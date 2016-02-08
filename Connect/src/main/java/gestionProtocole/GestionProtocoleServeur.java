@@ -68,5 +68,4 @@ public class GestionProtocoleServeur {
 		}
 			this.resultats += resultats[i];
 	}
-
 }
