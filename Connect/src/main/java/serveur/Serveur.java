@@ -2,12 +2,10 @@ package serveur;
 import java.sql.SQLException;
 
 import informations.SGBD;
-import threads.Threads;
 
 public class Serveur {
 	
 	private SGBD sgbd;
-	private Threads th;
 	
 	private String reponse;
 	private String[] resultats;
@@ -34,16 +32,8 @@ public class Serveur {
 	public String getReponse() {
 		return reponse;
 	}
-	public void setReponse(String[] resultats) {
-		// Compteur d'implémentation de reponse
-		int i;
-		
-		// Initialisation puis construction de reponse
-		this.reponse = null;
-		for(i = 0; i < (resultats.length - 1); i++){
-			this.reponse += resultats[i] + "|";
-		}
-			this.reponse += resultats[i];
+	public void setReponse(String reponse) {
+		this.reponse = reponse;
 	}
 
 	// Constructeurs : String[] resultats
@@ -120,7 +110,7 @@ public class Serveur {
 	}
 	
 	// Méthode de consultation d'un profil utilisateur
-	public String consulter(String adresseMail) throws SQLException {
+	public String[] consulter(String adresseMail) throws SQLException {
 		
 		// ControleDroits
 		if(sgbd.isAdmin(adresseMail)){
@@ -131,19 +121,16 @@ public class Serveur {
 			// Récupération des informations visibles du profil
 			resultats = (sgbd.getVisibleInfos(adresseMail));
 		}
-		// fabrication du retour à Gestion Protocole serveur
-		setReponse(resultats);
-		return reponse;
+
+		return resultats;
 	}
 	
 	// Méthode de recherche d'utilisateurs
-	public String rechercher(String[] chaine) throws SQLException{
+	public String[] rechercher(String[] chaine) throws SQLException{
 				
 		// Recherche
 		resultats = (sgbd.getUtilisateurs(chaine));
 		
-		// fabrication du retour à Gestion Protocole serveur
-		setReponse(resultats);
-		return reponse;
+		return resultats;
 	}
 }

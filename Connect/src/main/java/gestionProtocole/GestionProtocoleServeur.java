@@ -6,9 +6,10 @@ import serveur.Serveur;
 public class GestionProtocoleServeur {
  
     private Serveur serveur;
-    private String reponse;
-     
-    public GestionProtocoleServeur(Serveur serveur) {
+    private String reponse, resultats;
+    private String[] temp;
+
+	public GestionProtocoleServeur(Serveur serveur) {
         super();
         this.serveur = serveur;
     }
@@ -27,15 +28,24 @@ public class GestionProtocoleServeur {
 	            setReponse("MSG|" + serveur.modifierInformations(req,"adresseMail"));
 
 		    case "CONS":
-	            setReponse("MSG|" + serveur.consulter(req[2]));
+		    	temp = (serveur.consulter(req[2]));
+		    	setResultats(temp);
+            	setReponse("PROF|" + resultats);
 
 		    case "RECH":
-	            setReponse("MSG|" + serveur.rechercher(req));
+	            temp = (serveur.rechercher(req));
+	            if (temp[0] == "1")
+	            	requete("CONS|" + temp[1] + "|" + temp[2]);
+	            else {
+	            	setResultats(temp);
+	            	setReponse("LIST|" + resultats);
+	            }
 
 		    case "DECO":
 	            setReponse("MSG|" + serveur.seDeconnecter());
 
         }
+        
         return reponse;
     }
 
@@ -45,6 +55,18 @@ public class GestionProtocoleServeur {
 
 	public void setReponse(String reponse) {
 		this.reponse = reponse;
+	}
+
+	public void setResultats(String[] resultats) {
+		// Compteur d'implémentation de reponse
+		int i;
+		
+		// Initialisation puis construction de reponse
+		this.resultats = null;
+		for(i = 0; i < (resultats.length - 1); i++){
+			this.resultats += resultats[i] + "|";
+		}
+			this.resultats += resultats[i];
 	}
 
 }

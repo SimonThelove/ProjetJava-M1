@@ -191,7 +191,8 @@ public class SGBD extends Thread {
 		
 		// Assemblage des N-1 termes suivants
 		for(i = 1; i < (chaine.length - 2); i += 2){
-			requeteModification += chaine[i] + " = " + chaine[i+1] + ", ";
+			if (chaine[i+1] != null)
+				requeteModification += chaine[i] + " = " + chaine[i+1] + ", ";
 		}
 		// Ajout du dernier terme à la requête
 		requeteModification += chaine[i] + " =  " + chaine[i+1];
