@@ -50,8 +50,9 @@ public class Serveur {
 		System.out.println("creation compte ...");
 		// ControleMail
 		try {
-			System.out.println("try recupMail ...");
+			System.out.println("test avant : " + test);
 			setTest(sgbd.recupererMail(adresseMail));
+			System.out.println("test apres : " + test);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
