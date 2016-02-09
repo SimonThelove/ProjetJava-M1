@@ -169,11 +169,11 @@ public class SGBD extends Thread {
 	}
 	
 	public void setRequeteCreationInfos (String nom, String prenom, String mail) {
-		this.requeteCreation = "INSERT INTO INFORMATIONS (mail, nom, prenom) VALUES ('"+ mail +"''" + nom + "','" + prenom + "'); ";
+		this.requeteCreation = "INSERT INTO INFORMATIONS (mail, nom, prenom) VALUES ('"+ mail +"','" + nom + "','" + prenom + "'); ";
 	}
 	
 	public void setRequeteCreationVisible (String mail) {
-		this.requeteCreation = "INSERT INTO VISIBILITE (mail,infos_visibles_anonymes,infos_visbles_utilisateurs) VALUES ('"+ mail +"','','');";
+		this.requeteCreation = "INSERT INTO VISIBILITE VALUES ('"+ mail +"','mail,nom,prenom','mail,nom,prenom');";
 	}
 
 	// Requête de modification dans la base de données
@@ -248,7 +248,7 @@ public class SGBD extends Thread {
 		bdd();
             	try {
 					rslt = st.executeQuery("SELECT mdp FROM UTILISATEURS WHERE mdp = '" + motDePasse + "' AND mail = '"+ mail +"';");
-					if (rslt != null){
+					if (rslt.next()){
 	            		con.close();
 	            		return true;
 	            		}
