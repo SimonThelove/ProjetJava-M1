@@ -25,7 +25,7 @@ public class TestYohann {
 					do
 					{
 						System.out.println(test.seConnecter());
-					}while(test.getMail() == null);
+					}while((test.getGp().getMessage() == "Utilisateur inconnu.") || (test.getGp().getMessage() == "Votre mot de passe est incorrect"));
 					
 					do 
 					{
