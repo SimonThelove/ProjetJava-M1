@@ -22,7 +22,6 @@ public class GestionProtocoleServeur {
 	        case "CREA":
 				System.out.println("NOM : "+ req[2] +" PRENOM : "+ req[4] +" MAIL : "+ req[6] +" MDP : "+ req[8]);
 				reponse = ("MSG|" + serveur.creerCompte(req[2], req[4], req[6], req[8]));
-				break;
 		    case "CONX":
 			try {
 				setReponse("MSG|" + serveur.seConnecter(req[2], req[4]));

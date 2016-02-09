@@ -67,7 +67,9 @@ public class Serveur {
 			}
 			else {
 				// Traitement de la requête par le SGBD
-				sgbd.setRequeteCreation(nom, prenom, adresseMail, motDePasse);
+				sgbd.setRequeteCreationUtil(adresseMail, motDePasse);
+				setValide(sgbd.executeUpdate("CREA"));
+				sgbd.setRequeteCreationInfos(nom, prenom);
 				setValide(sgbd.executeUpdate("CREA"));
 				if (valide != 0)
 					return "Votre compte a bien été créé, vous pouvez maintenant vous connecter.";

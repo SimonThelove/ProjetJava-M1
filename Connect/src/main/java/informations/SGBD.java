@@ -163,12 +163,13 @@ public class SGBD extends Thread {
 		 }
 	}
 	
-	// Requête de création dans la base de données
-	public void setRequeteCreation(String nom, String prenom, String adresseMail, String motDePasse) {
-		this.requeteCreation  = "INSERT INTO UTILISATEURS (mail, mdp) VALUES ('" + adresseMail + "','" + motDePasse + "'); ";
-		this.requeteCreation += "INSERT INTO INFORMATIONS (nom, prenom) VALUES ('" + nom + "','" + prenom + "'); ";
-		this.requeteCreation += "INSERT INTO VISIBILITE VALUES ('"+ adresseMail +"','mail,nom,prenom','mail,nom,prenom');";
-		System.out.println(requeteCreation);
+	// Requêtes de création dans la base de données
+	public void setRequeteCreationUtil (String mail, String mdp) {
+		this.requeteCreation  = "INSERT INTO UTILISATEURS (mail, mdp) VALUES ('" + mail + "','" + mdp + "'); ";
+	}
+	
+	public void setRequeteCreationInfos (String nom, String prenom) {
+		this.requeteCreation = "INSERT INTO INFORMATIONS (nom, prenom) VALUES ('" + nom + "','" + prenom + "'); ";
 	}
 
 	// Requête de modification dans la base de données
