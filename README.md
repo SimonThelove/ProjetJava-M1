@@ -29,6 +29,7 @@ Yohann veut faire des tests sur son code (menuAnonyme) en utilisant les GUI déj
 > 2) Test de menuAnonyme sur la branche Yohann (tu fais ce que tu veux)
 
 > 3) Une fois menuAnonyme validé et testé tu peux push menuAnonyme.java sur javafx
-    MAIS PAS creation.java, connexion.java NI modification.java qui ont déjà été validés
+
+> MAIS PAS creation.java, connexion.java NI modification.java qui ont déjà été validés
 
 Bon code !!!
