@@ -168,8 +168,12 @@ public class SGBD extends Thread {
 		this.requeteCreation  = "INSERT INTO UTILISATEURS (mail, mdp) VALUES ('" + mail + "','" + mdp + "'); ";
 	}
 	
-	public void setRequeteCreationInfos (String nom, String prenom) {
-		this.requeteCreation = "INSERT INTO INFORMATIONS (nom, prenom) VALUES ('" + nom + "','" + prenom + "'); ";
+	public void setRequeteCreationInfos (String nom, String prenom, String mail) {
+		this.requeteCreation = "INSERT INTO INFORMATIONS (mail, nom, prenom) VALUES ('"+ mail +"''" + nom + "','" + prenom + "'); ";
+	}
+	
+	public void setRequeteCreationVisible (String mail) {
+		this.requeteCreation = "INSERT INTO VISIBILITE (mail,infos_visibles_anonymes,infos_visbles_utilisateurs) VALUES ('"+ mail +"','','');";
 	}
 
 	// Requête de modification dans la base de données
@@ -240,10 +244,10 @@ public class SGBD extends Thread {
 	}
 	
 	// Méthode de récupération du mot de passe
-	public boolean recupererMotDePasse(String motDePasse) {
+	public boolean recupererMotDePasse(String motDePasse, String mail) {
 		bdd();
             	try {
-					rslt = st.executeQuery("SELECT mdp FROM UTILISATEURS WHERE mdp = '" + motDePasse + "'");
+					rslt = st.executeQuery("SELECT mdp FROM UTILISATEURS WHERE mdp = '" + motDePasse + "' AND mail = '"+ mail +"';");
 					if (rslt != null){
 	            		con.close();
 	            		return true;
