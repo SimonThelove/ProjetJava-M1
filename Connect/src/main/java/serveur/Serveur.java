@@ -5,6 +5,10 @@ import informations.SGBD;
 
 public class Serveur {
 	
+	public Serveur() {
+		super();
+	}
+
 	private SGBD sgbd = new SGBD();
 	
 	private String reponse;
