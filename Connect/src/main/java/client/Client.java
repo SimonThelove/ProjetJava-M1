@@ -80,7 +80,6 @@ public class Client {
 	    mail = sc.nextLine();
 	    System.out.print("Mot de passe : ");
 	    String motDePasse = sc.nextLine();
-	    
 	    //Appelle à la concaténation de la requète connexion
 	    gp.requeteConx(mail, motDePasse);
 	    return gp.getMessage();
