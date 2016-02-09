@@ -48,15 +48,9 @@ public class Serveur {
 	// Méthode de création d'un compte sur le serveur d'annuaire
 	public String creerCompte(String nom, String prenom, String adresseMail, String motDePasse) {
 		System.out.println("creation compte ...");
-		// ControleMail
-		try {
-			System.out.println("test avant : " + test);
-			setTest(sgbd.recupererMail(adresseMail));
-			System.out.println("test apres : " + test);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		System.out.println("test avant : " + test);
+		setTest(sgbd.recupererMail(adresseMail));
+		System.out.println("test apres : " + test);
 		if (isTest()){
 			// Adresse mail deja existante = Echec creation
 			return "Mail déjà existant.";
@@ -70,12 +64,7 @@ public class Serveur {
 			else {
 				// Traitement de la requête par le SGBD
 				sgbd.setRequeteCreation(nom, prenom, adresseMail, motDePasse);
-				try {
-					setValide(sgbd.executeUpdate("CREA"));
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				setValide(sgbd.executeUpdate("CREA"));
 				if (valide != 0)
 					return "Votre compte a bien été créé, vous pouvez maintenant vous connecter.";
 				else	return "Erreur création : votre compte n'a pas été créé.";

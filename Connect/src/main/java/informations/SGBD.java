@@ -168,6 +168,7 @@ public class SGBD extends Thread {
 		this.requeteCreation  = "INSERT INTO UTILISATEURS (mail, mdp) VALUES ('" + adresseMail + "','" + motDePasse + "'); ";
 		this.requeteCreation += "INSERT INTO INFORMATIONS (nom, prenom) VALUES ('" + nom + "','" + prenom + "'); ";
 		this.requeteCreation += "INSERT INTO VISIBILITE VALUES ('"+ adresseMail +"','mail,nom,prenom','mail,nom,prenom');";
+		System.out.println(requeteCreation);
 	}
 
 	// Requête de modification dans la base de données
@@ -207,17 +208,24 @@ public class SGBD extends Thread {
 	}
 	
 	// Méthode de récupération du mail
-	public boolean recupererMail(String adresseMail) throws SQLException{
+	public boolean recupererMail(String adresseMail) {
 		bdd();    	
-		rslt = st.executeQuery("SELECT mail FROM UTILISATEURS WHERE mail = '" + adresseMail + "'");
-            	if (rslt.next()) {
-            		con.close();
-            		return true;
-            	}
-            	else{
-            		con.close();
-            		return false;
-            		}
+		try {
+			rslt = st.executeQuery("SELECT mail FROM UTILISATEURS WHERE mail = '" + adresseMail + "'");
+			if (rslt.next()) {
+        		con.close();
+        		return true;
+        	}
+        	else{
+        		con.close();
+        		return false;
+        		}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+            	
 	}
 	
 	// Méthode de vérification du mot de passe (politique de sécurité des mots de passe)
@@ -231,52 +239,72 @@ public class SGBD extends Thread {
 	}
 	
 	// Méthode de récupération du mot de passe
-	public boolean recupererMotDePasse(String motDePasse) throws SQLException{
+	public boolean recupererMotDePasse(String motDePasse) {
 		bdd();
-            	rslt = st.executeQuery("SELECT mdp FROM UTILISATEURS WHERE mdp = '" + motDePasse + "'");
-            	if (rslt != null){
-            		con.close();
-            		return true;
-            		}
-            	else {
-            		con.close();
-            		return false;
-            	}
+            	try {
+					rslt = st.executeQuery("SELECT mdp FROM UTILISATEURS WHERE mdp = '" + motDePasse + "'");
+					if (rslt != null){
+	            		con.close();
+	            		return true;
+	            		}
+	            	else {
+	            		con.close();
+	            		return false;
+	            	}
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					return false;
+				}
+            	
 	}
 	
 	// Requête de vérification des droits d'accès aux informations des utilisateurs
-	public boolean isAdmin(String adresseMail) throws SQLException{
+	public boolean isAdmin(String adresseMail) {
 		bdd();
-		rslt = st.executeQuery("SELECT mail FROM ADMINISTRATEURS WHERE mail = '" + adresseMail +"';");
-		if (rslt.next()){
-    		con.close();
-			return true;
-		} else {
-    		con.close();
+		try {
+			rslt = st.executeQuery("SELECT mail FROM ADMINISTRATEURS WHERE mail = '" + adresseMail +"';");
+			if (rslt.next()){
+	    		con.close();
+				return true;
+			} else {
+	    		con.close();
+				return false;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 			return false;
 		}
+		
 	}
 	
 	// Récupération des informations d'un profil utilisateur (admin)
-	public String[] getAllInfos(String adresseMail) throws SQLException{
+	public String[] getAllInfos(String adresseMail) {
 		bdd();
 		// On fabrique les informations à transmettre
-		String[] req = ("CONS|MAIL|" + adresseMail + "").split("|");
+		String[] req = ("CONS|MAIL|" + adresseMail + "").split("[|]");
 		setRequeteConsultation(req);
 		
 		// On l'exécute sur la BDD et on récupère les informations sur ces résultats
-		rslt = st.executeQuery(requeteConsultation);
-		rsmd = rslt.getMetaData();
+		try {
+			rslt = st.executeQuery(requeteConsultation);
+			rsmd = rslt.getMetaData();
 
-		// On standardise les résultats
-		setResultats(rslt,rsmd,null);
+			// On standardise les résultats
+			setResultats(rslt,rsmd,null);
+			
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
-		con.close();
 		return resultats;
 	}
 	
 	// Récupération des informations d'un profil utilisateur (selon visibilité)
-	public String[] getVisibleInfos(String adresseMail) throws SQLException{
+	public String[] getVisibleInfos(String adresseMail) {
 		bdd();
 		// On des variables de gestion de la visibilité
 		String temp;
@@ -287,49 +315,71 @@ public class SGBD extends Thread {
 		setRequeteConsultation(req);
 		
 		// On l'exécute sur la BDD et on récupère les informations sur ces résultats
-		rslt = st.executeQuery(requeteConsultation);
-		rsmd = rslt.getMetaData();
+		try {
+			rslt = st.executeQuery(requeteConsultation);
+			rsmd = rslt.getMetaData();
+			
+			// Gestion de la visibilité
+			ResultSet visible = st.executeQuery("SELECT infos_visibles_anonymes FROM VISIBILITE WHERE mail = '" + adresseMail + "';");
+			temp = visible.getString("infos_visibles_anonymes");
+			split = temp.split(",");
+			
+			// On standardise les résultats
+			setResultats(rslt,rsmd,split);
+			
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
-		// Gestion de la visibilité
-		ResultSet visible = st.executeQuery("SELECT infos_visibles_anonymes FROM visibilite WHERE mail = '" + adresseMail + "';");
-		temp = visible.getString("infos_visibles_anonymes");
-		split = temp.split(",");
-		
-		// On standardise les résultats
-		setResultats(rslt,rsmd,split);
-		
-		con.close();
 		return resultats;
 	}
 	
 	// Requête de recherche d'utilisateurs selon des mots clés
-	public String[] getUtilisateurs(String[] motsCles) throws SQLException {
+	public String[] getUtilisateurs(String[] motsCles) {
 		bdd();
 		// On fabrique la requête
 		setRequeteConsultation(motsCles);
 	
 		// On l'exécute sur la BDD et on récupère les informations sur ces résultats
-		rslt = st.executeQuery(requeteConsultation);
-		rsmd = rslt.getMetaData();
+		try {
+			rslt = st.executeQuery(requeteConsultation);
+			rsmd = rslt.getMetaData();
 
-		// On standardise les résultats
-		setResultats(rslt,rsmd,null);
-		
-		con.close();
+			// On standardise les résultats
+			setResultats(rslt,rsmd,null);
+			
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		return resultats;
 	}
 	
 	// Mise à jour de la BDD = Action d'écriture donc besoin de gestion des accès concurrents
 	// Creation ou Modification (Synchronized)
-	public synchronized int executeUpdate(String type) throws SQLException {
+	public synchronized int executeUpdate(String type) {
 		bdd();
 		if (type == "CREA") {
-			i = st.executeUpdate(requeteCreation);
-    		con.close();
+			try {
+				i = st.executeUpdate(requeteCreation);
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			return i;
 		} else {
-			i = st.executeUpdate(requeteModification);
-    		con.close();
+			try {
+				i = st.executeUpdate(requeteModification);
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			return i;
 		}
 	}
