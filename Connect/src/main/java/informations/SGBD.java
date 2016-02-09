@@ -167,7 +167,7 @@ public class SGBD extends Thread {
 	public void setRequeteCreation(String nom, String prenom, String adresseMail, String motDePasse) {
 		this.requeteCreation  = "INSERT INTO UTILISATEURS (mail, mdp) VALUES ('" + adresseMail + "','" + motDePasse + "'); ";
 		this.requeteCreation += "INSERT INTO INFORMATIONS (nom, prenom) VALUES ('" + nom + "','" + prenom + "'); ";
-		this.requeteCreation += " INSERT INTO VISIBILITE VALUES ('',''," + adresseMail + ");";
+		this.requeteCreation += " INSERT INTO VISIBILITE VALUES ('"+ adresseMail +"','mail,nom,prenom','mail,nom,prenom');";
 	}
 
 	// Requête de modification dans la base de données
