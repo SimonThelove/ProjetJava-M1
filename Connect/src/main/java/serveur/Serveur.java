@@ -52,9 +52,7 @@ public class Serveur {
 	// Méthode de création d'un compte sur le serveur d'annuaire
 	public String creerCompte(String nom, String prenom, String adresseMail, String motDePasse) {
 		System.out.println("creation compte ...");
-		System.out.println("test avant : " + test);
 		setTest(sgbd.recupererMail(adresseMail));
-		System.out.println("test apres : " + test);
 		if (isTest()){
 			// Adresse mail deja existante = Echec creation
 			return "Mail déjà existant.";
@@ -67,9 +65,14 @@ public class Serveur {
 			}
 			else {
 				// Traitement de la requête par le SGBD
+				System.out.println("creation utilisateur ...");
 				sgbd.setRequeteCreationUtil(adresseMail, motDePasse);
 				setValide(sgbd.executeUpdate("CREA"));
-				sgbd.setRequeteCreationInfos(nom, prenom);
+				System.out.println("creation informations ...");
+				sgbd.setRequeteCreationInfos(nom, prenom, adresseMail);
+				setValide(sgbd.executeUpdate("CREA"));
+				System.out.println("creation visibilite ...");
+				sgbd.setRequeteCreationVisible(adresseMail);
 				setValide(sgbd.executeUpdate("CREA"));
 				if (valide != 0)
 					return "Votre compte a bien été créé, vous pouvez maintenant vous connecter.";
@@ -82,6 +85,7 @@ public class Serveur {
 	public String seConnecter(String adresseMail, String motDePasse) throws SQLException{
 		
 		// ControleMail
+			System.out.println("controle mail ...");
 				setTest(sgbd.recupererMail(adresseMail));
 				if (!isTest()){
 					// Adresse mail non existante = Echec connexion
@@ -89,7 +93,8 @@ public class Serveur {
 				}
 				else {
 					// ControleMotDePasse
-					setTest(sgbd.recupererMotDePasse(motDePasse));
+					System.out.println("controle mot de passe ...");
+					setTest(sgbd.recupererMotDePasse(motDePasse, adresseMail));
 					if (!isTest()) {
 						return "Votre mot de passe est incorrect.";
 					}
@@ -102,6 +107,7 @@ public class Serveur {
 	
 	public String seDeconnecter() {
 //fermetureThread et déconnexion du client
+		System.out.println("deconnexion client ...");
 		return "Vous vous êtes bien déconnecté.";
 	}
 
@@ -109,6 +115,7 @@ public class Serveur {
 	public String modifierInformations(String[] chaine, String adresseMail) throws SQLException{
 		
 		// Modification des informations
+		System.out.println("modifications compte ...");
 		sgbd.setRequeteModification(chaine, adresseMail);
 		setValide(sgbd.executeUpdate("MODI"));
 		if (valide != 0)
