@@ -16,7 +16,7 @@ public class SGBD extends Thread {
 	private ResultSetMetaData rsmd;
 
 	private String table;
-	private String[] resultats = null;
+	private String[] resultats;
 	
 	// Compteurs utilisés pour parcourir les tableaux et résultats
 	private int i, j;
@@ -51,10 +51,9 @@ public class SGBD extends Thread {
 		return resultats;
 	}
 	public void setResultats(ResultSet rslt, ResultSetMetaData rsmd, String[] visibilite) throws SQLException {
-		// Initialisation du compteur et du nombre de résultats SQL
+		// Initialisation du compteur
 		i = 0;
 		j = 0;
-		resultats[0] = "0";
 		
 		// Avec contrôle de la visibilité (getVisibleInfos)
 		if (visibilite != null) {
@@ -112,10 +111,18 @@ public class SGBD extends Thread {
 	public void setRequeteConsultation(String[] chaine) {
 
 		// On fabrique le début la requête
-		requeteConsultation = " SELECT * FROM informations WHERE (";
+		requeteConsultation = " SELECT * FROM INFORMATIONS WHERE (";
+		if (chaine[1].compareTo("MOTSCLES") != 0) {
 
-		if (chaine[1] == "MOTSCLES") {
- 			// On stocke les mots clés dans un tableau
+   			// Recherche par champs => on sait où chercher et on simplifie la fabrication de la requête
+   			for (i = 1; i < (chaine.length - 2); i+= 2) {
+    				requeteConsultation += chaine[i] + " LIKE '%" + chaine[i+1] + "%' AND ";
+		   	}
+    			// On finit la requête avec l'ajout du dernier champ
+		 	requeteConsultation += chaine[i] + " LIKE '%" + chaine[i+1] + "%');";
+		 	
+		} else 	{
+			// On stocke les mots clés dans un tableau
  			// Le séparateur est un espace (logique de saisie)
 			String[] mots = chaine[2].split(" ");
  	
@@ -151,15 +158,6 @@ public class SGBD extends Thread {
  			}
  			// On finit par rechercher le dernier mot clé en clôturant la requête
  			requeteConsultation += "competences LIKE '%" + mots[i] + "%');";
- 	
- 
-		} else 	{
-   			// Recherche par champs => on sait où chercher et on simplifie la fabrication de la requête
-   			for (i = 1; i < (chaine.length - 2); i+= 2) {
-    				requeteConsultation += chaine[i] + " LIKE '%" + chaine[i+1] + "%' AND ";
-		   	}
-    			// On finit la requête avec l'ajout du dernier champ
-		 	requeteConsultation += chaine[i] + " LIKE '%" + chaine[i+1] + "%');";
 		 }
 	}
 	
@@ -346,7 +344,6 @@ public class SGBD extends Thread {
 		bdd();
 		// On fabrique la requête
 		setRequeteConsultation(motsCles);
-	
 		// On l'exécute sur la BDD et on récupère les informations sur ces résultats
 		try {
 			rslt = st.executeQuery(requeteConsultation);

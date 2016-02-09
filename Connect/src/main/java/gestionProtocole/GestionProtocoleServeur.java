@@ -7,7 +7,7 @@ public class GestionProtocoleServeur {
  
     private Serveur serveur;
     private String reponse, resultats;
-    private String[] temp;
+    private String[] temp = null;
 
 	public GestionProtocoleServeur(Serveur serveur) {
         super();
@@ -49,13 +49,8 @@ public class GestionProtocoleServeur {
             	setReponse("PROF|" + resultats);
             	break;
 		    case "RECH":
-			try {
-				temp = (serveur.rechercher(req));
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	            if (temp[0] == "1")
+			temp = (serveur.rechercher(req));
+	            if (temp[0].compareTo("1") == 0)
 	            	requete("CONS|" + temp[1] + "|" + temp[2]);
 	            else {
 	            	setResultats(temp);

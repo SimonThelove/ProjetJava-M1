@@ -140,7 +140,7 @@ public class Serveur {
 	}
 	
 	// Méthode de recherche d'utilisateurs
-	public String[] rechercher(String[] chaine) throws SQLException{
+	public String[] rechercher(String[] chaine) {
 				
 		// Recherche
 		resultats = (sgbd.getUtilisateurs(chaine));
