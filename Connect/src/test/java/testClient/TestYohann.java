@@ -3,56 +3,64 @@ import client.Client;
 
 public class TestYohann {
 	
-	/*Main permettant de créer un nouveau client et afficher un menu
+	/*Main permettant de crï¿½er un nouveau client et afficher un menu
 	afin qu'il puisse executer une action
 	*/
 	public static void main(String[] args)
     {
 		Client test= new Client();
+		
+		int valide;
+		String retour;
+		
 		System.out.println("Bienvenue dans Connect !");
 		do {
 			//Appelle du menu principal en mode anonyme
 			test.menuAnonyme();
-			test.getSc().nextLine();//Vider l'entrée clavier
+			test.getSc().nextLine();//Vider l'entrï¿½e clavier
 			
 			switch (test.getChoix()) {
 				case 1:
-					//Création d'un compte client
+					//Crï¿½ation d'un compte client
 					System.out.println(test.creerCompte());
 					break;
 				case 2:
-					//Connexion à l'application
+					//Connexion ï¿½ l'application
 					do
 					{
-						System.out.println(test.seConnecter());
-					}while((test.getGp().getMessage() == "Utilisateur inconnu.") || (test.getGp().getMessage() == "Votre mot de passe est incorrect"));
+						retour = test.seConnecter();
+						valide = retour.compareTo("Utilisateur inconnu.");
+						if (valide != 0)
+							valide = retour.compareTo("Votre mot de passe est incorrect.");
+						System.out.println(retour);
+					}while(valide == 0);
 					
 					do 
 					{
-						//Appelle du menu connecté
+						//Appelle du menu connectï¿½
 						test.menuConnecter();
-						test.getSc().nextLine();//Vider l'entrée clavier
+						test.getSc().nextLine();//Vider l'entrï¿½e clavier
 						switch (test.getChoix()) {
 							case 1:
 								do {
-									//Appelle du menu rechercher en mode connecté
+									//Appelle du menu rechercher en mode connectï¿½
 									test.menuRechercher();
-									test.getSc().nextLine();//Vider l'entrée clavier
+									test.getSc().nextLine();//Vider l'entrï¿½e clavier
 									switch (test.getChoix()) {
 										case 1:
-											//Faire une recherche par mots Clés
+											//Faire une recherche par mots Clï¿½s
 											System.out.println(test.rechercherMotsCles());
 											break;
 										case 2:
-											//Faire une recherche avec différents champs à remplir
+											//Faire une recherche avec diffï¿½rents champs ï¿½ remplir
 											System.out.println(test.rechercherAvancee());
 											break;
 										case 3:
-											//Retour au menu connecté
-											System.out.println("Retour au menu connecté\n");
+											//Retour au menu connectï¿½
+											System.out.println("Retour au menu connectï¿½\n");
 											break;
 										default:
-											System.out.println("Veuillez choisir un type de recherche ou retournez au menu connecté");
+											System.out.println("Veuillez choisir un type de recherche ou retournez au menu connectï¿½");
 									}
 								 } while (test.getChoix() != 3);
 								break;
@@ -61,7 +69,7 @@ public class TestYohann {
 								System.out.println(test.modifierInfo());
 								break;								
 							case 3 :
-								//Se déconnecter pour revenir au menu principal
+								//Se dï¿½connecter pour revenir au menu principal
 								System.out.println(test.seDeconnecter());
 								break;
 							default:
@@ -73,14 +81,14 @@ public class TestYohann {
 					do {
 						//Appelle du menu rechercher en mode anonyme
 						test.menuRechercher();
-						test.getSc().nextLine();//Vider l'entrée clavier
+						test.getSc().nextLine();//Vider l'entrï¿½e clavier
 						switch (test.getChoix()) {
 							case 1:
-								//Faire une recherche par mots Clés
+								//Faire une recherche par mots Clï¿½s
 								System.out.println(test.rechercherMotsCles());
 								break;
 							case 2:
-								//Faire une recherche avec différents champs à remplir
+								//Faire une recherche avec diffï¿½rents champs ï¿½ remplir
 								System.out.println(test.rechercherAvancee());
 								break;
 							case 3:
