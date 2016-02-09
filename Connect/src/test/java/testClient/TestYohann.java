@@ -22,16 +22,13 @@ public class TestYohann {
 					break;
 				case 2:
 					//Connexion à l'application
-					String[] verif = null;
-					String message = null;
 					do
 					{
-						message = test.seConnecter();
-						System.out.println(message);
-						verif = message.split(" ");
-					}while(test.getMail() != "");
+						System.out.println(test.seConnecter());
+					}while(test.getMail() == null);
 					
-					do {
+					do 
+					{
 						//Appelle du menu connecté
 						test.menuConnecter();
 						test.getSc().nextLine();//Vider l'entrée clavier

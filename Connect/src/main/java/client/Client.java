@@ -6,7 +6,7 @@ public class Client {
 	private Scanner sc = new Scanner(System.in);
 	private int choix;
 	private GestionProtocoleClient gp = new GestionProtocoleClient(null);
-	private String mail;
+	private String mail = null;
 	
 	public String getMail() {
 		return mail;
@@ -58,7 +58,7 @@ public class Client {
 	
 	//Méthode de la création de compte
 	public String creerCompte(){
-	    System.out.println("\n\n--> INSCRIPTION");
+	    System.out.println("\n\n--> INSCRIPTION\n");
 	    System.out.print("Nom : ");
 	    String nom = sc.nextLine();
 	    System.out.print("Prenom : ");
@@ -88,10 +88,9 @@ public class Client {
 	
 	//Méthode du menu connecté
 		public void menuConnecter(){
-		    System.out.println("\n\n1. S'inscrire");
-		    System.out.println("2. S'identifier");
-		    System.out.println("3. Rechercher (en tant qu'anonyme)");
-		    System.out.println("4. Quitter");
+		    System.out.println("\n\n1. Rechercher");
+		    System.out.println("2. Modifier mes informations");
+		    System.out.println("3. Se déconnecter");
 		    System.out.print("\nChoix : ");
 		    try{
 		    	choix = sc.nextInt();
@@ -223,7 +222,7 @@ public class Client {
 		//Méthode pour se déconnecter
 		public String seDeconnecter() {
 			gp.requeteDeco();
-			mail="";
+			mail = null;
 			return gp.getMessage();
 		}
 	
