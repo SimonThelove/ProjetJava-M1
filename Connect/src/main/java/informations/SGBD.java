@@ -167,7 +167,7 @@ public class SGBD extends Thread {
 	public void setRequeteCreation(String nom, String prenom, String adresseMail, String motDePasse) {
 		this.requeteCreation  = "INSERT INTO UTILISATEURS (mail, mdp) VALUES ('" + adresseMail + "','" + motDePasse + "'); ";
 		this.requeteCreation += "INSERT INTO INFORMATIONS (nom, prenom) VALUES ('" + nom + "','" + prenom + "'); ";
-		this.requeteCreation += " INSERT INTO VISIBILITE VALUES ('"+ adresseMail +"','mail,nom,prenom','mail,nom,prenom');";
+		this.requeteCreation += "INSERT INTO VISIBILITE VALUES ('"+ adresseMail +"','mail,nom,prenom','mail,nom,prenom');";
 	}
 
 	// Requête de modification dans la base de données
@@ -182,11 +182,11 @@ public class SGBD extends Thread {
 			j = i % 2;
 			if (j == 1) {						// On teste le nom des champs
 				if (chaine[i] == "mdp")			// Le champ mdp n'appartient qu'à la table utilisateurs
-					setTable("utilisateurs");
+					setTable("UTILISATEURS");
 				else if (chaine[i] == "infos_visibles_anonymes" || chaine[i] == "infos_visibles_utilisateurs")
-					setTable("visibilite");		// Les champs infos_visibiles > table visibilite
+					setTable("VISIBILITE");		// Les champs infos_visibiles > table visibilite
 				else
-					setTable("informations");	// Les autres champs appartiennent à la table informations
+					setTable("INFORMATIONS");	// Les autres champs appartiennent à la table informations
 			}
 			i ++;
 		}
