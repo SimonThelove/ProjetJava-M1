@@ -58,8 +58,19 @@ public class SocketServeur extends Object {
          
         try {
           int b = 0;
+          sortieSocket = new PrintStream(connexionCourante.getOutputStream());
+          entreeSocket = new BufferedReader(new InputStreamReader(connexionCourante.getInputStream()));
+          
+          // R�ception client
+          retour = entreeSocket.readLine();
+          // Traitement requ�te
+          reponse = gp.requete(retour);
+          // Envoi au client
+          sortieSocket.println(reponse);
+          
           while (b != -1) {
         	  
+        	  connexionCourante = leServeur.accept();
               sortieSocket = new PrintStream(connexionCourante.getOutputStream());
               entreeSocket = new BufferedReader(new InputStreamReader(connexionCourante.getInputStream()));
               

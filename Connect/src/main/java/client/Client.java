@@ -8,6 +8,14 @@ public class Client {
 	private GestionProtocoleClient gp = new GestionProtocoleClient(null);
 	private String mail;
 	
+	public String getMail() {
+		return mail;
+	}
+
+	public void setMail(String mail) {
+		this.mail = mail;
+	}
+
 	public GestionProtocoleClient getGp() {
 		return gp;
 	}
@@ -215,6 +223,7 @@ public class Client {
 		//Méthode pour se déconnecter
 		public String seDeconnecter() {
 			gp.requeteDeco();
+			mail="";
 			return gp.getMessage();
 		}
 	

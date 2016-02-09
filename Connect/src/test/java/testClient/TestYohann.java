@@ -29,7 +29,7 @@ public class TestYohann {
 						message = test.seConnecter();
 						System.out.println(message);
 						verif = message.split(" ");
-					}while(verif[0] != "Erreur");
+					}while(test.getMail() != "");
 					
 					do {
 						//Appelle du menu connecté

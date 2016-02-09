@@ -22,6 +22,7 @@ public class GestionProtocoleServeur {
 	        case "CREA":
 				System.out.println("NOM : "+ req[2] +" PRENOM : "+ req[4] +" MAIL : "+ req[6] +" MDP : "+ req[8]);
 				reponse = ("MSG|" + serveur.creerCompte(req[2], req[4], req[6], req[8]));
+				break;
 		    case "CONX":
 			try {
 				setReponse("MSG|" + serveur.seConnecter(req[2], req[4]));
@@ -29,7 +30,7 @@ public class GestionProtocoleServeur {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		            
+				break;
 		    case "MODI": // AJOUTER LE MAIL DU CLIENT CONNECTE (condition WHERE du SQL UPDATE)
 			try {
 				setReponse("MSG|" + serveur.modifierInformations(req,req[2]));
@@ -37,7 +38,7 @@ public class GestionProtocoleServeur {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
+				break;
 		    case "CONS":
 			try {
 				temp = (serveur.consulter(req[2]));
@@ -47,7 +48,7 @@ public class GestionProtocoleServeur {
 			}
 		    	setResultats(temp);
             	setReponse("PROF|" + resultats);
-
+            	break;
 		    case "RECH":
 			try {
 				temp = (serveur.rechercher(req));
@@ -61,10 +62,10 @@ public class GestionProtocoleServeur {
 	            	setResultats(temp);
 	            	setReponse("LIST|" + resultats);
 	            }
-
+	            break;
 		    case "DECO":
 	            setReponse("MSG|" + serveur.seDeconnecter());
-
+	            break;
         }
         return reponse;
     }
