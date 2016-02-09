@@ -103,9 +103,9 @@ public class Client {
 	//Méthode du menu Rechercher
 	public void menuRechercher(){   
 	    System.out.println("\n\n--> Recherche\n");
-	    System.out.println("1. Rechercher");
-	    System.out.println("2. Modifier mes informations");
-	    System.out.println("3. Se déconnecter");
+	    System.out.println("1. Rechercher par mots clés");
+	    System.out.println("2. Recherche avancée");
+	    System.out.println("3. Revenir au menu principal");
 	    System.out.print("\nChoix : ");
 	    try{
 	    	choix = sc.nextInt();
