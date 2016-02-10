@@ -1,6 +1,7 @@
 package informations;
 
 import java.sql.*;
+import java.util.*;
 
 public class SGBD extends Thread {
 	
@@ -16,7 +17,7 @@ public class SGBD extends Thread {
 	private ResultSetMetaData rsmd;
 
 	private String table;
-	private String[] resultats;
+	private ArrayList<String> resultats = new ArrayList<String>();
 	
 	// Compteurs utilisés pour parcourir les tableaux et résultats
 	private int i, j;
@@ -46,63 +47,66 @@ public class SGBD extends Thread {
 		this.table = table;
 	}
 
-	// Constructeurs : String[] resultats
-	public String[] getResultats() {
+	// Constructeurs : ArrayList<String> resultats
+	public ArrayList<String> getResultats() {
 		return resultats;
 	}
-	public void setResultats(ResultSet rslt, ResultSetMetaData rsmd, String[] visibilite) throws SQLException {
-		// Initialisation du compteur
+
+	public void setResultats(ResultSet rslt, ResultSetMetaData rsmd, String[] visibilite) {
+		// Intialisation des compteurs
 		i = 0;
 		j = 0;
+		String retour, champ;
 		
-		// Avec contrôle de la visibilité (getVisibleInfos)
-		if (visibilite != null) {
+		// Depuis getVisibleInfos
+		if (visibilite != null){
 			// On parcourt les résultats SQL
-			while (rslt.next()) {
-				// On parcourt les champs de chaque résultat SQL
-				// tant qu'il y a des colonnes dans le ResultSet (start 1)
-				while (i < rsmd.getColumnCount()) {
-					// On avance dans resultats et sur la ligne du ResultSet
-					i ++;
-					// On teste le contenu de chaque colonne
-					if (rslt.getString(i) != null) {
-						// On teste le nombre de champs à affecter à resultats
-						if (j < visibilite.length) {
-							// On verifie la visibilite du champ pour l'affecter
-							if (rsmd.getColumnLabel(i) == visibilite[j]) {
-								// On remplit le tableau resultats
-								resultats[i] = rsmd.getColumnLabel(i);
-								resultats[i+1] = rslt.getString(i);
-								// On incrémente j
-								j ++;
+			try {
+				while (rslt.next()){
+					// Tant qu'il y a des colonnes résultat SQL
+					while (i <= rsmd.getColumnCount()){
+						i ++;
+						if(rslt.getString(i) != null){
+							// On teste le nombre de champs à affecter à resultats
+							if (j < visibilite.length) {
+								// On verifie la visibilite du champ pour l'affecter
+								if (rsmd.getColumnLabel(i) == visibilite[j]) {
+									// On remplit le tableau resultats
+									resultats.add(i,rsmd.getColumnLabel(i));
+									resultats.add(i+1,rslt.getString(i));
+									// On incrémente j
+									j ++;
+								}
 							}
+							// On ajoute le numéro de la ligne dans la case 0 (nombre de résultats)
+							resultats.add(0,Integer.toString(rslt.getRow()));
 						}
-						// On implémente le nombre résultats SQL dans resultats[0]
-						// en utilisant le numéro de ligne de ResultSet comme référence (start 1)
-						resultats[0] = "" + rslt.getRow() + "";
 					}
 				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
-		// Sans contrôle de la visibilité (getAllInfos)
+		// Depuis getAllInfos
 		else {
 			// On parcourt les résultats SQL
-			while (rslt.next()) {
-				// On parcourt les champs de chaque résultat SQL
-				// tant qu'il y a des colonnes dans le ResultSet (start 1)
-				while (i < rsmd.getColumnCount()) {
-					// On avance dans resultats et sur la ligne du ResultSet
-					i ++;
-					// On teste le contenu de chaque colonne
-					if (rslt.getString(i) != null) {
-						// On remplit le tableau resultats
-						resultats[i] = rsmd.getColumnLabel(i);
-						resultats[i+1] = rslt.getString(i);
-						// On implémente le nombre résultats SQL dans resultats[0]
-						// en utilisant le numéro de ligne de ResultSet comme référence (start 1)
-						resultats[0] = "" + rslt.getRow() + "";
+			try {
+				while (rslt.next()){
+					// Tant qu'il y a des colonnes résultat SQL
+					while (i < rsmd.getColumnCount()){
+						i ++;
+						retour = rslt.getString(i);
+						champ = rsmd.getColumnLabel(i);
+						// On ajoute le nom du champ
+						resultats.add(champ);
+						// On ajoute la valeur du champ
+						resultats.add(retour);
 					}
 				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 	}
@@ -283,7 +287,7 @@ public class SGBD extends Thread {
 	}
 	
 	// Récupération des informations d'un profil utilisateur (admin)
-	public String[] getAllInfos(String adresseMail) {
+	public ArrayList<String> getAllInfos(String adresseMail) {
 		bdd();
 		// On fabrique les informations à transmettre
 		String[] req = ("CONS|MAIL|" + adresseMail + "").split("[|]");
@@ -307,7 +311,7 @@ public class SGBD extends Thread {
 	}
 	
 	// Récupération des informations d'un profil utilisateur (selon visibilité)
-	public String[] getVisibleInfos(String adresseMail) {
+	public ArrayList<String> getVisibleInfos(String adresseMail) {
 		bdd();
 		// On des variables de gestion de la visibilité
 		String temp;
@@ -340,7 +344,7 @@ public class SGBD extends Thread {
 	}
 	
 	// Requête de recherche d'utilisateurs selon des mots clés
-	public String[] getUtilisateurs(String[] motsCles) {
+	public ArrayList<String> getUtilisateurs(String[] motsCles) {
 		bdd();
 		// On fabrique la requête
 		setRequeteConsultation(motsCles);

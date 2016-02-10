@@ -1,5 +1,6 @@
 package serveur;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import informations.SGBD;
 
@@ -12,7 +13,7 @@ public class Serveur {
 	private SGBD sgbd = new SGBD();
 	
 	private String reponse;
-	private String[] resultats;
+	private ArrayList<String> resultats =  new ArrayList<String>();
 	private boolean test = false;
 	private int valide = 0;
 	
@@ -38,14 +39,6 @@ public class Serveur {
 	}
 	public void setReponse(String reponse) {
 		this.reponse = reponse;
-	}
-
-	// Constructeurs : String[] resultats
-	public String[] getResultats(String[] resultats) {
-		return resultats;
-	}
-	public void setResultats(String[] resultats) {
-		this.resultats = resultats;
 	}
 	
 
@@ -124,7 +117,7 @@ public class Serveur {
 	}
 	
 	// Méthode de consultation d'un profil utilisateur
-	public String[] consulter(String adresseMail) throws SQLException {
+	public ArrayList<String> consulter(String adresseMail) throws SQLException {
 		
 		// ControleDroits
 		if(sgbd.isAdmin(adresseMail)){
@@ -140,7 +133,7 @@ public class Serveur {
 	}
 	
 	// Méthode de recherche d'utilisateurs
-	public String[] rechercher(String[] chaine) {
+	public ArrayList<String> rechercher(String[] chaine) {
 				
 		// Recherche
 		resultats = (sgbd.getUtilisateurs(chaine));

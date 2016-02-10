@@ -1,5 +1,6 @@
 package gestionProtocole;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import serveur.Serveur;
  
@@ -7,7 +8,7 @@ public class GestionProtocoleServeur {
  
     private Serveur serveur;
     private String reponse, resultats;
-    private String[] temp = null;
+    private ArrayList<String> temp = new ArrayList<String>();
 
 	public GestionProtocoleServeur(Serveur serveur) {
         super();
@@ -50,8 +51,8 @@ public class GestionProtocoleServeur {
             	break;
 		    case "RECH":
 			temp = (serveur.rechercher(req));
-	            if (temp[0].compareTo("1") == 0)
-	            	requete("CONS|" + temp[1] + "|" + temp[2]);
+	            if (temp.get(0).compareTo("1") == 0)
+	            	requete("CONS|" + temp.get(1) + "|" + temp.get(2));
 	            else {
 	            	setResultats(temp);
 	            	setReponse("LIST|" + resultats);
@@ -72,15 +73,15 @@ public class GestionProtocoleServeur {
 		this.reponse = reponse;
 	}
 
-	public void setResultats(String[] resultats) {
+	public void setResultats(ArrayList<String> array) {
 		// Compteur d'implémentation de reponse
 		int i;
 		
 		// Initialisation puis construction de reponse
 		this.resultats = null;
-		for(i = 0; i < (resultats.length - 1); i++){
-			this.resultats += resultats[i] + "|";
+		for(i = 0; i < (array.size() - 1); i++){
+			this.resultats += array.get(i) + "|";
 		}
-			this.resultats += resultats[i];
+			this.resultats += array.get(i);
 	}
 }
