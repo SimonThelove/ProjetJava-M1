@@ -5,13 +5,10 @@ import java.util.ArrayList;
 import informations.SGBD;
 
 public class Serveur {
-	
 	public Serveur() {
 		super();
 	}
-
 	private SGBD sgbd = new SGBD();
-	
 	private String reponse;
 	private ArrayList<String> resultats =  new ArrayList<String>();
 	private boolean test = false;
@@ -24,7 +21,6 @@ public class Serveur {
 	public void setValide(int valide) {
 		this.valide = valide;
 	}
-	
 	// Constructeurs : boolean test
 	public boolean isTest() {
 		return test;
@@ -40,24 +36,23 @@ public class Serveur {
 	public void setReponse(String reponse) {
 		this.reponse = reponse;
 	}
-	
 
-	// Méthode de création d'un compte sur le serveur d'annuaire
+	// Methode de creation d'un compte sur le serveur d'annuaire
 	public String creerCompte(String nom, String prenom, String adresseMail, String motDePasse) {
 		System.out.println("creation compte ...");
 		setTest(sgbd.recupererMail(adresseMail));
 		if (isTest()){
 			// Adresse mail deja existante = Echec creation
-			return "Mail déjà existant.";
+			return "Mail deja�existant.";
 		}
 		else {
 			// VerificationMotDePasse
 			setTest(sgbd.verifierMotDePasse(motDePasse));
 			if (!isTest()) {
-				return "Votre mot de passe n'est pas sécurisé.";
+				return "Votre mot de passe n'est pas securiser.";
 			}
 			else {
-				// Traitement de la requête par le SGBD
+				// Traitement de la requete par le SGBD
 				System.out.println("creation utilisateur ...");
 				sgbd.setRequeteCreationUtil(adresseMail, motDePasse);
 				setValide(sgbd.executeUpdate("CREA"));
@@ -68,13 +63,13 @@ public class Serveur {
 				sgbd.setRequeteCreationVisible(adresseMail);
 				setValide(sgbd.executeUpdate("CREA"));
 				if (valide != 0)
-					return "Votre compte a bien été créé, vous pouvez maintenant vous connecter.";
-				else	return "Erreur création : votre compte n'a pas été créé.";
+					return "Votre compte a bien ete creer, vous pouvez maintenant vous connecter.";
+				else	return "Erreur creation : votre compte n'a pas ete creer.";
 			}
 		}
 	}
 	
-	// Méthode de connexion au serveur d'annuaire
+	// Methode de connexion au serveur d'annuaire
 	public String seConnecter(String adresseMail, String motDePasse) throws SQLException{
 		
 		// ControleMail
@@ -92,19 +87,19 @@ public class Serveur {
 						return "Votre mot de passe est incorrect.";
 					}
 					else {
-//creationThread et ID client de manière unique
-						return "Vous êtes bien connectés.";
+						//creationThread et ID client de manière unique
+						return "Vous etes bien connectes.";
 					}
 				}
 	}
 	
 	public String seDeconnecter() {
-//fermetureThread et déconnexion du client
+		//fermetureThread et deconnexion du client
 		System.out.println("deconnexion client ...");
-		return "Vous vous êtes bien déconnecté.";
+		return "Vous vous etes bien deconnecter.";
 	}
 
-	// Méthode de modification des informations sur le compte connecté
+	// Methode de modification des informations sur le compte connecter
 	public String modifierInformations(String[] chaine, String adresseMail) throws SQLException{
 		
 		// Modification des informations
@@ -112,32 +107,30 @@ public class Serveur {
 		sgbd.setRequeteModification(chaine, adresseMail);
 		setValide(sgbd.executeUpdate("MODI"));
 		if (valide != 0)
-			return "Vos modifications ont été prises en compte.";
-		else	return "Erreur modification : vos modifications n'ont pas été prises en compte.";
+			return "Vos modifications ont ete prises en compte.";
+		else	return "Erreur modification : vos modifications n'ont pas ete prises en compte.";
 	}
 	
-	// Méthode de consultation d'un profil utilisateur
+	// Methode de consultation d'un profil utilisateur
 	public ArrayList<String> consulter(String adresseMail) throws SQLException {
 		
 		// ControleDroits
 		if(sgbd.isAdmin(adresseMail)){
-			// Récupération de toutes les informations du profil
+			// Recuperation de toutes les informations du profil
 			resultats = (sgbd.getAllInfos(adresseMail));
 		}
 		else {
-			// Récupération des informations visibles du profil
+			// Recuperation des informations visibles du profil
 			resultats = (sgbd.getVisibleInfos(adresseMail));
 		}
-
 		return resultats;
 	}
 	
-	// Méthode de recherche d'utilisateurs
+	// Methode de recherche d'utilisateurs
 	public ArrayList<String> rechercher(String[] chaine) {
 				
 		// Recherche
 		resultats = (sgbd.getUtilisateurs(chaine));
-		
 		return resultats;
 	}
 }

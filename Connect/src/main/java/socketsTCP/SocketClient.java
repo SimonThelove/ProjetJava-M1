@@ -14,7 +14,7 @@ public class SocketClient {
 		    
 		    try {
 		      leSocket = new Socket("localhost", 12314); // socket sur echo
-		      System.err.println("Connecté sur : "+leSocket);
+		      System.err.println("Connecter sur : "+leSocket);
 		      
 		      fluxSortieSocket = new PrintStream(leSocket.getOutputStream());
 		      fluxEntreeSocket = new BufferedReader(new InputStreamReader(leSocket.getInputStream()));

@@ -18,7 +18,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
-	<classpathentry kind="lib" path="C:/Users/Yohann/Desktop/ProjetJava-M1/Connect/mysql-connector-java-5.1.38-bin.jar" sourcepath="C:/Users/Yohann/Desktop/Git_repertoire/ProjetJava-M1/Connect/mysql-connector-java-5.1.38-bin.jar">
+	<classpathentry kind="lib" path="C:/Users/Yohann/Desktop/Git_repertoire/ProjetJava-M1/Connect/mysql-connector-java-5.1.38-bin.jar" sourcepath="C:/Users/Yohann/Desktop/Git_repertoire/ProjetJava-M1/Connect/mysql-connector-java-5.1.38-bin.jar">
 		<attributes>
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="C:/Users/Yohann/Desktop/Git_repertoire/ProjetJava-M1"/>
 		</attributes>

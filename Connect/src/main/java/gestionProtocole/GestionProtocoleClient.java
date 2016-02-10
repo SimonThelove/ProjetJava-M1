@@ -1,49 +1,32 @@
 package gestionProtocole;
 import java.util.Scanner;
-
 import client.Client;
 import socketsTCP.SocketClient;
 
 public class GestionProtocoleClient {
 	private Client client;
-	private Scanner sc = new Scanner(System.in);
-	private String message;
+	private Scanner sc = new Scanner(System.in);//Pour la lecture de saisie utilisateur
+	private String message;//Variable ou est stockee la requete
 	private SocketClient soc = new SocketClient();
-	private int nbPersonne;
-	private int choixProfil;
-	private String mailRechercher[];
-	private String req[];
+	private int nbPersonne;//Nombre de profil que renvoit les requetes de recherche
+	private int choixProfil;//Le profil que choisira l'utilisateur s'il y a plusieurs profil
+	private String mailRechercher[];//Les mails seront stockees pour que l'utilisateur puisse choisir
+	private String req[];//Requete de retour du serveur
 	
 	public int getChoixProfil() {
 		return choixProfil;
 	}
 
-	public void setChoixProfil(int choixProfil) {
-		this.choixProfil = choixProfil;
-	}
-
 	public int getNbPersonne() {
 		return nbPersonne;
 	}
-
-	public void setNbPersonne(int nbPersonne) {
-		this.nbPersonne = nbPersonne;
-	}
-
+	
 	public String[] getMailRechercher() {
 		return mailRechercher;
-	}
-
-	public void setMailRechercher(String[] mailRechercher) {
-		this.mailRechercher = mailRechercher;
 	}
 	
 	public String getMessage() {
 		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
 	}
 
 	public GestionProtocoleClient(Client client) {
@@ -51,77 +34,83 @@ public class GestionProtocoleClient {
 		this.client = client;
 	}
 
-	//M�thode de concat�nation de la requ�te creerCompte
+	//Methode de concatenation de la requete creerCompte
 	public void requeteCrea(String nom, String prenom, String mail, String motDePasse){
+		//Creation de la requete
 		message = "CREA|NOM|" + nom + "|PRENOM|" + prenom + "|MAIL|" + mail + "|MOTDEPASSE|" + motDePasse;
-
-		//Envoit du message � SocketClient
+		//Envoit du message a SocketClient
 		message = soc.socket(message);
-		//Appelle � la m�thode pour cr�er un affichage ordonn� au client
+		//Appelle a la methode pour creer un affichage au client
 		message = decoupage(message);
 	}
 	
-	//M�thode de concat�nation de la requ�te connexion
+	//Methode de concatenation de la requete connexion
 	public void requeteConx(String mail, String motDePasse){
+		//Creation de la requete
 		message = "CONX|MAIL|" + mail + "|MOTDEPASSE|" + motDePasse;
-		//Envoit du message � SocketClient
+		//Envoit du message a SocketClient
 		message = soc.socket(message);
-		//Appelle � la m�thode pour cr�er un affichage ordonn� au client
+		//Appelle a la methode pour creer un affichage au client
 		message = decoupage(message);
 	}
 
-	//M�thode de concat�nation de la requ�te rechercherMotsCles
+	//Methode de concatenation de la requete rechercherMotsCles
 	public void requeteRechMotsCles(String motCles){
+		//Creation de la requete
 		message = "RECH|MOTSCLES|" + motCles;
-		//Envoit du message � SocketClient
+		//Envoit du message a SocketClient
 		message = soc.socket(message);
-		//Appelle � la m�thode pour cr�er un affichage ordonn� au client
+		//Appelle a la methode pour creer un affichage au client
 		message = decoupage(message);
 	}
 
-	//M�thode de concat�nation de la requ�te RechercherAvancee
+	//Methode de concatenation de la requete RechercherAvancee
 	public void requeteRechNom(String nom, String prenom, String mail, String diplome, String annee, String competences){
+		//Creation de la requete
 		message = "RECH|NOM|" + nom + "|PRENOM|" + prenom + "|MAIL|" + mail + "|DIPLOME|" + diplome + "|ANNEE|" + annee + "|COMPETENCES|" + competences;
-		//Envoit du message � SocketClient
+		//Envoit du message a SocketClient
 		message = soc.socket(message);
-		//Appelle � la m�thode pour cr�er un affichage ordonn� au client
+		//Appelle a la methode pour creer un affichage au client
 		message = decoupage(message);
 	}
 
-	//M�thode de concat�nation de la requ�te consultation
+	//Methode de concatenation de la requete consultation
 	public void requeteCons(){
+		//Creation de la requete
 		message = "CONS|" + mailRechercher[choixProfil];
-		//Envoit du message � SocketClient
+		//Envoit du message a SocketClient
 		message = soc.socket(message);
-		//Appelle � la m�thode pour cr�er un affichage ordonn� au client
+		//Appelle a la methode pour creer un affichage au client
 		message = decoupage(message);
 	}
 	
-	//M�thode de concat�nation de la requ�te modification
+	//Methode de concatenation de la requete modification
 	public void requeteModi(String modification){
+		//Creation de la requete
 		message = "MODI|MAIL|" + client.getMail() + "|" + modification;
 		System.out.println(message);
-		//Envoit du message � SocketClient
+		//Envoit du message a SocketClient
 		message = soc.socket(message);
-		//Appelle � la m�thode pour cr�er un affichage ordonn� au client
+		//Appelle a la methode pour creer un affichage au client
 		message = decoupage(message);
 	}
 
-	//M�thode de concat�nation de la requ�te deconnexion
+	//Methode de concatenation de la requete deconnexion
 	public void requeteDeco(){
+		//Creation de la requete
 		message = "DECO";
-		//Envoit du message � SocketClient
+		//Envoit du message a SocketClient
 		message = soc.socket(message);
-		//Appelle � la m�thode pour cr�er un affichage ordonn� au client
+		//Appelle a la methode pour creer un affichage au client
 		message = decoupage(message);
 	}
 	
-	//M�thode pour cr�er la r�ponse � afficher d'une requ�te
+	//Methode pour creer la reponse a afficher d'une requete
 	public String decoupage(String reponse){
 		nbPersonne = 1;
         req = reponse.split("[|]");
         switch(req[0]){
-        //Recup�re le message � afficher au client
+        //Recupere le message a afficher au client
         case "MSG":
             try {
                 message = req[1];
@@ -131,7 +120,7 @@ public class GestionProtocoleClient {
                 message = "Erreur format";
             }
             break;
-        //Affiche la liste simplifi�e des profils
+        //Affiche la liste simplifier des profils
         case "LIST":
             try {
             	//message = "Resultats :\n\n";
@@ -173,12 +162,12 @@ public class GestionProtocoleClient {
                 			message += " (en" + req[i+1] + ")";
                 			break;
                 		case "COMPETENCES" :
-                			message += "\nComp�tences ; " + req[i+1];
+                			message += "\nCompetences ; " + req[i+1];
                             break;        
             		  default:
             		    /*Action*/;             
             		}
-	            	message = req[2] + " - " + req[4] + " - " + req[6] + "\nDiplom�(e) en " + req[8] + " (" + req[10] + ")\nComp�tence(s) : " + req[12];
+	            	message = req[2] + " - " + req[4] + " - " + req[6] + "\nDiplomer(e) en " + req[8] + " (" + req[10] + ")\nCompetence(s) : " + req[12];
             	}
             	message += "\n----------------------------------------\n";
             } catch (NumberFormatException e) {

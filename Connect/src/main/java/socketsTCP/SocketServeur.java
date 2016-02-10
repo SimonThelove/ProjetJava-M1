@@ -5,19 +5,13 @@ import gestionProtocole.GestionProtocoleServeur;
 import serveur.Serveur;
 
 public class SocketServeur extends Object {
- 
-  /** Port par défaut */
+  /** Port par defaut */
   public final static int portEcho = 12314;
-  
   // Variables serveur
   private Serveur serveur;
   private String retour = null;
-     
-  /**
-  * @param args the command line arguments
-  */
+  
   public void socket () {
-	  
     ServerSocket    leServeur = null;
     Socket          connexionCourante;
     BufferedReader  entreeSocket;
@@ -33,7 +27,7 @@ public class SocketServeur extends Object {
     catch (IOException ex)
     {
       // fin de connexion
-      System.err.println("Impossible de créer un socket serveur sur ce port : "+ex);
+      System.err.println("Impossible de crer un socket serveur sur ce port : "+ex);
        
       try {
         // on demande un port anonyme 
@@ -42,7 +36,7 @@ public class SocketServeur extends Object {
       catch (IOException ex2)
       {
         // fin de connexion
-        System.err.println("Impossible de créer un socket serveur : "+ex);
+        System.err.println("Impossible de creer un socket serveur : "+ex);
       }
     }
       
@@ -53,7 +47,6 @@ public class SocketServeur extends Object {
       System.err.println("En attente de connexion sur le port : "+leServeur.getLocalPort());
       while (true) {
         connexionCourante = leServeur.accept();
-         
         System.err.println("Nouvelle connexion : "+connexionCourante);
          
         try {
@@ -61,26 +54,24 @@ public class SocketServeur extends Object {
           sortieSocket = new PrintStream(connexionCourante.getOutputStream());
           entreeSocket = new BufferedReader(new InputStreamReader(connexionCourante.getInputStream()));
           
-          // R�ception client
+          // Reception client
           retour = entreeSocket.readLine();
-          // Traitement requ�te
+          // Traitement requete
           reponse = gp.requete(retour);
           // Envoi au client
           sortieSocket.println(reponse);
           
           while (b != -1) {
-        	  
         	  connexionCourante = leServeur.accept();
               sortieSocket = new PrintStream(connexionCourante.getOutputStream());
               entreeSocket = new BufferedReader(new InputStreamReader(connexionCourante.getInputStream()));
               
-              // R�ception client
+              // Reception client
               retour = entreeSocket.readLine();
-              // Traitement requ�te
+              // Traitement requete
               reponse = gp.requete(retour);
               // Envoi au client
-              sortieSocket.println(reponse);
-               
+              sortieSocket.println(reponse);  
           }
           System.err.println("Fin de connexion");
         }
@@ -89,7 +80,6 @@ public class SocketServeur extends Object {
           // fin de connexion
           System.err.println("Fin de connexion : "+ex);
         }
-         
         connexionCourante.close();
       }
     }
@@ -101,5 +91,4 @@ public class SocketServeur extends Object {
     }
    } 
   }
- 
 }

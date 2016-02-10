@@ -1,11 +1,9 @@
 package gestionProtocole;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
 import serveur.Serveur;
  
 public class GestionProtocoleServeur {
- 
     private Serveur serveur;
     private String reponse, resultats;
     private ArrayList<String> temp = new ArrayList<String>();
@@ -15,6 +13,18 @@ public class GestionProtocoleServeur {
         this.serveur = serveur;
     }
     
+	public String getReponse() {
+		return reponse;
+	}
+
+	public void setReponse(String reponse) {
+		this.reponse = reponse;
+	}
+
+	public void setResultats(ArrayList<String> array) {
+		this.resultats += array.get(0);
+	}	
+	
     public String requete(String entreeSocket) {
         String[] req = entreeSocket.split("[|]");
 
@@ -63,17 +73,5 @@ public class GestionProtocoleServeur {
 	            break;
         }
         return reponse;
-    }
-
-	public String getReponse() {
-		return reponse;
-	}
-
-	public void setReponse(String reponse) {
-		this.reponse = reponse;
-	}
-
-	public void setResultats(ArrayList<String> array) {
-		this.resultats += array.get(0);
-	}
+    }	
 }

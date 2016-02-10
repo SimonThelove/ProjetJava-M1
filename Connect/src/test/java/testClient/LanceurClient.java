@@ -8,8 +8,11 @@ public class LanceurClient {
 	*/
 	public static void main(String[] args)
     {
+		//Creation d'un nouveau client
 		Client test= new Client();
 		
+		//Ces deux variables permettront de verifier que le client à bien saisie les bon
+		//identifiants avant de le laisser acceder au menu connecter
 		int valide;
 		String retour;
 		
@@ -17,7 +20,7 @@ public class LanceurClient {
 		do {
 			//Appelle du menu principal en mode anonyme
 			test.menuAnonyme();
-			test.getSc().nextLine();//Vider l'entrï¿½e clavier
+			test.getSc().nextLine();//Vider l'entree clavier
 			
 			switch (test.getChoix()) {
 				case 1:
@@ -25,11 +28,12 @@ public class LanceurClient {
 					System.out.println(test.creerCompte());
 					break;
 				case 2:
-					//Connexion ï¿½ l'application
+					//Connexion a l'application
 					do
 					{
 						retour = test.seConnecter();
 						valide = retour.compareTo("Utilisateur inconnu.");
+						//Si le message n'est une erreur identifiant alors on test le mdp
 						if (valide != 0)
 							valide = retour.compareTo("Votre mot de passe est incorrect.");
 						System.out.println(retour);
@@ -37,30 +41,30 @@ public class LanceurClient {
 					
 					do 
 					{
-						//Appelle du menu connectï¿½
+						//Appelle du menu connecter
 						test.menuConnecter();
-						test.getSc().nextLine();//Vider l'entrï¿½e clavier
+						test.getSc().nextLine();//Vider l'entree clavier
 						switch (test.getChoix()) {
 							case 1:
 								do {
-									//Appelle du menu rechercher en mode connectï¿½
+									//Appelle du menu rechercher en mode connecter
 									test.menuRechercher();
-									test.getSc().nextLine();//Vider l'entrï¿½e clavier
+									test.getSc().nextLine();//Vider l'entree clavier
 									switch (test.getChoix()) {
 										case 1:
-											//Faire une recherche par mots Clï¿½s
+											//Faire une recherche par mots Clees
 											System.out.println(test.rechercherMotsCles());
 											break;
 										case 2:
-											//Faire une recherche avec diffï¿½rents champs ï¿½ remplir
+											//Faire une recherche avec differents champs a remplir
 											System.out.println(test.rechercherAvancee());
 											break;
 										case 3:
-											//Retour au menu connectï¿½
-											System.out.println("Retour au menu connectï¿½\n");
+											//Retour au menu connecter
+											System.out.println("Retour au menu connecter\n");
 											break;
 										default:
-											System.out.println("Veuillez choisir un type de recherche ou retournez au menu connectï¿½");
+											System.out.println("Veuillez choisir un type de recherche ou retournez au menu connecter");
 									}
 								 } while (test.getChoix() != 3);
 								break;
@@ -69,7 +73,7 @@ public class LanceurClient {
 								System.out.println(test.modifierInfo());
 								break;								
 							case 3 :
-								//Se dï¿½connecter pour revenir au menu principal
+								//Se deconnecter pour revenir au menu principal
 								System.out.println(test.seDeconnecter());
 								break;
 							default:
@@ -81,14 +85,14 @@ public class LanceurClient {
 					do {
 						//Appelle du menu rechercher en mode anonyme
 						test.menuRechercher();
-						test.getSc().nextLine();//Vider l'entrï¿½e clavier
+						test.getSc().nextLine();//Vider l'entree clavier
 						switch (test.getChoix()) {
 							case 1:
-								//Faire une recherche par mots Clï¿½s
+								//Faire une recherche par mots Clees
 								System.out.println(test.rechercherMotsCles());
 								break;
 							case 2:
-								//Faire une recherche avec diffï¿½rents champs ï¿½ remplir
+								//Faire une recherche avec differents champs a remplir
 								System.out.println(test.rechercherAvancee());
 								break;
 							case 3:
