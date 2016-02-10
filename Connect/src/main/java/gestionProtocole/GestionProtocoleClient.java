@@ -55,7 +55,7 @@ public class GestionProtocoleClient {
 	public void requeteCrea(String nom, String prenom, String mail, String motDePasse){
 		message = "CREA|NOM|" + nom + "|PRENOM|" + prenom + "|MAIL|" + mail + "|MOTDEPASSE|" + motDePasse;
 
-		//Envoit du message à SocketClient
+		//Envoit du message ï¿½ SocketClient
 		message = soc.socket(message);
 		//Appelle ï¿½ la mï¿½thode pour crï¿½er un affichage ordonnï¿½ au client
 		message = decoupage(message);
@@ -133,16 +133,13 @@ public class GestionProtocoleClient {
         //Affiche la liste simplifiï¿½e des profils
         case "LIST":
             try {
-            	int i, j=3;
-        		nbPersonne = Integer.parseInt(req[1]);
-        		message = "Resultats :\n\n";
-                    	for(i = 1; i < (nbPersonne) ; i = i+2, j = j+6)
-        		{
-        			message += req[j] + " - " + req[j+2] + " - " + req[j+4] + "\n";
-        			mailRechercher[i] = req[j+4];
-        		}
-                    		
-        		message += "\nQuel profil souhaitez-vous consulter ? :";
+            	//message = "Resultats :\n\n";
+            	for(int i = 1; i <= req.length; i++){
+            		System.out.println("message :" + req[i]);
+            		message += Integer.toString(i) + "/ " + req[i+4] + " " + req[i+6] + " - " + req[i+1] ;
+            		//mailRechercher[i] = req[i+1];
+            	}
+            	message += "\nQuel profil souhaitez-vous consulter ? :";
             	choixProfil = sc.nextInt();
             	}
               catch (NumberFormatException e) {

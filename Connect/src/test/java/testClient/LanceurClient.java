@@ -1,7 +1,7 @@
 package testClient;
 import client.Client;
 
-public class TestYohann {
+public class LanceurClient {
 	
 	/*Main permettant de cr�er un nouveau client et afficher un menu
 	afin qu'il puisse executer une action

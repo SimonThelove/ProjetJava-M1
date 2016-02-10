@@ -74,14 +74,6 @@ public class GestionProtocoleServeur {
 	}
 
 	public void setResultats(ArrayList<String> array) {
-		// Compteur d'implémentation de reponse
-		int i;
-		
-		// Initialisation puis construction de reponse
-		this.resultats = null;
-		for(i = 0; i < (array.size() - 1); i++){
-			this.resultats += array.get(i) + "|";
-		}
-			this.resultats += array.get(i);
+		this.resultats += array.get(0);
 	}
 }
