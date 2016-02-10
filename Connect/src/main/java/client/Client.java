@@ -163,58 +163,96 @@ public class Client {
 	//Méthode de la modification d'information
 		public String modifierInfo(){   
 			char info;
-			String nom = null, prenom = null, motDePasse = null, nomDiplome = null, anneeDiplome = null, competence = null;
+			String requete = new String();
 			System.out.println("\n\n--> Modifier ses informations");
-			System.out.print("\nSouhaitez-vous modifier votre Nom ? (o/n) : ");
 			do{
+				System.out.print("\nSouhaitez-vous modifier votre Nom ? (o/n) : ");
 				info = sc.nextLine().charAt(0);
-			}while ((info != 'o') || (info != 'n'));
-			if(info == '0')
+			}while ((info != 'o') && (info != 'n'));
+			if(info == 'o')
 			{
-				nom = sc.nextLine();
+				requete ="NOM|";
 			}
-		    System.out.print("\nSouhaitez-vous modifier votre Prenom ? (o/n) : ");
+			if(info == 'o')
+			{
+				System.out.print("\nNouveau nom ? : ");
+				requete += sc.nextLine() + "|";
+			}
+
+			do{
+		    	System.out.print("\nSouhaitez-vous modifier votre Prenom ? (o/n) : ");
+				info = sc.nextLine().charAt(0);
+			}while ((info != 'o') && (info != 'n'));
+			if(info == 'o')
+			{
+				requete +="PRENOM|";
+			}
+			if(info == 'o')
+			{
+				System.out.print("\nNouveau prenom ? : ");
+				requete += sc.nextLine() + "|";
+			}
+			
 		    do{
+				System.out.print("\nSouhaitez-vous modifier votre Mot de passe ? (o/n) : ");
 				info = sc.nextLine().charAt(0);
-			}while ((info != 'o') || (info != 'n'));
-			if(info == '0')
+			}while ((info != 'o') && (info != 'n'));
+		    if(info == 'o')
 			{
-				prenom = sc.nextLine();
+				requete +="MOTDEPASSE|";
 			}
-			System.out.print("\nSouhaitez-vous modifier votre Mot de passe ? (o/n) : ");
+			if(info == 'o')
+			{
+				System.out.print("\nNouveau mot de passe ? : ");
+				requete += sc.nextLine() + "|";
+			}
+			
 		    do{
+			    System.out.print("\nSouhaitez-vous modifier votre Intitulé du diplome ? (o/n) : ");
 				info = sc.nextLine().charAt(0);
-			}while ((info != 'o') || (info != 'n'));
-			if(info == '0')
+			}while ((info != 'o') && (info != 'n'));
+		    if(info == 'o')
 			{
-				motDePasse = sc.nextLine();
+				requete +="DIPLOME|";
 			}
-		    System.out.print("\nSouhaitez-vous modifier votre Intitulé du diplome ? (o/n) : ");
+			if(info == 'o')
+			{
+				System.out.print("\nNouveau diplome ? : ");
+				requete += sc.nextLine() + "|";
+			}
+			
 		    do{
+			    System.out.print("\nSouhaitez-vous modifier votre Année de diplomation ? (o/n) : ");
 				info = sc.nextLine().charAt(0);
-			}while ((info != 'o') || (info != 'n'));
-			if(info == '0')
+			}while ((info != 'o') && (info != 'n'));
+		    if(info == 'o')
 			{
-				nomDiplome = sc.nextLine();
+				requete +="ANNEE|";
 			}
-		    System.out.print("\nSouhaitez-vous modifier votre Année de diplomation ? (o/n) : ");
+			if(info == 'o')
+			{
+				System.out.print("\nNouvelle année ? : ");
+				requete += sc.nextLine() + "|";
+			}
+		    
 		    do{
+			    System.out.print("\nSouhaitez-vous modifier vos Compétences ? (o/n) : ");
 				info = sc.nextLine().charAt(0);
-			}while ((info != 'o') || (info != 'n'));
-			if(info == '0')
+			}while ((info != 'o') && (info != 'n'));
+		    if(info == 'o')
 			{
-				anneeDiplome = sc.nextLine();
+				requete +="COMPETENCES|";
 			}
-		    System.out.print("\nSouhaitez-vous modifier vos Compétences ? (o/n) : ");
-		    do{
-				info = sc.nextLine().charAt(0);
-			}while ((info != 'o') || (info != 'n'));
-			if(info == '0')
+			if(info == 'o')
 			{
-				competence = sc.nextLine();
+				System.out.print("\nNouveau nom ? : ");
+				requete += sc.nextLine();
 			}
+			System.out.print(requete);
+			
+			
 		    //Appelle à la concaténation de la requète rechercherModification
-		    gp.requeteModi(mail, nom, prenom, motDePasse, nomDiplome, anneeDiplome, competence);
+		    gp.requeteModi(requete);
 		    return gp.getMessage();
 		  }
 	

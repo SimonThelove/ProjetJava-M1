@@ -98,8 +98,9 @@ public class GestionProtocoleClient {
 	}
 	
 	//M�thode de concat�nation de la requ�te modification
-	public void requeteModi(String mail, String nom, String prenom, String motDePasse, String diplome, String annee, String competences){
-		message = "MODI|MAIL|" + mail + "|NOM|" + nom + "|PRENOM|" + prenom + "|MOTDEPASSE|" + motDePasse + "|DIPLOME|"  + diplome + "|ANNEE|" + annee + "|COMPETENCES|" + competences;
+	public void requeteModi(String modification){
+		message = "MODI|MAIL|" + client.getMail() + "|" + modification;
+		System.out.println(message);
 		//Envoit du message � SocketClient
 		message = soc.socket(message);
 		//Appelle � la m�thode pour cr�er un affichage ordonn� au client
