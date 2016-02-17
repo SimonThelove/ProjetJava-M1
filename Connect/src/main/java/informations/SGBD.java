@@ -54,6 +54,7 @@ public class SGBD extends Thread {
 		// Intialisation des compteurs
 		i = 0;
 		j = 0;
+		int cpt = 0;
 		String retour, champ;
 		
 		// Depuis getVisibleInfos
@@ -62,6 +63,7 @@ public class SGBD extends Thread {
 			try {
 				while (rslt.next()){
 					// Tant qu'il y a des colonnes resultat SQL
+					i = 0;
 					while (i <= rsmd.getColumnCount()){
 						i ++;
 						if(rslt.getString(i) != null){
@@ -69,6 +71,7 @@ public class SGBD extends Thread {
 							if (j < visibilite.length) {
 								// On verifie la visibilite du champ pour l'affecter
 								if (rsmd.getColumnLabel(i) == visibilite[j]) {
+									System.out.println(resultats + "?");
 									// On remplit le tableau resultats
 									resultats.add(i,rsmd.getColumnLabel(i));
 									resultats.add(i+1,rslt.getString(i));
@@ -80,6 +83,7 @@ public class SGBD extends Thread {
 							resultats.add(0,Integer.toString(rslt.getRow()));
 						}
 					}
+					cpt++;//Nombre de personnes
 				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -90,9 +94,12 @@ public class SGBD extends Thread {
 		else {
 			// On parcourt les resultats SQL
 			try {
-				while (rslt.next()){
+				while (rslt.next() != false){
+					System.out.println("\nA\n");
 					// Tant qu'il y a des colonnes resultat SQL
+					i = 0;
 					while (i < rsmd.getColumnCount()){
+						System.out.println(resultats + "!");
 						i ++;
 						retour = rslt.getString(i);
 						champ = rsmd.getColumnLabel(i);
@@ -102,6 +109,9 @@ public class SGBD extends Thread {
 						resultats.add(retour);
 					}
 				}
+				rslt.last();
+				cpt = rslt.getRow();
+				resultats.add(0, Integer.toString(cpt));
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -122,6 +132,8 @@ public class SGBD extends Thread {
 		   	}
     			// On finit la requete avec l'ajout du dernier champ
 		 	requeteConsultation += chaine[i] + " LIKE '%" + chaine[i+1] + "%');";
+			System.out.println(requeteConsultation);
+
 		 	
 		} else 	{
 			// On stocke les mots clees dans un tableau
@@ -161,6 +173,7 @@ public class SGBD extends Thread {
  			// On finit par rechercher le dernier mot clee en cloturant la requete
  			requeteConsultation += "competences LIKE '%" + mots[i] + "%');";
 		 }
+		System.out.println(requeteConsultation);
 	}
 	
 	// Requetes de creation dans la base de donnees

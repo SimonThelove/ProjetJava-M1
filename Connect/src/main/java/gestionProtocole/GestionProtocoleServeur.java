@@ -61,6 +61,7 @@ public class GestionProtocoleServeur {
             	break;
 		    case "RECH":
 			temp = (serveur.rechercher(req));
+			System.out.println(temp);
 	            if (temp.get(0).compareTo("1") == 0)
 	            	requete("CONS|" + temp.get(1) + "|" + temp.get(2));
 	            else {
