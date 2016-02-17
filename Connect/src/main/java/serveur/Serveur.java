@@ -131,6 +131,7 @@ public class Serveur {
 				
 		// Recherche
 		resultats = (sgbd.getUtilisateurs(chaine));
+		System.out.println("niveau serveur" + resultats);
 		return resultats;
 	}
 }

@@ -61,11 +61,16 @@ public class GestionProtocoleServeur {
             	break;
 		    case "RECH":
 			temp = (serveur.rechercher(req));
-			System.out.println(temp);
+			System.out.println("Niveau GPS temp - " + temp);
 	            if (temp.get(0).compareTo("1") == 0)
 	            	requete("CONS|" + temp.get(1) + "|" + temp.get(2));
 	            else {
 	            	setResultats(temp);
+	            	String[] resu = new String[temp.size()];
+	            	//resu = temp.toArray(resu);
+	            	//for(String s: resu)
+	            	// Erreur a ce niveau resultats est vide (probleme cast arrayList to String)
+	            	System.out.println("Niveau GPS resultat1 - " + resultats);
 	            	setReponse("LIST|" + resultats);
 	            }
 	            break;
@@ -73,6 +78,8 @@ public class GestionProtocoleServeur {
 	            setReponse("MSG|" + serveur.seDeconnecter());
 	            break;
         }
+    
+        System.out.println("Niveau GPS resultat2 - " + reponse);
         return reponse;
     }	
 }

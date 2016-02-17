@@ -56,6 +56,7 @@ public class SGBD extends Thread {
 		j = 0;
 		int cpt = 0;
 		String retour, champ;
+		resultats.clear();
 		
 		// Depuis getVisibleInfos
 		if (visibilite != null){
@@ -63,7 +64,7 @@ public class SGBD extends Thread {
 			try {
 				while (rslt.next()){
 					// Tant qu'il y a des colonnes resultat SQL
-					i = 0;
+					i = 0;//Permet de récuperer les information du prochain profil
 					while (i <= rsmd.getColumnCount()){
 						i ++;
 						if(rslt.getString(i) != null){
@@ -71,7 +72,7 @@ public class SGBD extends Thread {
 							if (j < visibilite.length) {
 								// On verifie la visibilite du champ pour l'affecter
 								if (rsmd.getColumnLabel(i) == visibilite[j]) {
-									System.out.println(resultats + "?");
+									System.out.println("niveau SGBD getVisible info" +resultats);
 									// On remplit le tableau resultats
 									resultats.add(i,rsmd.getColumnLabel(i));
 									resultats.add(i+1,rslt.getString(i));
@@ -83,8 +84,10 @@ public class SGBD extends Thread {
 							resultats.add(0,Integer.toString(rslt.getRow()));
 						}
 					}
-					cpt++;//Nombre de personnes
 				}
+				//On recupere le nombre de profil a afficher pour le mettre en tant que premier element de l'arrayListe
+				cpt = rslt.getRow();
+				resultats.add(0, Integer.toString(cpt));
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -95,11 +98,10 @@ public class SGBD extends Thread {
 			// On parcourt les resultats SQL
 			try {
 				while (rslt.next() != false){
-					System.out.println("\nA\n");
-					// Tant qu'il y a des colonnes resultat SQL
-					i = 0;
+					i = 0;//Permet de récuperer les information du prochain profil
+					// Tant qu'il y a des colonnes resultat SQL					
 					while (i < rsmd.getColumnCount()){
-						System.out.println(resultats + "!");
+						System.out.println("niveau SGBD getAllInfo" +resultats);
 						i ++;
 						retour = rslt.getString(i);
 						champ = rsmd.getColumnLabel(i);
@@ -110,6 +112,7 @@ public class SGBD extends Thread {
 					}
 				}
 				rslt.last();
+				//On recupere le nombre de profil a afficher pour le mettre en tant que premier element de l'arrayListe
 				cpt = rslt.getRow();
 				resultats.add(0, Integer.toString(cpt));
 			} catch (SQLException e) {
