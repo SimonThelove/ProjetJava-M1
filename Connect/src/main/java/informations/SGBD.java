@@ -130,12 +130,12 @@ public class SGBD extends Thread {
 		if (chaine[1].compareTo("MOTSCLES") != 0) {
 
    			// Recherche par champs => on sait ou chercher et on simplifie la fabrication de la requete
-   			for (i = 1; i < (chaine.length - 2); i+= 2) {
+   			for (i = 0; i < (chaine.length - 2); i+= 2) {
     				requeteConsultation += chaine[i] + " LIKE '%" + chaine[i+1] + "%' AND ";
 		   	}
     			// On finit la requete avec l'ajout du dernier champ
 		 	requeteConsultation += chaine[i] + " LIKE '%" + chaine[i+1] + "%');";
-			System.out.println(requeteConsultation);
+			System.out.println("SGBD 1 - " + requeteConsultation);
 
 		 	
 		} else 	{
@@ -176,7 +176,7 @@ public class SGBD extends Thread {
  			// On finit par rechercher le dernier mot clee en cloturant la requete
  			requeteConsultation += "competences LIKE '%" + mots[i] + "%');";
 		 }
-		System.out.println(requeteConsultation);
+		System.out.println("SGBD 2 - " + requeteConsultation);
 	}
 	
 	// Requetes de creation dans la base de donnees

@@ -63,15 +63,16 @@ public class GestionProtocoleServeur {
 			temp = (serveur.rechercher(req));
 			System.out.println("Niveau GPS temp - " + temp);
 	            if (temp.get(0).compareTo("1") == 0)
+	            {
+	            	System.out.println("Niveau GPS CONS|"+ temp.get(1) + "|" + temp.get(2));
 	            	requete("CONS|" + temp.get(1) + "|" + temp.get(2));
+	            }
 	            else {
-	            	setResultats(temp);
-	            	String[] resu = new String[temp.size()];
-	            	//resu = temp.toArray(resu);
-	            	//for(String s: resu)
-	            	// Erreur a ce niveau resultats est vide (probleme cast arrayList to String)
-	            	System.out.println("Niveau GPS resultat1 - " + resultats);
-	            	setReponse("LIST|" + resultats);
+	            	System.out.println("Niveau GPS LIST||");
+	            	//Transformation de l'arrayList en String
+	            	String result = String.join("|",temp);
+	            	//Concatenation de la requete
+	            	setReponse("LIST|" + result);
 	            }
 	            break;
 		    case "DECO":
