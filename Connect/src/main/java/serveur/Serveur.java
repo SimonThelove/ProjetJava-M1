@@ -113,7 +113,8 @@ public class Serveur {
 	
 	// Methode de consultation d'un profil utilisateur
 	public ArrayList<String> consulter(String adresseMail) throws SQLException {
-		
+		System.out.println("Serveur consulter - adressemail :" + adresseMail);
+
 		// ControleDroits
 		if(sgbd.isAdmin(adresseMail)){
 			// Recuperation de toutes les informations du profil

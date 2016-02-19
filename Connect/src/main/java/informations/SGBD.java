@@ -131,12 +131,11 @@ public class SGBD extends Thread {
 
    			// Recherche par champs => on sait ou chercher et on simplifie la fabrication de la requete
    			for (i = 0; i < (chaine.length - 2); i+= 2) {
-    				requeteConsultation += chaine[i] + " LIKE '%" + chaine[i+1] + "%' AND ";
+   				System.out.println("SGBD chain - " + chaine);
+    				requeteConsultation += chaine[i] + " = '" + chaine[i+1] + "' AND ";
 		   	}
     			// On finit la requete avec l'ajout du dernier champ
-		 	requeteConsultation += chaine[i] + " LIKE '%" + chaine[i+1] + "%');";
-			System.out.println("SGBD 1 - " + requeteConsultation);
-
+		 	requeteConsultation += chaine[i] + " = '" + chaine[i+1] + "');";
 		 	
 		} else 	{
 			// On stocke les mots clees dans un tableau
@@ -175,8 +174,9 @@ public class SGBD extends Thread {
  			}
  			// On finit par rechercher le dernier mot clee en cloturant la requete
  			requeteConsultation += "competences LIKE '%" + mots[i] + "%');";
+ 			
 		 }
-		System.out.println("SGBD 2 - " + requeteConsultation);
+		System.out.println("SGBD requeteConsultation - " + requeteConsultation);
 	}
 	
 	// Requetes de creation dans la base de donnees
@@ -328,7 +328,8 @@ public class SGBD extends Thread {
 		String[] split;
 		
 		// On fabrique les informations a transmettre
-		String[] req = ("CONS|MAIL|" + adresseMail + "").split("|");
+		String[] req = {"MAIL", adresseMail};
+		System.out.println("SGBD getVisibleInfo - req :" + req);
 		setRequeteConsultation(req);
 		
 		// On l'execute sur la BDD et on recupere les informations sur ces resultats
@@ -339,6 +340,7 @@ public class SGBD extends Thread {
 			// Gestion de la visibilitee
 			ResultSet visible = st.executeQuery("SELECT infos_visibles_anonymes FROM VISIBILITE WHERE mail = '" + adresseMail + "';");
 			temp = visible.getString("infos_visibles_anonymes");
+			System.out.println("SGBD temp :" + temp);
 			split = temp.split(",");
 			
 			// On standardise les resultats

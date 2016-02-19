@@ -51,7 +51,9 @@ public class GestionProtocoleServeur {
 				break;
 		    case "CONS":
 			try {
+				System.out.println("SGBD CONS fonction - req :" + req[2]);
 				temp = (serveur.consulter(req[2]));
+				System.out.println("SGBD CONS fonction - temp :" + temp);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -64,7 +66,7 @@ public class GestionProtocoleServeur {
 			System.out.println("Niveau GPS temp - " + temp);
 	            if (temp.get(0).compareTo("1") == 0)
 	            {
-	            	System.out.println("Niveau GPS CONS|"+ temp.get(1) + "|" + temp.get(2));
+	            	System.out.println("Niveau GPS Rech :"+ temp.get(1) + "|" + temp.get(2));
 	            	requete("CONS|" + temp.get(1) + "|" + temp.get(2));
 	            }
 	            else {
