@@ -163,7 +163,7 @@ public class Recherche extends GridPane {
                client.setAnnee(saisie_annee.getText());
                client.setCompetences(saisie_competences.getText());
                
-               gp.requeteRechNom(client.getNom(), client.getPrenom(), client.getTel(), client.getDiplome(), client.getAnnee(), client.getCompetences());
+               //gp.requeteRechNom(client.getNom(), client.getPrenom(), client.getTel(), client.getDiplome(), client.getAnnee(), client.getCompetences());
                 
                AffichageResultats affichage = new AffichageResultats();
                Scene scene_affichage = new Scene(affichage);

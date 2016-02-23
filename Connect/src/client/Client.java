@@ -83,20 +83,8 @@ public class Client {
         return chaine;
     }
 
-    public void setChaine() {
-            this.chaine = null;
-        if (this.nom != null)
-            this.chaine += "NOM|" + this.nom;
-        if (this.prenom != null)
-            this.chaine += "PRENOM|" + this.prenom;
-        if (this.mail != null)
-            this.chaine += "MAIL|" + this.mail;
-        if (this.diplome != null)
-            this.chaine += "DIPLOME|" + this.diplome;
-        if (this.annee != null)
-            this.chaine += "ANNEE|" + this.annee;
-        if (this.competences != null)
-            this.chaine += "COMPETENCES|" + this.competences;
+    public void setChaine(String chaine) {
+         this.chaine = chaine;
     }
 
 }

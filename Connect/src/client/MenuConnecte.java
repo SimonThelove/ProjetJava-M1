@@ -19,20 +19,26 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import gestionProtocole.GestionProtocoleClient;
+import javafx.scene.control.Alert;
+
 /**
  *
  * @author lamoure
  */
 public class MenuConnecte extends GridPane {
+    
+    private final Client client = new Client();
+    private final GestionProtocoleClient gp = new GestionProtocoleClient();
 
-    public void menuConnecte(Stage fenetre_menuC, Scene rootScene) {
+    public void menuConnecte(Stage fenetre_menuC, Scene rootScene, String nom, String prenom) {
         
         this.setAlignment(Pos.CENTER);
         this.setHgap(10);
         this.setVgap(10);
         this.setPadding(new Insets(25, 25, 25, 25));
         
-        Text titre = new Text("Bienvenue : '+ NOM UTILISATEUR'");
+        Text titre = new Text("Bienvenue : " + nom + prenom);
         titre.setFont(Font.font("Calibri", FontWeight.NORMAL, 16));
         this.add(titre, 0, 0, 2, 1);
         
@@ -82,6 +88,16 @@ public class MenuConnecte extends GridPane {
 
             @Override
             public void handle(ActionEvent e) {
+                gp.requeteDeco();
+                
+                // POP-UP DU MESSAGE DE RESULTAT
+                final Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.initOwner(fenetre_menuC);
+                alert.setTitle("Connect - information");
+                alert.setHeaderText("Message");
+                alert.setContentText(client.getChaine());
+                alert.showAndWait();
+                
                 MenuAnonyme menuA = new MenuAnonyme();
                 Scene scene_menuA = new Scene(menuA);
                 menuA.menuAnonyme(fenetre_menuC, scene_menuA);

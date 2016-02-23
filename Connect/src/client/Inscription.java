@@ -23,6 +23,9 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import gestionProtocole.GestionProtocoleClient;
+import java.util.Optional;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 
 /**
  *
@@ -83,6 +86,7 @@ public class Inscription extends GridPane {
         this.add(hbBtn, 1, 6);
         
         
+        
         sInscrire.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
@@ -92,6 +96,14 @@ public class Inscription extends GridPane {
                 client.setMail(saisie_mail.getText());
                 client.setMdp(saisie_mdp.getText());
                 gp.requeteCrea(client.getNom(), client.getPrenom(), client.getMail(), client.getMdp());
+                
+                // POP-UP DU MESSAGE DE RESULTAT
+                final Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.initOwner(fenetre_menu);
+                alert.setTitle("Connect - information");
+                alert.setHeaderText("Message");
+                alert.setContentText(client.getChaine());
+                alert.showAndWait();
                 
                 // RETOUR MENU PRINCIPAL
                 

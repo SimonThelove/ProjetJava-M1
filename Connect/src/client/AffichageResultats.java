@@ -22,13 +22,17 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import gestionProtocole.GestionProtocoleClient;
+
 /**
  *
  * @author lamoure
  */
 public class AffichageResultats extends GridPane {
     
-    private Button retour;
+    private final GestionProtocoleClient gp = new GestionProtocoleClient();
+    
+    private Button retour, consulter;
     private TableView resultats;
     private Text titre;
     private Label nom, prenom, mail, tel, diplome, annee, competences;
@@ -54,12 +58,34 @@ public class AffichageResultats extends GridPane {
         this.add(titre, 0, 0, 2, 1);
         
         resultats = new TableView();
-        
+ // REMPLISSAGE DE LA TABLEVIEW ???
         TableColumn nom = new TableColumn("Nom");
         TableColumn prenom = new TableColumn("Prénom");
         TableColumn mail = new TableColumn("E-mail");
         resultats.getColumns().addAll(nom, prenom, mail);
         this.add(resultats, 0, 2);
+        
+        consulter = new Button("Consulter");
+        HBox hbConsult = new HBox(10);
+        hbConsult.setAlignment(Pos.BOTTOM_RIGHT);
+        hbConsult.getChildren().add(consulter);
+        this.add(hbConsult, 0, 3);
+        
+        consulter.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                
+                if(resultats.getSelectionModel().getSelectedItem().getClass() == Client.class)
+                    gp.requeteCons(resultats.getSelectionModel().getSelectedIndex());
+
+                AffichageResultats affichage = new AffichageResultats();
+                Scene scene_affichage = new Scene(affichage);
+                affichage.afficherProfil(fenetre_menu, scene_affichage);
+                fenetre_menu.setScene(scene_affichage);
+            }
+        }
+        );
         
         retour = new Button("Retour");
         HBox hbBtn = new HBox(10);
@@ -71,14 +97,6 @@ public class AffichageResultats extends GridPane {
             
             @Override
             public void handle (ActionEvent e) {
-                //utilisateur.setID();
-                //utilisateur.setMDP();
-                
-                // TEST AFFICHER PROFIL
-                AffichageResultats affichage = new AffichageResultats();
-                Scene scene_affichage = new Scene(affichage);
-                affichage.afficherProfil(fenetre_menu, scene_affichage);
-                fenetre_menu.setScene(scene_affichage);
                 
                 // IF CONNECTE
                 /* 

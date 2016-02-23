@@ -102,14 +102,14 @@ public class Modification extends GridPane {
                 client.setAnnee(saisie_annee.getText());
                 client.setCompetences(saisie_competences.getText());
                 
-                client.setChaine();
+                gp.setMessage();
                 gp.requeteModi(client.getChaine());
                 
                 // RETOUR MENU CONNECTE
                 
                 MenuConnecte menuC = new MenuConnecte();
                 Scene scene_menuC = new Scene(menuC);
-                menuC.menuConnecte(fenetre_menu, scene_menuC);
+                menuC.menuConnecte(fenetre_menu, scene_menuC, client.getNom(), client.getPrenom());
                 fenetre_menu.setScene(scene_menuC);
             }
         });

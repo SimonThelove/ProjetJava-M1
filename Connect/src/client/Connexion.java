@@ -23,6 +23,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import gestionProtocole.GestionProtocoleClient;
+import javafx.scene.control.Alert;
 
 /**
  *
@@ -78,20 +79,28 @@ public class Connexion extends GridPane {
                 
                 gp.requeteConx(client.getMail(), client.getMdp());
                 
-                // IF CONNEXION OK
-                 
+                // POP-UP DU MESSAGE DE RESULTAT
+                final Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.initOwner(fenetre_menu);
+                alert.setTitle("Connect - information");
+                alert.setHeaderText("Message");
+                alert.setContentText(client.getChaine());
+                alert.showAndWait();
+                
+                if (client.getChaine().equals("Vous êtes bien connectés."))
+                {
                     MenuConnecte menuC = new MenuConnecte();
                     Scene scene_menuC = new Scene(menuC);
-                    menuC.menuConnecte(fenetre_menu, scene_menuC);
+                    menuC.menuConnecte(fenetre_menu, scene_menuC, client.getNom(), client.getPrenom());
                     fenetre_menu.setScene(scene_menuC);
-                
-                // ELSE (CONNEXION !OK)
-                /* 
+                }
+                else
+                {
                     MenuAnonyme menuA = new MenuAnonyme();
                     Scene scene_menuA = new Scene(menuA);
                     menuA.menuAnonyme(fenetre_menu, scene_menuA);
                     fenetre_menu.setScene(scene_menuA);
-                */
+                }
             }
         });
     }
