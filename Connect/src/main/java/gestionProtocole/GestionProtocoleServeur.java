@@ -51,9 +51,9 @@ public class GestionProtocoleServeur {
 				break;
 		    case "CONS":
 			try {
-				System.out.println("SGBD CONS fonction - req :" + req[2]);
+				System.out.println("GPS CONS fonction 1 - req :" + req[2]);
 				temp = (serveur.consulter(req[2]));
-				System.out.println("SGBD CONS fonction - temp :" + temp);
+				System.out.println("GPS CONS fonction 2 - temp :" + temp);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

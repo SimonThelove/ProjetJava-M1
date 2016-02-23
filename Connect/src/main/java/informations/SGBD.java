@@ -62,7 +62,7 @@ public class SGBD extends Thread {
 		if (visibilite != null){
 			// On parcourt les resultats SQL
 			try {
-				while (rslt.next()){
+				while (rslt.next()!= false){
 					// Tant qu'il y a des colonnes resultat SQL
 					i = 0;//Permet de récuperer les information du prochain profil
 					while (i <= rsmd.getColumnCount()){
@@ -329,20 +329,20 @@ public class SGBD extends Thread {
 		
 		// On fabrique les informations a transmettre
 		String[] req = {"MAIL", adresseMail};
-		System.out.println("SGBD getVisibleInfo - req :" + req);
+		System.out.println("SGBD getVisibleInfo - req :" + req[1]);
 		setRequeteConsultation(req);
 		
 		// On l'execute sur la BDD et on recupere les informations sur ces resultats
 		try {
 			rslt = st.executeQuery(requeteConsultation);
 			rsmd = rslt.getMetaData();
-			
+
 			// Gestion de la visibilitee
 			ResultSet visible = st.executeQuery("SELECT infos_visibles_anonymes FROM VISIBILITE WHERE mail = '" + adresseMail + "';");
+			visible.next();
 			temp = visible.getString("infos_visibles_anonymes");
 			System.out.println("SGBD temp :" + temp);
 			split = temp.split(",");
-			
 			// On standardise les resultats
 			setResultats(rslt,rsmd,split);
 			con.close();
@@ -362,7 +362,6 @@ public class SGBD extends Thread {
 		try {
 			rslt = st.executeQuery(requeteConsultation);
 			rsmd = rslt.getMetaData();
-
 			// On standardise les resultats
 			setResultats(rslt,rsmd,null);
 			con.close();
