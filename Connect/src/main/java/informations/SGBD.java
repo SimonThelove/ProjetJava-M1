@@ -81,8 +81,8 @@ public class SGBD extends Thread {
 
 							// On teste le nombre de champs a� affecter a�resultats
 							if (j < visibilite.length) {
-								System.out.println("4");
-
+								System.out.println("4");						
+								
 								// On verifie la visibilite du champ pour l'affecter
 								if (rsmd.getColumnLabel(i).equalsIgnoreCase(visibilite[j])) {
 									System.out.println("niveau SGBD getVisible info" +resultats);
