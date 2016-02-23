@@ -12,6 +12,7 @@ public class SGBD extends Thread {
 	/* Chargement du driver JDBC pour MySQL */
 	private Connection con;
 	private Statement st;
+	private Statement visibilite;
 	private ResultSet rslt;
 	private ResultSetMetaData rsmd;
 	private String table;
@@ -48,6 +49,12 @@ public class SGBD extends Thread {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		try {
+			visibilite = con.createStatement();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 	}	
 
 	public void setResultats(ResultSet rslt, ResultSetMetaData rsmd, String[] visibilite) {
@@ -64,12 +71,18 @@ public class SGBD extends Thread {
 			try {
 				while (rslt.next()!= false){
 					// Tant qu'il y a des colonnes resultat SQL
-					i = 0;//Permet de récuperer les information du prochain profil
-					while (i <= rsmd.getColumnCount()){
+					System.out.println("1");
+					while (i < rsmd.getColumnCount()){
+						System.out.println("2");
+
 						i ++;
 						if(rslt.getString(i) != null){
+							System.out.println("3");
+
 							// On teste le nombre de champs a  affecter a resultats
 							if (j < visibilite.length) {
+								System.out.println("4");
+
 								// On verifie la visibilite du champ pour l'affecter
 								if (rsmd.getColumnLabel(i) == visibilite[j]) {
 									System.out.println("niveau SGBD getVisible info" +resultats);
@@ -338,7 +351,7 @@ public class SGBD extends Thread {
 			rsmd = rslt.getMetaData();
 
 			// Gestion de la visibilitee
-			ResultSet visible = st.executeQuery("SELECT infos_visibles_anonymes FROM VISIBILITE WHERE mail = '" + adresseMail + "';");
+			ResultSet visible = visibilite.executeQuery("SELECT infos_visibles_anonymes FROM VISIBILITE WHERE mail = '" + adresseMail + "';");
 			visible.next();
 			temp = visible.getString("infos_visibles_anonymes");
 			System.out.println("SGBD temp :" + temp);
