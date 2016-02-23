@@ -35,7 +35,7 @@ public class SGBD extends Thread {
 		return resultats;
 	}
 	
-	// Connexion e  la  BDD
+	// Connexion eï¿½ la  BDD
 	public void bdd() {
 		try {
 			con = DriverManager.getConnection("jdbc:mysql://mysql-stri.alwaysdata.net/stri_connect","stri","STRISTRI");
@@ -79,16 +79,19 @@ public class SGBD extends Thread {
 						if(rslt.getString(i) != null){
 							System.out.println("3");
 
-							// On teste le nombre de champs a  affecter a resultats
+							// On teste le nombre de champs aï¿½ affecter aï¿½resultats
 							if (j < visibilite.length) {
 								System.out.println("4");
 
 								// On verifie la visibilite du champ pour l'affecter
-								if (rsmd.getColumnLabel(i) == visibilite[j]) {
+								if (rsmd.getColumnLabel(i).equalsIgnoreCase(visibilite[j])) {
 									System.out.println("niveau SGBD getVisible info" +resultats);
-									// On remplit le tableau resultats
-									resultats.add(i,rsmd.getColumnLabel(i));
-									resultats.add(i+1,rslt.getString(i));
+									retour = rslt.getString(i);
+									champ = rsmd.getColumnLabel(i);
+									// On ajoute le nom du champ
+									resultats.add(champ);
+									// On ajoute la valeur du champ
+									resultats.add(retour);
 									// On incremente j
 									j ++;
 								}
@@ -111,7 +114,7 @@ public class SGBD extends Thread {
 			// On parcourt les resultats SQL
 			try {
 				while (rslt.next() != false){
-					i = 0;//Permet de récuperer les information du prochain profil
+					i = 0;//Permet de rï¿½cuperer les information du prochain profil
 					// Tant qu'il y a des colonnes resultat SQL					
 					while (i < rsmd.getColumnCount()){
 						System.out.println("niveau SGBD getAllInfo" +resultats);
