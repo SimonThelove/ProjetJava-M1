@@ -5,7 +5,7 @@ import serveur.Serveur;
  
 public class GestionProtocoleServeur {
     private Serveur serveur;
-    private String reponse, resultats;
+    private String reponse;
     private ArrayList<String> temp = new ArrayList<String>();
 
 	public GestionProtocoleServeur(Serveur serveur) {
@@ -20,10 +20,6 @@ public class GestionProtocoleServeur {
 	public void setReponse(String reponse) {
 		this.reponse = reponse;
 	}
-
-	public void setResultats(ArrayList<String> array) {
-		this.resultats += array.get(0);
-	}	
 	
     public String requete(String entreeSocket) {
         String[] req = entreeSocket.split("[|]");
@@ -58,8 +54,8 @@ public class GestionProtocoleServeur {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		    	setResultats(temp);
-            	setReponse("PROF|" + resultats);
+		    	String resultat = String.join("|",temp);
+            	setReponse("PROF|" + resultat);
             	break;
 		    case "RECH":
 			temp = (serveur.rechercher(req));

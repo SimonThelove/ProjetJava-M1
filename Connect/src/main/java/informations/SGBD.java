@@ -85,7 +85,6 @@ public class SGBD extends Thread {
 								
 								// On verifie la visibilite du champ pour l'affecter
 								if (rsmd.getColumnLabel(i).equalsIgnoreCase(visibilite[j])) {
-									System.out.println("niveau SGBD getVisible info" +resultats);
 									retour = rslt.getString(i);
 									champ = rsmd.getColumnLabel(i);
 									// On ajoute le nom du champ
@@ -94,16 +93,12 @@ public class SGBD extends Thread {
 									resultats.add(retour);
 									// On incremente j
 									j ++;
+				System.out.println("niveau SGBD getVisible info" +resultats);
 								}
 							}
-							// On ajoute le numero de la ligne dans la case 0 (nombre de resultats)
-							resultats.add(0,Integer.toString(rslt.getRow()));
 						}
 					}
 				}
-				//On recupere le nombre de profil a afficher pour le mettre en tant que premier element de l'arrayListe
-				cpt = rslt.getRow();
-				resultats.add(0, Integer.toString(cpt));
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -114,7 +109,7 @@ public class SGBD extends Thread {
 			// On parcourt les resultats SQL
 			try {
 				while (rslt.next() != false){
-					i = 0;//Permet de r�cuperer les information du prochain profil
+					i = 0;//Permet de recuperer les information du prochain profil
 					// Tant qu'il y a des colonnes resultat SQL					
 					while (i < rsmd.getColumnCount()){
 						System.out.println("niveau SGBD getAllInfo" +resultats);
@@ -146,8 +141,8 @@ public class SGBD extends Thread {
 		if (chaine[1].compareTo("MOTSCLES") != 0) {
 
    			// Recherche par champs => on sait ou chercher et on simplifie la fabrication de la requete
-   			for (i = 0; i < (chaine.length - 2); i+= 2) {
-   				System.out.println("SGBD chain - " + chaine);
+   			for (i = 1; i < (chaine.length - 2); i+= 2) {
+   				System.out.println("SGBD chain - " + chaine[i]);
     				requeteConsultation += chaine[i] + " = '" + chaine[i+1] + "' AND ";
 		   	}
     			// On finit la requete avec l'ajout du dernier champ
