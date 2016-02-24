@@ -238,7 +238,7 @@ public class SGBD extends Thread {
 		requeteModification = "UPDATE " + table + " SET ";
 		
 		// Assemblage des N-1 termes suivants
-		for(i = 1; i < (chaine.length - 2); i += 2){
+		for(i = 1; i <= (chaine.length - 2); i += 2){
 			if (chaine[i+1] != null)
 				requeteModification += chaine[i] + " = " + chaine[i+1] + ", ";
 		}

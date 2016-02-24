@@ -30,7 +30,8 @@ import gestionProtocole.GestionProtocoleClient;
  */
 public class Recherche extends GridPane {
     
-    private final Client client = new Client();
+    private Client client = new Client();
+    
     private final GestionProtocoleClient gp = new GestionProtocoleClient();
     
     private String motsCherches;
@@ -89,6 +90,7 @@ public class Recherche extends GridPane {
                motsCherches = saisie_motsCles.getText();
                
                gp.requeteRechMotsCles(motsCherches);
+               client = gp.getClient();
                
                AffichageResultats affichage = new AffichageResultats();
                Scene scene_affichage = new Scene(affichage);
@@ -163,7 +165,7 @@ public class Recherche extends GridPane {
                client.setAnnee(saisie_annee.getText());
                client.setCompetences(saisie_competences.getText());
                
-               //gp.requeteRechNom(client.getNom(), client.getPrenom(), client.getTel(), client.getDiplome(), client.getAnnee(), client.getCompetences());
+               gp.requeteRechNom(client.getNom(), client.getPrenom(), client.getTel(), client.getDiplome(), client.getAnnee(), client.getCompetences());
                 
                AffichageResultats affichage = new AffichageResultats();
                Scene scene_affichage = new Scene(affichage);

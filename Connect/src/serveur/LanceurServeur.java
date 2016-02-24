@@ -10,15 +10,20 @@ package serveur;
  *
  * @author Yohann
  */
-import static javafx.application.Application.launch;
+import javafx.application.Application;
+import javafx.stage.Stage;
 import socketsTCP.SocketServeur;
 
-public class LanceurServeur {
+public class LanceurServeur extends Application {
+    
+    
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        SocketServeur soc = new SocketServeur();
+        soc.socket();
+    }
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		
-		SocketServeur soc = new SocketServeur();
-		soc.socket();
-	}
+    public static void main(String[] args) {
+        launch(args);
+    }
 }

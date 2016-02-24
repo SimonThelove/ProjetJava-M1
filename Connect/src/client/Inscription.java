@@ -23,9 +23,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import gestionProtocole.GestionProtocoleClient;
-import java.util.Optional;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 
 /**
  *
@@ -33,7 +31,8 @@ import javafx.scene.control.ButtonType;
  */
 public class Inscription extends GridPane {
     
-    private final Client client = new Client();
+    private Client client = new Client();
+    
     private final GestionProtocoleClient gp = new GestionProtocoleClient();
     
     private Text titre;
@@ -96,7 +95,7 @@ public class Inscription extends GridPane {
                 client.setMail(saisie_mail.getText());
                 client.setMdp(saisie_mdp.getText());
                 gp.requeteCrea(client.getNom(), client.getPrenom(), client.getMail(), client.getMdp());
-                
+                client = gp.getClient();
                 // POP-UP DU MESSAGE DE RESULTAT
                 final Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.initOwner(fenetre_menu);
@@ -104,7 +103,6 @@ public class Inscription extends GridPane {
                 alert.setHeaderText("Message");
                 alert.setContentText(client.getChaine());
                 alert.showAndWait();
-                
                 // RETOUR MENU PRINCIPAL
                 
                 MenuAnonyme menuA = new MenuAnonyme();

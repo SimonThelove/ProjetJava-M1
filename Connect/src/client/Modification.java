@@ -22,6 +22,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import gestionProtocole.GestionProtocoleClient;
+import javafx.scene.control.Alert;
 
 /**
  *
@@ -29,7 +30,8 @@ import gestionProtocole.GestionProtocoleClient;
  */
 public class Modification extends GridPane {
     
-    private final Client client = new Client();
+    private Client client = new Client();
+    
     private final GestionProtocoleClient gp = new GestionProtocoleClient();
     
     private Text titre;
@@ -103,7 +105,16 @@ public class Modification extends GridPane {
                 client.setCompetences(saisie_competences.getText());
                 
                 gp.setMessage();
-                gp.requeteModi(client.getChaine());
+                gp.requeteModi(gp.getMessage());
+                client = gp.getClient();
+                
+                // POP-UP DU MESSAGE DE RESULTAT
+                final Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.initOwner(fenetre_menu);
+                alert.setTitle("Connect - information");
+                alert.setHeaderText("Message");
+                alert.setContentText(client.getChaine());
+                alert.showAndWait();
                 
                 // RETOUR MENU CONNECTE
                 

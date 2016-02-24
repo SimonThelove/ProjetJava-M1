@@ -32,14 +32,15 @@ import javafx.scene.control.Alert;
 
 public class Connexion extends GridPane {
     
-    private final Client client = new Client();
     private final GestionProtocoleClient gp = new GestionProtocoleClient();
+    
+    private Client client = new Client();
 
     private Text titre;
     private Label identifiant, mdp;
     private TextField saisie_id;
     private PasswordField saisie_mdp;
-    private Button seConnecter;
+    private Button seConnecter, retour;
         
     public void seConnecter (Stage fenetre_menu, Scene rootScene){
         
@@ -78,7 +79,7 @@ public class Connexion extends GridPane {
                 client.setMdp(saisie_mdp.getText());
                 
                 gp.requeteConx(client.getMail(), client.getMdp());
-                
+                client = gp.getClient();
                 // POP-UP DU MESSAGE DE RESULTAT
                 final Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.initOwner(fenetre_menu);
@@ -87,8 +88,9 @@ public class Connexion extends GridPane {
                 alert.setContentText(client.getChaine());
                 alert.showAndWait();
                 
-                if (client.getChaine().equals("Vous êtes bien connectés."))
+                if (client.getChaine().equals("Vous etes bien connectes."))
                 {
+System.out.println("CONX - infos : " + client.getNom() + " " + client.getPrenom());
                     MenuConnecte menuC = new MenuConnecte();
                     Scene scene_menuC = new Scene(menuC);
                     menuC.menuConnecte(fenetre_menu, scene_menuC, client.getNom(), client.getPrenom());
@@ -103,5 +105,24 @@ public class Connexion extends GridPane {
                 }
             }
         });
+        
+        retour = new Button("Retour");
+        HBox hbRetour = new HBox(10);
+        hbRetour.setAlignment(Pos.BOTTOM_RIGHT);
+        hbRetour.getChildren().add(retour);
+        this.add(hbRetour, 1, 5);
+        
+        retour.setOnAction(new EventHandler<ActionEvent>(){
+            
+            @Override
+            public void handle (ActionEvent e) {
+                MenuAnonyme menuA = new MenuAnonyme();
+                Scene scene_menuA = new Scene(menuA);
+                menuA.menuAnonyme(fenetre_menu, scene_menuA);
+                fenetre_menu.setScene(scene_menuA);
+
+            }
+        });
+        
     }
 }

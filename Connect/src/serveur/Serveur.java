@@ -9,7 +9,6 @@ package serveur;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import serveur.SGBD;
 
 /**
  *

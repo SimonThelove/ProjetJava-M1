@@ -28,7 +28,8 @@ import javafx.scene.control.Alert;
  */
 public class MenuConnecte extends GridPane {
     
-    private final Client client = new Client();
+    private Client client = new Client();
+    
     private final GestionProtocoleClient gp = new GestionProtocoleClient();
 
     public void menuConnecte(Stage fenetre_menuC, Scene rootScene, String nom, String prenom) {
@@ -37,8 +38,8 @@ public class MenuConnecte extends GridPane {
         this.setHgap(10);
         this.setVgap(10);
         this.setPadding(new Insets(25, 25, 25, 25));
-        
-        Text titre = new Text("Bienvenue : " + nom + prenom);
+System.out.println("MENU C - infos : " + nom + " " + prenom);        
+        Text titre = new Text("Bienvenue : " + nom + " " + prenom);
         titre.setFont(Font.font("Calibri", FontWeight.NORMAL, 16));
         this.add(titre, 0, 0, 2, 1);
         
@@ -89,6 +90,7 @@ public class MenuConnecte extends GridPane {
             @Override
             public void handle(ActionEvent e) {
                 gp.requeteDeco();
+                client = gp.getClient();
                 
                 // POP-UP DU MESSAGE DE RESULTAT
                 final Alert alert = new Alert(Alert.AlertType.INFORMATION);

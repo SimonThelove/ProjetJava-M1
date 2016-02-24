@@ -30,6 +30,10 @@ public class GestionProtocoleClient {
         this.clients = FXCollections.observableArrayList();
     }
     
+    public Client getClient() {
+        return client;
+    }
+    
     public ObservableList<Client> getClients() {
         return clients;
     }
@@ -106,9 +110,9 @@ public class GestionProtocoleClient {
     }
 	
     //Methode de concatenation de la requete modification
-    public void requeteModi(String modification){
+    public void requeteModi(String requete){
 	//Creation de la requete
-	message = "MODI|MAIL|" + client.getMail() + "|" + modification;
+	message = "MODI|MAIL|" + client.getMail() + "|" + requete;
 	//Envoit du message a SocketClient
 	message = soc.socket(message);
 	//Appelle a la methode pour creer un affichage au client
@@ -127,17 +131,19 @@ public class GestionProtocoleClient {
 	
     //Methode pour creer la reponse a afficher d'une requete
     public void decoupage(String reponse){
-        
+System.out.println("reponse : " + reponse);
 	nbPersonne = 1;
         client.setChaine("Aucune information disponible");
-        
+System.out.println("GPC - chaine 1 : " + client.getChaine());        
         req = reponse.split("[|]");
         
         switch(req[0]){
         //Recupere le message a afficher au client
         case "MSG":
             try {
+System.out.println("MSG - req 1 : " + req[1]);
                 client.setChaine(req[1]);
+System.out.println("MSG - chaine : " + client.getChaine());
             } catch (NumberFormatException e) {
                 // TODO Auto-generated catch block
                 client.setChaine("Erreur format");
@@ -147,8 +153,9 @@ public class GestionProtocoleClient {
         case "LIST":
             try {
             	//message = "Resultats :\n\n";
-            	for(int i = 1; i <= req.length; i+=6){
-System.out.println("message :" + req[i]);
+System.out.println("LIST - req 1 : " + req[1]);
+            	for(int i = 1; i <= req.length; i++){
+System.out.println("message " + i + " :" + req[i]);
                         client = new Client();
             		client.setMail(req[i+1]);
                         client.setNom(req[i+3]);
@@ -167,6 +174,7 @@ System.out.println("message :" + req[i]);
         //Affiche un profil
         case "PROF":
             try {
+System.out.println("PROF - req 1 : " + req[1]);
             	for(int i = 1; i < (reponse.length()) && !client.getChaine().equals("Erreur GPC"); i += 2)
             	{
             		switch (req[i])
@@ -199,8 +207,10 @@ System.out.println("message :" + req[i]);
             }
             break;
         case "DECO" :
+System.out.println("DECO - req 1 : " + req[1]);
             client.setChaine("Vous êtes bien déconnectés.");
         default :
+System.out.println("DEF - req 1 : " + req[1]);
             client.setChaine("Erreur dans votre choix");
         }
     }
