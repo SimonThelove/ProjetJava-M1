@@ -67,7 +67,7 @@ public class GestionProtocoleServeur {
 				e.printStackTrace();
 			}
 		    	String resultat = String.join("|",temp);
-            	setReponse("PROF|" + resultat);
+                        setReponse("PROF|" + resultat);
             	break;
 		    case "RECH":
 			temp = (serveur.rechercher(req));
