@@ -19,6 +19,7 @@ public class LanceurServeur extends Application {
     
     @Override
     public void start(Stage primaryStage) throws Exception {
+        
         SocketServeur soc = new SocketServeur();
         soc.socket();
     }
