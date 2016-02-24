@@ -93,7 +93,7 @@ public class Inscription extends GridPane {
                 {
                     final Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Connect - information");
-                    alert.setHeaderText("Mail manquant !");
+                    alert.setHeaderText("Nom manquant !");
                     alert.setContentText("Veuillez saisir votre nom.");
                     alert.showAndWait();
                     nom.setTextFill(Color.RED);
@@ -105,7 +105,7 @@ public class Inscription extends GridPane {
                 {
                     final Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Connect - information");
-                    alert.setHeaderText("Mot de passe manquant !");
+                    alert.setHeaderText("Prenom manquant !");
                     alert.setContentText("Veuillez saisir votre prenom.");
                     alert.showAndWait();
                     prenom.setTextFill(Color.RED);
@@ -117,7 +117,7 @@ public class Inscription extends GridPane {
                 {
                     final Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Connect - information");
-                    alert.setHeaderText("Mot de passe manquant !");
+                    alert.setHeaderText("Mail manquant !");
                     alert.setContentText("Veuillez saisir votre mail.");
                     alert.showAndWait();
                     mail.setTextFill(Color.RED);
