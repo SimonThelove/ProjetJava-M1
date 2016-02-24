@@ -34,7 +34,6 @@ public class Connexion extends GridPane {
     
     private final GestionProtocoleClient gp = new GestionProtocoleClient();
     
-    private Client client = new Client();
 
     private Text titre;
     private Label identifiant, mdp;
@@ -42,7 +41,7 @@ public class Connexion extends GridPane {
     private PasswordField saisie_mdp;
     private Button seConnecter, retour;
         
-    public void seConnecter (Stage fenetre_menu, Scene rootScene){
+    public void seConnecter (Stage fenetre_menu, Scene rootScene, Client client){
         
         this.setAlignment(Pos.CENTER);
         this.setHgap(10);
@@ -78,8 +77,8 @@ public class Connexion extends GridPane {
                 client.setMail(saisie_id.getText());
                 client.setMdp(saisie_mdp.getText());
                 
-                gp.requeteConx(client.getMail(), client.getMdp());
-                client = gp.getClient();
+                gp.requeteConx(client.getMail(), client.getMdp(), client);
+                //client = gp.getClient();
                 // POP-UP DU MESSAGE DE RESULTAT
                 final Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.initOwner(fenetre_menu);
@@ -93,14 +92,14 @@ public class Connexion extends GridPane {
 System.out.println("CONX - infos : " + client.getNom() + " " + client.getPrenom());
                     MenuConnecte menuC = new MenuConnecte();
                     Scene scene_menuC = new Scene(menuC);
-                    menuC.menuConnecte(fenetre_menu, scene_menuC, client.getNom(), client.getPrenom());
+                    menuC.menuConnecte(fenetre_menu, scene_menuC, client);
                     fenetre_menu.setScene(scene_menuC);
                 }
                 else
                 {
                     MenuAnonyme menuA = new MenuAnonyme();
                     Scene scene_menuA = new Scene(menuA);
-                    menuA.menuAnonyme(fenetre_menu, scene_menuA);
+                    menuA.menuAnonyme(fenetre_menu, scene_menuA, client);
                     fenetre_menu.setScene(scene_menuA);
                 }
             }
@@ -118,7 +117,7 @@ System.out.println("CONX - infos : " + client.getNom() + " " + client.getPrenom(
             public void handle (ActionEvent e) {
                 MenuAnonyme menuA = new MenuAnonyme();
                 Scene scene_menuA = new Scene(menuA);
-                menuA.menuAnonyme(fenetre_menu, scene_menuA);
+                menuA.menuAnonyme(fenetre_menu, scene_menuA, client);
                 fenetre_menu.setScene(scene_menuA);
 
             }

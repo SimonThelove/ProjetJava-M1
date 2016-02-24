@@ -238,17 +238,18 @@ public class SGBD extends Thread {
 		
 		// Debut de la requete
 		requeteModification = "UPDATE " + table + " SET ";
-		
+                
 		// Assemblage des N-1 termes suivants
-		for(i = 1; i <= (chaine.length - 2); i += 2){
+		for(i = 1; i < (chaine.length - 2); i += 2){
 			if (chaine[i+1] != null)
-				requeteModification += chaine[i] + " = " + chaine[i+1] + ", ";
+				requeteModification += chaine[i] + " = '" + chaine[i+1] + "', ";
 		}
 		// Ajout du dernier terme a la requête
-		requeteModification += chaine[i] + " =  " + chaine[i+1];
+		requeteModification += chaine[i] + " =  '" + chaine[i+1] + "'";
 		
 		// Ajout de la condition WHERE
-		requeteModification += " WHERE mail = " + adresseMail + ";";
+		requeteModification += " WHERE mail = '" + adresseMail + "';";
+        System.out.println("SGBD setRequeteModification requeteModification : " + requeteModification);
 	}
 	
 	// Methode de recuperation du mail

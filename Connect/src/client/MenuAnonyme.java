@@ -26,7 +26,7 @@ import javafx.stage.Stage;
  */
 public class MenuAnonyme extends GridPane {
 
-    public void menuAnonyme (Stage fenetre_menu, Scene rootScene) {
+    public void menuAnonyme (Stage fenetre_menu, Scene rootScene, Client client) {
         
         this.setAlignment(Pos.CENTER);
         this.setHgap(10);
@@ -50,7 +50,7 @@ public class MenuAnonyme extends GridPane {
             public void handle(ActionEvent e) {
                 Inscription inscription = new Inscription();
                 Scene scene_insciption = new Scene(inscription);
-                inscription.sInscrire(fenetre_menu, scene_insciption);
+                inscription.sInscrire(fenetre_menu, scene_insciption, client);
                 fenetre_menu.setScene(scene_insciption);
             }
         });
@@ -68,7 +68,7 @@ public class MenuAnonyme extends GridPane {
             public void handle(ActionEvent e) {
                 Connexion connexion = new Connexion();
                 Scene scene_connexion = new Scene(connexion);
-                connexion.seConnecter(fenetre_menu, scene_connexion);
+                connexion.seConnecter(fenetre_menu, scene_connexion, client);
                 fenetre_menu.setScene(scene_connexion);
             }
         });
@@ -86,7 +86,7 @@ public class MenuAnonyme extends GridPane {
             public void handle(ActionEvent e) {
                 Recherche recherche = new Recherche();
                 Scene scene_recherche = new Scene(recherche);
-                recherche.rechercher(fenetre_menu, scene_recherche);
+                recherche.rechercher(fenetre_menu, scene_recherche, client);
                 fenetre_menu.setScene(scene_recherche);
             }
         });

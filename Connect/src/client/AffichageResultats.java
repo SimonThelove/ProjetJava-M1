@@ -37,7 +37,7 @@ public class AffichageResultats extends GridPane {
     private Text titre;
     private Label nom, prenom, mail, tel, diplome, annee, competences;
     
-    public void afficherResultats(Stage fenetre_menu, Scene rootScene) {
+    public void afficherResultats(Stage fenetre_menu, Scene rootScene, Client client) {
         
         this.setAlignment(Pos.CENTER);
         this.setHgap(10);
@@ -77,11 +77,11 @@ public class AffichageResultats extends GridPane {
             public void handle(ActionEvent event) {
                 
                 if(resultats.getSelectionModel().getSelectedItem().getClass() == Client.class)
-                    gp.requeteCons(resultats.getSelectionModel().getSelectedIndex());
+                    gp.requeteCons(resultats.getSelectionModel().getSelectedIndex(), client);
 
                 AffichageResultats affichage = new AffichageResultats();
                 Scene scene_affichage = new Scene(affichage);
-                affichage.afficherProfil(fenetre_menu, scene_affichage);
+                affichage.afficherProfil(fenetre_menu, scene_affichage, client);
                 fenetre_menu.setScene(scene_affichage);
             }
         }
@@ -116,7 +116,7 @@ public class AffichageResultats extends GridPane {
         });
     }
     
-    public void afficherProfil(Stage fenetre_menu, Scene rootScene){
+    public void afficherProfil(Stage fenetre_menu, Scene rootScene, Client client){
         
         this.setAlignment(Pos.CENTER);
         this.setHgap(10);
@@ -178,14 +178,14 @@ public class AffichageResultats extends GridPane {
                 /* 
                     MenuConnecte menuC = new MenuConnecte();
                     Scene scene_menuC = new Scene(menuC);
-                    menuC.menuConnecte(fenetre_menu, scene_menuC);
+                    menuC.menuConnecte(fenetre_menu, scene_menuC, client);
                     fenetre_menu.setScene(scene_menuC);
                 */
                 // ELSE (NON CONNECTE)
                  
                     MenuAnonyme menuA = new MenuAnonyme();
                     Scene scene_menuA = new Scene(menuA);
-                    menuA.menuAnonyme(fenetre_menu, scene_menuA);
+                    menuA.menuAnonyme(fenetre_menu, scene_menuA, client);
                     fenetre_menu.setScene(scene_menuA);
                 
             }

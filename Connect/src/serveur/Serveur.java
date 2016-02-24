@@ -114,7 +114,7 @@ public class Serveur {
 	public String modifierInformations(String[] chaine, String adresseMail) throws SQLException{
 		
 		// Modification des informations
-		System.out.println("modifications compte ...");
+System.out.println("modifications compte ...");
 		sgbd.setRequeteModification(chaine, adresseMail);
 		setValide(sgbd.executeUpdate("MODI"));
 		if (valide != 0)

@@ -29,9 +29,7 @@ import javafx.scene.control.Alert;
  * @author lamoure
  */
 public class Modification extends GridPane {
-    
-    private Client client = new Client();
-    
+        
     private final GestionProtocoleClient gp = new GestionProtocoleClient();
     
     private Text titre;
@@ -39,7 +37,7 @@ public class Modification extends GridPane {
     private TextField saisie_nom, saisie_prenom, saisie_mail, saisie_diplome, saisie_annee, saisie_competences;
     private Button modifier;
     
-    public void modifier (Stage fenetre_menu, Scene rootScene) {
+    public void modifier (Stage fenetre_menu, Scene rootScene, Client client) {
         
         this.setAlignment(Pos.CENTER);
         this.setHgap(10);
@@ -104,9 +102,9 @@ public class Modification extends GridPane {
                 client.setAnnee(saisie_annee.getText());
                 client.setCompetences(saisie_competences.getText());
                 
-                gp.setMessage();
-                gp.requeteModi(gp.getMessage());
-                client = gp.getClient();
+                gp.setMessage(client);
+                gp.requeteModi(client);
+                //client = gp.getClient();
                 
                 // POP-UP DU MESSAGE DE RESULTAT
                 final Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -120,7 +118,7 @@ public class Modification extends GridPane {
                 
                 MenuConnecte menuC = new MenuConnecte();
                 Scene scene_menuC = new Scene(menuC);
-                menuC.menuConnecte(fenetre_menu, scene_menuC, client.getNom(), client.getPrenom());
+                menuC.menuConnecte(fenetre_menu, scene_menuC, client);
                 fenetre_menu.setScene(scene_menuC);
             }
         });

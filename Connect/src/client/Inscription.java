@@ -31,7 +31,6 @@ import javafx.scene.control.Alert;
  */
 public class Inscription extends GridPane {
     
-    private Client client = new Client();
     
     private final GestionProtocoleClient gp = new GestionProtocoleClient();
     
@@ -41,7 +40,7 @@ public class Inscription extends GridPane {
     private PasswordField saisie_mdp;
     private Button sInscrire;
     
-    public void sInscrire (Stage fenetre_menu, Scene rootScene) {
+    public void sInscrire (Stage fenetre_menu, Scene rootScene, Client client) {
         
         this.setAlignment(Pos.CENTER);
         this.setHgap(10);
@@ -94,8 +93,8 @@ public class Inscription extends GridPane {
                 client.setPrenom(saisie_prenom.getText());
                 client.setMail(saisie_mail.getText());
                 client.setMdp(saisie_mdp.getText());
-                gp.requeteCrea(client.getNom(), client.getPrenom(), client.getMail(), client.getMdp());
-                client = gp.getClient();
+                gp.requeteCrea(client);
+                //client = gp.getClient();
                 // POP-UP DU MESSAGE DE RESULTAT
                 final Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.initOwner(fenetre_menu);
@@ -107,7 +106,7 @@ public class Inscription extends GridPane {
                 
                 MenuAnonyme menuA = new MenuAnonyme();
                 Scene scene_menuA = new Scene(menuA);
-                menuA.menuAnonyme(fenetre_menu, scene_menuA);
+                menuA.menuAnonyme(fenetre_menu, scene_menuA, client);
                 fenetre_menu.setScene(scene_menuA);
             }
         });

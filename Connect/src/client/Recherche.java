@@ -29,9 +29,7 @@ import gestionProtocole.GestionProtocoleClient;
  * @author lamoure
  */
 public class Recherche extends GridPane {
-    
-    private Client client = new Client();
-    
+        
     private final GestionProtocoleClient gp = new GestionProtocoleClient();
     
     private String motsCherches;
@@ -46,7 +44,7 @@ public class Recherche extends GridPane {
     private TextField saisie_nom, saisie_prenom, saisie_mail, saisie_diplome, saisie_annee, saisie_competences;
     private Button rechercherPlus;
 
-    public void rechercher(Stage fenetre_menu, Scene rootScene) {
+    public void rechercher(Stage fenetre_menu, Scene rootScene, Client client) {
         
         this.setAlignment(Pos.CENTER);
         this.setHgap(10);
@@ -72,7 +70,7 @@ public class Recherche extends GridPane {
             public void handle(ActionEvent e) {
                 Recherche recherche = new Recherche();
                 Scene scene_recherche = new Scene(recherche);
-                recherche.rechercheAvancee(fenetre_menu, scene_recherche);
+                recherche.rechercheAvancee(fenetre_menu, scene_recherche, client);
                 fenetre_menu.setScene(scene_recherche);
             }
     });
@@ -89,18 +87,18 @@ public class Recherche extends GridPane {
             public void handle(ActionEvent e) {
                motsCherches = saisie_motsCles.getText();
                
-               gp.requeteRechMotsCles(motsCherches);
-               client = gp.getClient();
+               gp.requeteRechMotsCles(motsCherches, client);
+               //client = gp.getClient();
                
                AffichageResultats affichage = new AffichageResultats();
                Scene scene_affichage = new Scene(affichage);
-               affichage.afficherResultats(fenetre_menu, scene_affichage);
+               affichage.afficherResultats(fenetre_menu, scene_affichage, client);
                fenetre_menu.setScene(scene_affichage);
             }
         });
     }
     
-    public void rechercheAvancee (Stage fenetre_menu, Scene rootScene) {
+    public void rechercheAvancee (Stage fenetre_menu, Scene rootScene, Client client) {
         
         this.setAlignment(Pos.CENTER);
         this.setHgap(10);
@@ -165,11 +163,11 @@ public class Recherche extends GridPane {
                client.setAnnee(saisie_annee.getText());
                client.setCompetences(saisie_competences.getText());
                
-               gp.requeteRechNom(client.getNom(), client.getPrenom(), client.getTel(), client.getDiplome(), client.getAnnee(), client.getCompetences());
+               gp.requeteRechNom(client);
                 
                AffichageResultats affichage = new AffichageResultats();
                Scene scene_affichage = new Scene(affichage);
-               affichage.afficherResultats(fenetre_menu, scene_affichage);
+               affichage.afficherResultats(fenetre_menu, scene_affichage, client);
                fenetre_menu.setScene(scene_affichage);
             }
         });

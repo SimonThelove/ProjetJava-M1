@@ -14,6 +14,12 @@ public class Client {
     
     private String nom, prenom, mail, tel, diplome, annee, competences, mdp;
     private String chaine;
+    
+    private Client client;
+    
+    public Client getClient(){
+        return client;
+    }
 
     public String getNom() {
         return nom;

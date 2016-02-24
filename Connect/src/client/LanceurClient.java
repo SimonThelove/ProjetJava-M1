@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 public class LanceurClient extends Application {
     
     private MenuAnonyme menuA;
+    private Client client = new Client();
     
     @Override
     public void start(Stage application) {
@@ -24,7 +25,7 @@ public class LanceurClient extends Application {
         
         menuA = new MenuAnonyme();
         Scene sceneRoot = new Scene(menuA);
-        menuA.menuAnonyme(application, sceneRoot);
+        menuA.menuAnonyme(application, sceneRoot, client);
         application.setScene(sceneRoot);
         application.show();
     }

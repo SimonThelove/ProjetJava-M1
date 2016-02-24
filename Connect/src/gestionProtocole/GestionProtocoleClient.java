@@ -19,19 +19,13 @@ public class GestionProtocoleClient {
     
     private final SocketClient soc = new SocketClient();
     private final ObservableList<Client> clients;
-    
-    private Client client = new Client();
-    
+            
     private String message = null;//Variable ou est stockee la requete
     private int nbPersonne = 0;//Nombre de profil que renvoit les requetes de recherche
     private String req[] = null;//Requete de retour du serveur 
 
     public GestionProtocoleClient() {
         this.clients = FXCollections.observableArrayList();
-    }
-    
-    public Client getClient() {
-        return client;
     }
     
     public ObservableList<Client> getClients() {
@@ -43,94 +37,92 @@ public class GestionProtocoleClient {
     }
 
     // Methode de conception de requete (utilise depuis Modification.java)
-    public void setMessage() {
-        this.message = null;
-        if (client.getNom() != null)
-            this.message += "NOM|" + client.getNom();
-        if (client.getPrenom() != null)
-            this.message += "PRENOM|" + client.getPrenom();
-        if (client.getMail() != null)
-            this.message += "MAIL|" + client.getMail();
-        if (client.getDiplome() != null)
-            this.message += "DIPLOME|" + client.getDiplome();
-        if (client.getAnnee() != null)
-            this.message += "ANNEE|" + client.getAnnee();
-        if (client.getCompetences() != null)
-            this.message += "COMPETENCES|" + client.getCompetences();
+    public void setMessage(Client client) {
+            this.message = "NOM|" + client.getNom();
+            this.message += "|PRENOM|" + client.getPrenom();
+            this.message += "|MAIL|" + client.getMail();
+            this.message += "|DIPLOMES|" + client.getDiplome();
+            this.message += "|ANNEE_DIPLOMATION|" + client.getAnnee();
+            this.message += "|COMPETENCES|" + client.getCompetences();
+            this.message += " |";
+
+System.out.println(message);
     }
     
     //Methode de concatenation de la requete creerCompte
-    public void requeteCrea(String nom, String prenom, String mail, String motDePasse){
+    public void requeteCrea(Client client){
 	//Creation de la requete
-	message = "CREA|NOM|" + nom + "|PRENOM|" + prenom + "|MAIL|" + mail + "|MOTDEPASSE|" + motDePasse;
+	message = "CREA|NOM|" + client.getNom() + "|PRENOM|" + client.getPrenom()  + "|MAIL|" + client.getMail() + "|MOTDEPASSE|" + client.getMdp();
 	//Envoit du message a SocketClient
 	message = soc.socket(message);
 	//Appelle a la methode pour creer un affichage au client
-	decoupage(message);
+	decoupage(message, client);
     }
 	
     //Methode de concatenation de la requete connexion
-    public void requeteConx(String mail, String motDePasse){
+    public void requeteConx(String mail, String motDePasse, Client client){
 	//Creation de la requete
 	message = "CONX|MAIL|" + mail + "|MOTDEPASSE|" + motDePasse;
 	//Envoit du message a SocketClient
 	message = soc.socket(message);
 	//Appelle a la methode pour creer un affichage au client
-	decoupage(message);
+	decoupage(message, client);
     }
 
     //Methode de concatenation de la requete rechercherMotsCles
-    public void requeteRechMotsCles(String motCles){
+    public void requeteRechMotsCles(String motCles, Client client){
 	//Creation de la requete
 	message = "RECH|MOTSCLES|" + motCles;
 	//Envoit du message a SocketClient
 	message = soc.socket(message);
 	//Appelle a la methode pour creer un affichage au client
-	decoupage(message);
+	decoupage(message, client);
     }
 
     //Methode de concatenation de la requete RechercherAvancee
-    public void requeteRechNom(String nom, String prenom, String mail, String diplome, String annee, String competences){
+    public void requeteRechNom(Client client){
 	//Creation de la requete
-	message = "RECH|NOM|" + nom + "|PRENOM|" + prenom + "|MAIL|" + mail + "|DIPLOME|" + diplome + "|ANNEE|" + annee + "|COMPETENCES|" + competences;
+	message = "RECH|NOM|" + client.getNom() + "|PRENOM|" + client.getPrenom() + "|MAIL|" + client.getMail() + "|DIPLOME|" + client.getDiplome() + "|ANNEE|" + client.getAnnee() + "|COMPETENCES|" + client.getCompetences();
 	//Envoit du message a SocketClient
 	message = soc.socket(message);
 	//Appelle a la methode pour creer un affichage au client
-	decoupage(message);
+	decoupage(message, client);
     }
 
     //Methode de concatenation de la requete consultation
-    public void requeteCons(int index){
+    public void requeteCons(int index, Client client){
 	//Creation de la requete
 	message = "CONS|" + clients.get(index).getMail();
 	//Envoit du message a SocketClient
 	message = soc.socket(message);
 	//Appelle a la methode pour creer un affichage au client
-	decoupage(message);
+	decoupage(message, client);
     }
 	
     //Methode de concatenation de la requete modification
-    public void requeteModi(String requete){
+    public void requeteModi(Client client){
+        String requete;
 	//Creation de la requete
-	message = "MODI|MAIL|" + client.getMail() + "|" + requete;
+	requete = "MODI|MAIL|" + "yohann@gm.fr" + "|" + message;
 	//Envoit du message a SocketClient
-	message = soc.socket(message);
+	requete = soc.socket(requete);
 	//Appelle a la methode pour creer un affichage au client
-	decoupage(message);
+	decoupage(requete, client);
 	}
 
     //Methode de concatenation de la requete deconnexion
-    public void requeteDeco(){
+    public void requeteDeco(Client client){
 	//Creation de la requete
 	message = "DECO|";
 	//Envoit du message a SocketClient
 	message = soc.socket(message);
 	//Appelle a la methode pour creer un affichage au client
-	decoupage(message);
+	decoupage(message, client);
     }
 	
     //Methode pour creer la reponse a afficher d'une requete
-    public void decoupage(String reponse){
+    public void decoupage(String reponse, Client client){
+        
 System.out.println("reponse : " + reponse);
 	nbPersonne = 1;
         client.setChaine("Aucune information disponible");

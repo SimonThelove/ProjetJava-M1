@@ -51,6 +51,7 @@ public class GestionProtocoleServeur {
 				break;
 		    case "MODI": // AJOUTER LE MAIL DU CLIENT CONNECTE (condition WHERE du SQL UPDATE)
 			try {
+System.out.println("GPS MODI :" + req[(req.length - 1)]);
 				setReponse("MSG|" + serveur.modifierInformations(req,req[2]));
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -59,9 +60,9 @@ public class GestionProtocoleServeur {
 				break;
 		    case "CONS":
 			try {
-				System.out.println("GPS CONS fonction 1 - req :" + req[2]);
+System.out.println("GPS CONS fonction 1 - req :" + req[2]);
 				temp = (serveur.consulter(req[2]));
-				System.out.println("GPS CONS fonction 2 - temp :" + temp);
+System.out.println("GPS CONS fonction 2 - temp :" + temp);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

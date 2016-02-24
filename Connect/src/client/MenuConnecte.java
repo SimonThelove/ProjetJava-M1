@@ -32,14 +32,14 @@ public class MenuConnecte extends GridPane {
     
     private final GestionProtocoleClient gp = new GestionProtocoleClient();
 
-    public void menuConnecte(Stage fenetre_menuC, Scene rootScene, String nom, String prenom) {
+    public void menuConnecte(Stage fenetre_menuC, Scene rootScene, Client client) {
         
         this.setAlignment(Pos.CENTER);
         this.setHgap(10);
         this.setVgap(10);
         this.setPadding(new Insets(25, 25, 25, 25));
-System.out.println("MENU C - infos : " + nom + " " + prenom);        
-        Text titre = new Text("Bienvenue : " + nom + " " + prenom);
+System.out.println("MENU C - infos : " + client.getNom() + " " + client.getPrenom());        
+        Text titre = new Text("Bienvenue : " + client.getNom() + " " + client.getPrenom());
         titre.setFont(Font.font("Calibri", FontWeight.NORMAL, 16));
         this.add(titre, 0, 0, 2, 1);
         
@@ -56,7 +56,7 @@ System.out.println("MENU C - infos : " + nom + " " + prenom);
             public void handle(ActionEvent e) {
                 Modification modifier = new Modification();
                 Scene scene_modifier = new Scene(modifier);
-                modifier.modifier(fenetre_menuC,scene_modifier);
+                modifier.modifier(fenetre_menuC,scene_modifier, client);
                 fenetre_menuC.setScene(scene_modifier);
             }
         });
@@ -74,7 +74,7 @@ System.out.println("MENU C - infos : " + nom + " " + prenom);
             public void handle(ActionEvent e) {
                 Recherche recherche = new Recherche();
                 Scene scene_recherche = new Scene(recherche);
-                recherche.rechercher(fenetre_menuC, scene_recherche);
+                recherche.rechercher(fenetre_menuC, scene_recherche, client);
                 fenetre_menuC.setScene(scene_recherche);
             }
         });
@@ -89,8 +89,8 @@ System.out.println("MENU C - infos : " + nom + " " + prenom);
 
             @Override
             public void handle(ActionEvent e) {
-                gp.requeteDeco();
-                client = gp.getClient();
+                gp.requeteDeco(client);
+                //client = gp.getClient();
                 
                 // POP-UP DU MESSAGE DE RESULTAT
                 final Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -102,7 +102,7 @@ System.out.println("MENU C - infos : " + nom + " " + prenom);
                 
                 MenuAnonyme menuA = new MenuAnonyme();
                 Scene scene_menuA = new Scene(menuA);
-                menuA.menuAnonyme(fenetre_menuC, scene_menuA);
+                menuA.menuAnonyme(fenetre_menuC, scene_menuA, client);
                 fenetre_menuC.setScene(scene_menuA);
             }
         });
