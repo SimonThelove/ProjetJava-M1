@@ -152,13 +152,13 @@ public class SGBD extends Thread {
 		if (chaine[1].compareTo("MOTSCLES") != 0) {
                         System.out.println("SGBD chain 0 - " + chaine[0] + chaine[1]);
    			// Recherche par champs => on sait ou chercher et on simplifie la fabrication de la requete
-   			for (i = 1; i < (chaine.length - 2); i+= 2) {
+   			for (i = 0; i < (chaine.length - 2); i+= 2) {
    				System.out.println("SGBD chain 1 - " + chaine[i]);
                                 System.out.println("SGBD chain 2 - " + chaine[i+1]);
     				requeteConsultation += chaine[i] + " = '" + chaine[i+1] + "' AND ";
 		   	}
     			// On finit la requete avec l'ajout du dernier champ
-                        System.out.println("SGBD chain - " + chaine[i]);
+                        System.out.println("SGBD requeteConsultation - " + requeteConsultation);
 		 	requeteConsultation += chaine[i] + " = '" + chaine[i+1] + "');";
 		 	
 		} else 	{
