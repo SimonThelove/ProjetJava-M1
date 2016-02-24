@@ -24,6 +24,7 @@ import javafx.stage.Stage;
 
 import gestionProtocole.GestionProtocoleClient;
 import javafx.scene.control.Alert;
+import javafx.scene.paint.Color;
 
 /**
  *
@@ -82,32 +83,82 @@ public class Inscription extends GridPane {
         hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
         hbBtn.getChildren().add(sInscrire);
         this.add(hbBtn, 1, 6);
-        
-        
-        
+   
         sInscrire.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
             public void handle(ActionEvent e) {
-                client.setNom(saisie_nom.getText());
-                client.setPrenom(saisie_prenom.getText());
-                client.setMail(saisie_mail.getText());
-                client.setMdp(saisie_mdp.getText());
-                gp.requeteCrea(client);
-                //client = gp.getClient();
-                // POP-UP DU MESSAGE DE RESULTAT
-                final Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.initOwner(fenetre_menu);
-                alert.setTitle("Connect - information");
-                alert.setHeaderText("Message");
-                alert.setContentText(client.getChaine());
-                alert.showAndWait();
-                // RETOUR MENU PRINCIPAL
-                
-                MenuAnonyme menuA = new MenuAnonyme();
-                Scene scene_menuA = new Scene(menuA);
-                menuA.menuAnonyme(fenetre_menu, scene_menuA, client);
-                fenetre_menu.setScene(scene_menuA);
+                //Verification qu'aucun champs soit vide
+                 if(saisie_nom.getText().length() == 0)
+                {
+                    final Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Connect - information");
+                    alert.setHeaderText("Mail manquant !");
+                    alert.setContentText("Veuillez saisir votre nom.");
+                    alert.showAndWait();
+                    nom.setTextFill(Color.RED);
+                    prenom.setTextFill(Color.BLACK);
+                    mail.setTextFill(Color.BLACK);
+                    mdp.setTextFill(Color.BLACK);
+                }
+                else if(saisie_prenom.getText().length() == 0)
+                {
+                    final Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Connect - information");
+                    alert.setHeaderText("Mot de passe manquant !");
+                    alert.setContentText("Veuillez saisir votre prenom.");
+                    alert.showAndWait();
+                    prenom.setTextFill(Color.RED);
+                    nom.setTextFill(Color.BLACK);
+                    mail.setTextFill(Color.BLACK);
+                    mdp.setTextFill(Color.BLACK);
+                }
+                else if(saisie_mail.getText().length() == 0)
+                {
+                    final Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Connect - information");
+                    alert.setHeaderText("Mot de passe manquant !");
+                    alert.setContentText("Veuillez saisir votre mail.");
+                    alert.showAndWait();
+                    mail.setTextFill(Color.RED);
+                    nom.setTextFill(Color.BLACK);
+                    prenom.setTextFill(Color.BLACK);
+                    mdp.setTextFill(Color.BLACK);
+                }
+                else if(saisie_mdp.getText().length() == 0)
+                {
+                    final Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Connect - information");
+                    alert.setHeaderText("Mot de passe manquant !");
+                    alert.setContentText("Veuillez saisir votre mot de passe.");
+                    alert.showAndWait();
+                    mdp.setTextFill(Color.RED);
+                    nom.setTextFill(Color.BLACK);
+                    prenom.setTextFill(Color.BLACK);
+                    mail.setTextFill(Color.BLACK);
+                }
+                else
+                {
+                    client.setNom(saisie_nom.getText());
+                    client.setPrenom(saisie_prenom.getText());
+                    client.setMail(saisie_mail.getText());
+                    client.setMdp(saisie_mdp.getText());
+                    gp.requeteCrea(client);
+                    //client = gp.getClient();
+                    // POP-UP DU MESSAGE DE RESULTAT
+                    final Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.initOwner(fenetre_menu);
+                    alert.setTitle("Connect - information");
+                    alert.setHeaderText("Message");
+                    alert.setContentText(client.getChaine());
+                    alert.showAndWait();
+                    // RETOUR MENU PRINCIPAL
+
+                    MenuAnonyme menuA = new MenuAnonyme();
+                    Scene scene_menuA = new Scene(menuA);
+                    menuA.menuAnonyme(fenetre_menu, scene_menuA, client);
+                    fenetre_menu.setScene(scene_menuA);
+                }
             }
         });
 

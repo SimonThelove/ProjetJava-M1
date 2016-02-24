@@ -17,6 +17,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -74,33 +75,58 @@ public class Connexion extends GridPane {
             
             @Override
             public void handle (ActionEvent e) {
-                client.setMail(saisie_id.getText());
-                client.setMdp(saisie_mdp.getText());
-                
-                gp.requeteConx(client.getMail(), client.getMdp(), client);
-                //client = gp.getClient();
-                // POP-UP DU MESSAGE DE RESULTAT
-                final Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.initOwner(fenetre_menu);
-                alert.setTitle("Connect - information");
-                alert.setHeaderText("Message");
-                alert.setContentText(client.getChaine());
-                alert.showAndWait();
-                
-                if (client.getChaine().equals("Vous etes bien connectes."))
+                 //Verification qu'aucun champs soit vide
+                if(saisie_id.getText().length() == 0)
                 {
-System.out.println("CONX - infos : " + client.getNom() + " " + client.getPrenom());
-                    MenuConnecte menuC = new MenuConnecte();
-                    Scene scene_menuC = new Scene(menuC);
-                    menuC.menuConnecte(fenetre_menu, scene_menuC, client);
-                    fenetre_menu.setScene(scene_menuC);
+                    final Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Connect - information");
+                    alert.setHeaderText("Mail manquant !");
+                    alert.setContentText("Veuillez saisir votre mail.");
+                    alert.showAndWait();
+                    identifiant.setStyle("-fx-text-color: red;");
+                    identifiant.setTextFill(Color.RED);
+                    mdp.setTextFill(Color.BLACK);
+                }
+                else if(saisie_mdp.getText().length() == 0)
+                {
+                    final Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Connect - information");
+                    alert.setHeaderText("Mot de passe manquant !");
+                    alert.setContentText("Veuillez saisir votre mot de passe.");
+                    alert.showAndWait();
+                    mdp.setTextFill(Color.RED);
+                    identifiant.setTextFill(Color.BLACK);
                 }
                 else
                 {
-                    MenuAnonyme menuA = new MenuAnonyme();
-                    Scene scene_menuA = new Scene(menuA);
-                    menuA.menuAnonyme(fenetre_menu, scene_menuA, client);
-                    fenetre_menu.setScene(scene_menuA);
+                    client.setMail(saisie_id.getText());
+                    client.setMdp(saisie_mdp.getText());
+
+                    gp.requeteConx(client.getMail(), client.getMdp(), client);
+                    //client = gp.getClient();
+                    // POP-UP DU MESSAGE DE RESULTAT
+                    final Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.initOwner(fenetre_menu);
+                    alert.setTitle("Connect - information");
+                    alert.setHeaderText("Message");
+                    alert.setContentText(client.getChaine());
+                    alert.showAndWait();
+
+                    if (client.getChaine().equals("Vous etes bien connectes."))
+                    {
+    System.out.println("CONX - infos : " + client.getNom() + " " + client.getPrenom());
+                        MenuConnecte menuC = new MenuConnecte();
+                        Scene scene_menuC = new Scene(menuC);
+                        menuC.menuConnecte(fenetre_menu, scene_menuC, client);
+                        fenetre_menu.setScene(scene_menuC);
+                    }
+                    else
+                    {
+                        MenuAnonyme menuA = new MenuAnonyme();
+                        Scene scene_menuA = new Scene(menuA);
+                        menuA.menuAnonyme(fenetre_menu, scene_menuA, client);
+                        fenetre_menu.setScene(scene_menuA);
+                    }
                 }
             }
         });
