@@ -24,6 +24,7 @@ import javafx.stage.Stage;
 
 import gestionProtocole.GestionProtocoleClient;
 import javafx.scene.control.Alert;
+import javafx.scene.layout.Border;
 import javafx.scene.paint.Color;
 
 /**

@@ -9,6 +9,8 @@ package socketsTCP;
 import java.net.*;
 import java.io.*;
 import gestionProtocole.GestionProtocoleServeur;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import serveur.Serveur;
 
 /**
@@ -16,31 +18,25 @@ import serveur.Serveur;
  * @author Yohann
  */
 
-public class SocketServeur implements Runnable {
+public class SocketServeur {
   /** Port par defaut */
-  public final static int portEcho = 12314;
+  public final static int portDefault = 12314;
+  public int port;
   // Variables serveur
-  private Serveur serveur;
-  private String retour = null;
-  
-    @Override
-    public void run() {
-        socket();
-    }
+  private Serveur         serveur;
+  private GestionProtocoleServeur gp;
+
+  // Variable socket
+  private ServerSocket    leServeur;
   
   public void socket () {
 
-        ServerSocket    leServeur = null;
-        Socket          connexionCourante;
-        BufferedReader  entreeSocket;
-        PrintStream     sortieSocket;
-        String 	    reponse;
-
         serveur = new Serveur();
-        GestionProtocoleServeur gp = new GestionProtocoleServeur(serveur);
+        gp = new GestionProtocoleServeur(serveur);
+        leServeur = null;
 
         try {
-          leServeur = new ServerSocket(portEcho);
+          leServeur = new ServerSocket(portDefault);
         }
         catch (IOException ex)
         {
@@ -50,62 +46,26 @@ public class SocketServeur implements Runnable {
           try {
             // on demande un port anonyme 
             leServeur = new ServerSocket(0);
+            port = leServeur.getLocalPort();
+            System.out.println("Port serveur : " + port);
           }
           catch (IOException ex2)
           {
             // fin de connexion
-            System.err.println("Impossible de creer un socket serveur : "+ex);
+            System.err.println("Impossible de creer un socket serveur : "+ex2);
           }
         }
 
-        if
-          (leServeur != null) {
-         try {
-          System.err.println("En attente de connexion sur le port : "+leServeur.getLocalPort());
           while (true) {
-            connexionCourante = leServeur.accept();
-            System.err.println("Nouvelle connexion : "+connexionCourante);
+            System.out.println("En attente de connexion sur le port : " + port);
 
-            try {
-              int b = 0;
-              sortieSocket = new PrintStream(connexionCourante.getOutputStream());
-              entreeSocket = new BufferedReader(new InputStreamReader(connexionCourante.getInputStream()));
-
-              // Reception client
-              retour = entreeSocket.readLine();
-              // Traitement requete
-              reponse = gp.requete(retour);
-              // Envoi au client
-              sortieSocket.println(reponse);
-
-              while (b != -1) {
-                      connexionCourante = leServeur.accept();
-                  sortieSocket = new PrintStream(connexionCourante.getOutputStream());
-                  entreeSocket = new BufferedReader(new InputStreamReader(connexionCourante.getInputStream()));
-
-                  // Reception client
-                  retour = entreeSocket.readLine();
-                  // Traitement requete
-                  reponse = gp.requete(retour);
-                  // Envoi au client
-                  sortieSocket.println(reponse);  
-              }
-              System.err.println("Fin de connexion");
+            try {                                
+                new Conversation(leServeur.accept(), gp).start();
+                System.out.println("Conversation start : OK");
+                
+            } catch (IOException ex) {
+                Logger.getLogger(SocketServeur.class.getName()).log(Level.SEVERE, null, ex);
             }
-            catch (IOException ex)
-            {
-              // fin de connexion
-              System.err.println("Fin de connexion : "+ex);
-            }
-            connexionCourante.close();
           }
-        }
-        catch (Exception ex)
-        {
-          // erreur de connexion
-          System.err.println("Une erreur est survenue : "+ex);
-          ex.printStackTrace();
-        }
-        } 
     }
 }

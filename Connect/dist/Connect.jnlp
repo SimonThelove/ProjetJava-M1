@@ -8,13 +8,8 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-<<<<<<< Updated upstream
-    <jar href="Connect.jar" size="49454" download="eager" />
-    <jar href="lib/mysql-connector-java-5.1.38-bin.jar" size="983914" download="eager" />
-=======
-    <jar href="Connect.jar" size="48399" download="eager" />
+    <jar href="Connect.jar" size="50419" download="eager" />
     <jar href="lib/mysql-connector-java-5.1.23-bin.jar" size="827901" download="eager" />
->>>>>>> Stashed changes
   </resources>
   <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="Connect" >
     <param name="requiredFXVersion" value="8.0+"/>
