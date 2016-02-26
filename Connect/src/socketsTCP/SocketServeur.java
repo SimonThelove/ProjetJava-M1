@@ -38,7 +38,7 @@ public class SocketServeur
     try
     {
       leServeur = new ServerSocket(portDefault);
-      port = portDefaut;
+      port = portDefault;
     }
     catch (IOException ex)
     {
@@ -47,8 +47,7 @@ public class SocketServeur
       try
       {
         // on demande un port anonyme 
-        port = -1;
-        leServeur = new ServerSocket(port);
+        leServeur = new ServerSocket();
         port = leServeur.getLocalPort();
         System.out.println("Port serveur : " + port);
       }

@@ -24,6 +24,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import gestionProtocole.GestionProtocoleClient;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 /**
  *
@@ -60,9 +61,12 @@ public class AffichageResultats extends GridPane {
         
         resultats = new TableView();
  // REMPLISSAGE DE LA TABLEVIEW ???
-        TableColumn nom = new TableColumn("Nom");
-        TableColumn prenom = new TableColumn("Prénom");
-        TableColumn mail = new TableColumn("E-mail");
+        TableColumn<Client, String> nom = new TableColumn("Nom");
+        //nom.setCellValueFactory(new PropertyValueFactory<Client, String>("nom"));
+        TableColumn<Client, String> prenom = new TableColumn("Prénom");
+        //prenom.setCellValueFactory(new PropertyValueFactory<Client, String>("prenom"));
+        TableColumn<Client, String> mail = new TableColumn("E-mail");
+        //mail.setCellValueFactory(new PropertyValueFactory<Client, String>("mail"));
         resultats.getColumns().addAll(nom, prenom, mail);
         this.add(resultats, 0, 2);
         

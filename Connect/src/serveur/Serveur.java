@@ -123,11 +123,11 @@ System.out.println("modifications compte ...");
 	}
 	
 	// Methode de consultation d'un profil utilisateur
-	public ArrayList<String> consulter(String adresseMail) throws SQLException {
+	public ArrayList<String> consulter(String adresseMail, String droitAdmin) throws SQLException {
 		System.out.println("Serveur consulter - adressemail :" + adresseMail);
 
 		// ControleDroits
-		if(sgbd.isAdmin(adresseMail)){
+		if(sgbd.isAdmin(adresseMail) || ("1".equals(droitAdmin))){
 			// Recuperation de toutes les informations du profil
 			resultats = (sgbd.getAllInfos(adresseMail));
 		}

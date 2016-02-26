@@ -99,6 +99,16 @@ System.out.println(message);
 	decoupage(message, client);
     }
 	
+    //Methode de concatenation de la requete pour recuperer les information du client qui se connecte
+    public void requeteNomConnecte(Client client){
+	//Creation de la requete
+	message = "CONS|MAIL|" + client.getMail() + "|1|";
+	//Envoit du message a SocketClient
+	message = soc.socket(message);
+	//Appelle a la methode pour creer un affichage au client
+	decoupage(message, client);
+    }
+    
     //Methode de concatenation de la requete modification
     public void requeteModi(Client client){
         String requete;
@@ -110,6 +120,7 @@ System.out.println(message);
 	decoupage(requete, client);
 	}
 
+    
     //Methode de concatenation de la requete deconnexion
     public void requeteDeco(Client client){
 	//Creation de la requete
@@ -124,7 +135,6 @@ System.out.println(message);
     public void decoupage(String reponse, Client client){
         
 System.out.println("reponse : " + reponse);
-	nbPersonne = 1;
         client.setChaine("Aucune information disponible");
 System.out.println("GPC - chaine 1 : " + client.getChaine());        
         req = reponse.split("[|]");
@@ -143,18 +153,17 @@ System.out.println("MSG - chaine : " + client.getChaine());
             break;
         //Affiche la liste simplifier des profils
         case "LIST":
-            try {
+           try {
             	//message = "Resultats :\n\n";
-System.out.println("LIST - req 1 : " + req[1]);
-            	for(int i = 1; i <= req.length; i++){
-System.out.println("message " + i + " :" + req[i]);
-                        client = new Client();
-            		client.setMail(req[i+1]);
-                        client.setNom(req[i+3]);
-                        client.setPrenom(req[i+5]);
-                        nbPersonne ++;
-                        client.setChaine(Integer.toString(nbPersonne));
-                        clients.add(client);
+                if (!Integer.toString(0).matches(req[1])) { // Ne s'exécute qe s'il y a des résultats à la recherche
+System.out.println("LIST - nb resultats : " + req[1]);
+                    int j = 1;
+                    for(int i = 0; !Integer.toString(i).matches(req[1]); i ++){
+System.out.println("client " + (i+1) + " :" + req[j+4] + " " + req[j+6]);
+                        clients.add(new Client (req[j+2],req[j+4],req[j+6],req[j+10],req[j+12],req[j+14],Integer.toString(i)));
+System.out.println("liste clients : " + clients.get(i).getMail());
+                        j += 14; // permet de récupérer les bonnes valeurs
+                    }
             	}
             }
             catch (NumberFormatException e) {
@@ -166,26 +175,34 @@ System.out.println("message " + i + " :" + req[i]);
         //Affiche un profil
         case "PROF":
             try {
-System.out.println("PROF - req 1 : " + req[1]);
-            	for(int i = 1; i < (reponse.length()) && !client.getChaine().equals("Erreur GPC"); i += 2)
+System.out.println("PROF - req 1 : " + req[6]);
+
+            	for(int i = 1; i < (req.length - 2) && !client.getChaine().equals("Erreur GPC"); i += 2)
             	{
+                    System.out.println("PROF - req avant switch : " + req[i]);
             		switch (req[i])
             		{
-                            case "MAIL" : 
+                            //Si le contenu est 1, alors la requete est special (requete de recuperation d'info
+                            //du client lors de sa connexion
+                            case "1" :
+                                i++;
+                                break;
+                            case "mail" : 
                                 client.setMail(req[i+1]);
-                            case "NOM" :
+                                break;
+                            case "nom" :
             			client.setNom(req[i+1]);
             			break;
-            		    case "PRENOM" :
+            		    case "prenom" :
             		    	client.setPrenom(req[i+1]);
                 		break;
-                            case "DIPLOME" :
+                            case "diplomes" :
                                 client.setDiplome(req[i+1]);
                                 break;
-                            case "ANNEE" :
+                            case "annee_diplomation" :
                                 client.setAnnee(req[i+1]);
                 		break;
-                            case "COMPETENCES" :
+                            case "competences" :
                 		client.setCompetences(req[i+1]);
                                 break;        
                             default:

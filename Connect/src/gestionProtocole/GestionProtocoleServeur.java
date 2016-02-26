@@ -18,13 +18,31 @@ import serveur.Serveur;
 public class GestionProtocoleServeur {
     private Serveur serveur;
     private String reponse;
+    private String mailConnecte;
+    private String type;
     private ArrayList<String> temp = new ArrayList<String>();
 
-	public GestionProtocoleServeur(Serveur serveur) {
+    public GestionProtocoleServeur(Serveur serveur) {
         super();
         this.serveur = serveur;
     }
+
+        public String getMailConnecte() {
+                return mailConnecte;
+        }
+
+        public void setMailConnecte(String mailConnecte) {
+                this.mailConnecte = mailConnecte;
+        }
     
+        public String getType() {
+                return type;
+        }
+
+        public void setType(String type) {
+                this.type = type;
+        }
+        
 	public String getReponse() {
 		return reponse;
 	}
@@ -43,7 +61,8 @@ public class GestionProtocoleServeur {
 				break;
 		    case "CONX":
 			try {
-				setReponse("MSG|" + serveur.seConnecter(req[2], req[4]));
+                                this.setMailConnecte(req[2]);
+                                setReponse("MSG|" + serveur.seConnecter(this.getMailConnecte(), req[4]));
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -61,7 +80,7 @@ System.out.println("GPS MODI :" + req[(req.length - 1)]);
 		    case "CONS":
 			try {
 System.out.println("GPS CONS fonction 1 - req :" + req[2]);
-				temp = (serveur.consulter(req[2]));
+				temp = (serveur.consulter(req[2], req[3]));
 System.out.println("GPS CONS fonction 2 - temp :" + temp);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -72,14 +91,14 @@ System.out.println("GPS CONS fonction 2 - temp :" + temp);
             	break;
 		    case "RECH":
 			temp = (serveur.rechercher(req));
-			System.out.println("Niveau GPS temp - " + temp);
+System.out.println("Niveau GPS temp - " + temp);
 	            if (temp.get(0).compareTo("1") == 0)
 	            {
-	            	System.out.println("Niveau GPS Rech :"+ temp.get(1) + "|" + temp.get(2));
-	            	requete("CONS|" + temp.get(1) + "|" + temp.get(2));
+System.out.println("Niveau GPS Rech :"+ temp.get(1) + "|" + temp.get(2));
+	            	requete("CONS|" + temp.get(1) + "|" + temp.get(2) + "|0|");
 	            }
 	            else {
-	            	System.out.println("Niveau GPS LIST||");
+System.out.println("Niveau GPS LIST||");
 	            	//Transformation de l'arrayList en String
 	            	String result = String.join("|",temp);
 	            	//Concatenation de la requete
@@ -87,11 +106,11 @@ System.out.println("GPS CONS fonction 2 - temp :" + temp);
 	            }
 	            break;
 		    case "DECO":
-	            setReponse("MSG|" + serveur.seDeconnecter());
+                        setReponse("MSG|" + serveur.seDeconnecter());
 	            break;
         }
     
-        System.out.println("Niveau GPS resultat2 - " + reponse);
+System.out.println("Niveau GPS resultat2 - " + reponse);
         return reponse;
     }	
 }

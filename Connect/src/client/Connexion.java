@@ -35,13 +35,13 @@ public class Connexion extends GridPane {
     
     private final GestionProtocoleClient gp = new GestionProtocoleClient();
     
-
     private Text titre;
     private Label identifiant, mdp;
     private TextField saisie_id;
     private PasswordField saisie_mdp;
     private Button seConnecter, retour;
-        
+       
+    //Creation de la fenetre connexion au client
     public void seConnecter (Stage fenetre_menu, Scene rootScene, Client client){
         
         this.setAlignment(Pos.CENTER);
@@ -75,7 +75,7 @@ public class Connexion extends GridPane {
             
             @Override
             public void handle (ActionEvent e) {
-                 //Verification qu'aucun champs soit vide
+                //Verification qu'aucun champs soit vide
                 if(saisie_id.getText().length() == 0)
                 {
                     final Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -83,7 +83,6 @@ public class Connexion extends GridPane {
                     alert.setHeaderText("Mail manquant !");
                     alert.setContentText("Veuillez saisir votre mail.");
                     alert.showAndWait();
-                    identifiant.setStyle("-fx-text-color: red;");
                     identifiant.setTextFill(Color.RED);
                     mdp.setTextFill(Color.BLACK);
                 }
@@ -99,12 +98,14 @@ public class Connexion extends GridPane {
                 }
                 else
                 {
+                    //Aucun champs est vide, alors on recupere les valeurs des deux champs
                     client.setMail(saisie_id.getText());
                     client.setMdp(saisie_mdp.getText());
 
+                    //Appel a la fonction de connexion
                     gp.requeteConx(client.getMail(), client.getMdp(), client);
                     //client = gp.getClient();
-                    // POP-UP DU MESSAGE DE RESULTAT
+                    //POP-UP DU MESSAGE DE RESULTAT
                     final Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.initOwner(fenetre_menu);
                     alert.setTitle("Connect - information");
@@ -112,8 +113,14 @@ public class Connexion extends GridPane {
                     alert.setContentText(client.getChaine());
                     alert.showAndWait();
 
+                    //Si les identifiants sont bon et que la connexion c'est bien deroulee
                     if (client.getChaine().equals("Vous etes bien connectes."))
                     {
+                        //Appel a la fonction pour recuperer les informations du client
+                        gp.requeteNomConnecte(client);
+                        
+                        
+                        //Creation du menu connecter
     System.out.println("CONX - infos : " + client.getNom() + " " + client.getPrenom());
                         MenuConnecte menuC = new MenuConnecte();
                         Scene scene_menuC = new Scene(menuC);
@@ -122,6 +129,7 @@ public class Connexion extends GridPane {
                     }
                     else
                     {
+                        //Sinon on le renvoit au menu principal anonyme
                         MenuAnonyme menuA = new MenuAnonyme();
                         Scene scene_menuA = new Scene(menuA);
                         menuA.menuAnonyme(fenetre_menu, scene_menuA, client);
@@ -145,9 +153,7 @@ public class Connexion extends GridPane {
                 Scene scene_menuA = new Scene(menuA);
                 menuA.menuAnonyme(fenetre_menu, scene_menuA, client);
                 fenetre_menu.setScene(scene_menuA);
-
             }
         });
-        
     }
 }

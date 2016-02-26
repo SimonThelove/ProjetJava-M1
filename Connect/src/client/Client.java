@@ -17,6 +17,20 @@ public class Client {
     
     private Client client;
     
+    public Client(){
+        super();
+    }
+
+    public Client(String mail, String nom, String prenom, String diplome, String annee, String competences, String chaine){
+        this.nom = nom;
+        this.prenom = prenom;
+        this.mail = mail;
+        this.diplome = diplome;
+        this.annee = annee;
+        this.competences = competences;
+        this.chaine = chaine;
+    }
+    
     public Client getClient(){
         return client;
     }

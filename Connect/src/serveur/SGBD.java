@@ -82,18 +82,11 @@ public class SGBD extends Thread {
 			try {
 				while (rslt.next()!= false){
 					// Tant qu'il y a des colonnes resultat SQL
-					System.out.println("1");
 					while (i < rsmd.getColumnCount()){
-						System.out.println("2");
-
 						i ++;
 						if(rslt.getString(i) != null){
-							System.out.println("3");
-
 							// On teste le nombre de champs a� affecter a�resultats
 							if (j < visibilite.length) {
-								System.out.println("4");						
-								
 								// On verifie la visibilite du champ pour l'affecter
 								if (rsmd.getColumnLabel(i).equalsIgnoreCase(visibilite[j])) {
 									retour = rslt.getString(i);
@@ -327,7 +320,8 @@ public class SGBD extends Thread {
 	public ArrayList<String> getAllInfos(String adresseMail) {
 		bdd();
 		// On fabrique les informations a transmettre
-		String[] req = ("CONS|MAIL|" + adresseMail + "").split("[|]");
+		String[] req = {"MAIL", adresseMail};
+System.out.println("SGBD getAllInfo - req :" + req[1]);
 		setRequeteConsultation(req);
 		
 		// On l'execute sur la BDD et on recupere les informations sur ces resultats
@@ -354,7 +348,7 @@ public class SGBD extends Thread {
 		
 		// On fabrique les informations a transmettre
 		String[] req = {"MAIL", adresseMail};
-		System.out.println("SGBD getVisibleInfo - req :" + req[1]);
+System.out.println("SGBD getVisibleInfo - req :" + req[1]);
 		setRequeteConsultation(req);
 		
 		// On l'execute sur la BDD et on recupere les informations sur ces resultats
