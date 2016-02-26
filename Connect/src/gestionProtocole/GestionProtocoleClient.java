@@ -177,7 +177,7 @@ System.out.println("liste clients : " + clients.get(i).getMail());
             try {
 System.out.println("PROF - req 1 : " + req[6]);
 
-            	for(int i = 1; i < (req.length - 2) && !client.getChaine().equals("Erreur GPC"); i += 2)
+            	for(int i = 1; i < (req.length) && !client.getChaine().equals("Erreur GPC"); i += 2)
             	{
                     System.out.println("PROF - req avant switch : " + req[i]);
             		switch (req[i])
@@ -185,7 +185,7 @@ System.out.println("PROF - req 1 : " + req[6]);
                             //Si le contenu est 1, alors la requete est special (requete de recuperation d'info
                             //du client lors de sa connexion
                             case "1" :
-                                i++;
+                                i=0;
                                 break;
                             case "mail" : 
                                 client.setMail(req[i+1]);
@@ -196,6 +196,9 @@ System.out.println("PROF - req 1 : " + req[6]);
             		    case "prenom" :
             		    	client.setPrenom(req[i+1]);
                 		break;
+                            case "telephone" :
+                                client.setTel(req[i+1]);
+                                break;
                             case "diplomes" :
                                 client.setDiplome(req[i+1]);
                                 break;
