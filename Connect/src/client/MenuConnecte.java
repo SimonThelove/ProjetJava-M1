@@ -39,7 +39,7 @@ public class MenuConnecte extends GridPane {
         this.setVgap(10);
         this.setPadding(new Insets(25, 25, 25, 25));
 System.out.println("MENU C - infos : " + client.getNom() + " " + client.getPrenom());        
-        Text titre = new Text("Bienvenue : " + client.getNom() + " " + client.getPrenom());
+        Text titre = new Text("Bienvenue : " + client.getNomCo() + " " + client.getPrenomCo());
         titre.setFont(Font.font("Calibri", FontWeight.NORMAL, 16));
         this.add(titre, 0, 0, 2, 1);
         

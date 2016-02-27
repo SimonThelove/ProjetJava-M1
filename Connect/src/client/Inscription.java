@@ -40,7 +40,7 @@ public class Inscription extends GridPane {
     private Label nom, prenom, mail, mdp;
     private TextField saisie_nom, saisie_prenom, saisie_mail;
     private PasswordField saisie_mdp;
-    private Button sInscrire;
+    private Button sInscrire, retour;
     
     public void sInscrire (Stage fenetre_menu, Scene rootScene, Client client) {
         
@@ -162,7 +162,33 @@ public class Inscription extends GridPane {
                 }
             }
         });
-
         
+        retour = new Button("Retour");
+        HBox hbRetour = new HBox(10);
+        hbRetour.setAlignment(Pos.BOTTOM_RIGHT);
+        hbRetour.getChildren().add(retour);
+        this.add(hbRetour, 1, 7);
+        
+        retour.setOnAction(new EventHandler<ActionEvent>(){
+            
+            @Override
+            public void handle (ActionEvent e) {
+                
+                if(client.getMailCo()!=null)
+                {
+                    MenuConnecte menuC = new MenuConnecte();
+                    Scene scene_menuC = new Scene(menuC);
+                    menuC.menuConnecte(fenetre_menu, scene_menuC, client);
+                    fenetre_menu.setScene(scene_menuC);
+                }
+                else
+                {
+                    MenuAnonyme menuA = new MenuAnonyme();
+                    Scene scene_menuA = new Scene(menuA);
+                    menuA.menuAnonyme(fenetre_menu, scene_menuA, client);
+                    fenetre_menu.setScene(scene_menuA);
+                }
+            }
+        });
     }
 }

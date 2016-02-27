@@ -23,6 +23,8 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import gestionProtocole.GestionProtocoleClient;
+import javafx.scene.control.Alert;
+import javafx.scene.paint.Color;
 
 /**
  *
@@ -38,7 +40,7 @@ public class Recherche extends GridPane {
     private Label motsCles;
     private TextField saisie_motsCles;
     private Hyperlink rechercheAvancee;
-    private Button rechercher;
+    private Button rechercher, retour;
     
     private Label nom, prenom, mail, diplome, annee, competences;
     private TextField saisie_nom, saisie_prenom, saisie_mail, saisie_diplome, saisie_annee, saisie_competences;
@@ -85,15 +87,57 @@ public class Recherche extends GridPane {
 
             @Override
             public void handle(ActionEvent e) {
-               motsCherches = saisie_motsCles.getText();
-               
-               gp.requeteRechMotsCles(motsCherches, client);
-               //client = gp.getClient();
-               
-               AffichageResultats affichage = new AffichageResultats();
-               Scene scene_affichage = new Scene(affichage);
-               affichage.afficherResultats(fenetre_menu, scene_affichage, client);
-               fenetre_menu.setScene(scene_affichage);
+                
+               //Verification qu'aucun champs soit vide
+                if(saisie_motsCles.getText().length() == 0)
+                {
+                    final Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Connect - information");
+                    alert.setHeaderText("Mot(s) Cle(s) manquant !");
+                    alert.setContentText("Veuillez saisir au moins un mot cle.");
+                    alert.showAndWait();
+                    motsCles.setTextFill(Color.RED);
+                }
+                else
+                {
+                motsCherches = saisie_motsCles.getText();
+
+                gp.requeteRechMotsCles(motsCherches, client);
+                //client = gp.getClient();
+
+                AffichageResultats affichage = new AffichageResultats();
+                Scene scene_affichage = new Scene(affichage);
+                affichage.afficherResultats(fenetre_menu, scene_affichage, client);
+                fenetre_menu.setScene(scene_affichage);
+                }
+            }
+        });
+        
+        retour = new Button("Retour");
+        HBox hbRetour = new HBox(10);
+        hbRetour.setAlignment(Pos.BOTTOM_RIGHT);
+        hbRetour.getChildren().add(retour);
+        this.add(hbRetour, 1, 4);
+        
+        retour.setOnAction(new EventHandler<ActionEvent>(){
+            
+            @Override
+            public void handle (ActionEvent e) {
+                
+                if(client.getMailCo()!=null)
+                {
+                    MenuConnecte menuC = new MenuConnecte();
+                    Scene scene_menuC = new Scene(menuC);
+                    menuC.menuConnecte(fenetre_menu, scene_menuC, client);
+                    fenetre_menu.setScene(scene_menuC);
+                }
+                else
+                {
+                    MenuAnonyme menuA = new MenuAnonyme();
+                    Scene scene_menuA = new Scene(menuA);
+                    menuA.menuAnonyme(fenetre_menu, scene_menuA, client);
+                    fenetre_menu.setScene(scene_menuA);
+                }
             }
         });
     }
@@ -151,24 +195,72 @@ public class Recherche extends GridPane {
         hbBtn.getChildren().add(rechercherPlus);
         this.add(hbBtn, 1, 8);
                 
+
         
         rechercherPlus.setOnAction(new EventHandler<ActionEvent>() {
-
+            
             @Override
             public void handle(ActionEvent e) {
-               client.setNom(saisie_nom.getText());
-               client.setPrenom(saisie_prenom.getText());
-               client.setTel(saisie_mail.getText());
-               client.setDiplome(saisie_diplome.getText());
-               client.setAnnee(saisie_annee.getText());
-               client.setCompetences(saisie_competences.getText());
-               
-               gp.requeteRechNom(client);
+            //Verification qu'aucun champs soit vide
+            if((saisie_nom.getText().length() == 0) && (saisie_prenom.getText().length() == 0) && (saisie_mail.getText().length() == 0)
+                && (saisie_diplome.getText().length() == 0) && (saisie_annee.getText().length() == 0) && (saisie_competences.getText().length() == 0))
+            {
+                final Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Connect - information");
+                alert.setHeaderText("Information(s) manquante(s) !");
+                alert.setContentText("Veuillez saisir au moins un champs.");
+                alert.showAndWait();
+                nom.setTextFill(Color.RED);
+                prenom.setTextFill(Color.RED);
+                mail.setTextFill(Color.RED);
+                diplome.setTextFill(Color.RED);
+                annee.setTextFill(Color.RED);
+                competences.setTextFill(Color.RED);
+            }
+            else
+            {
+                   client.setNom(saisie_nom.getText());
+                   client.setPrenom(saisie_prenom.getText());
+                   client.setTel(saisie_mail.getText());
+                   client.setDiplome(saisie_diplome.getText());
+                   client.setAnnee(saisie_annee.getText());
+                   client.setCompetences(saisie_competences.getText());
+
+                   gp.requeteRechNom(client);
+
+                   AffichageResultats affichage = new AffichageResultats();
+                   Scene scene_affichage = new Scene(affichage);
+                   affichage.afficherResultats(fenetre_menu, scene_affichage, client);
+                   fenetre_menu.setScene(scene_affichage);
+                }
+            }
+        });
+        
+        retour = new Button("Retour");
+        HBox hbRetour = new HBox(10);
+        hbRetour.setAlignment(Pos.BOTTOM_RIGHT);
+        hbRetour.getChildren().add(retour);
+        this.add(hbRetour, 1, 9);
+        
+        retour.setOnAction(new EventHandler<ActionEvent>(){
+            
+            @Override
+            public void handle (ActionEvent e) {
                 
-               AffichageResultats affichage = new AffichageResultats();
-               Scene scene_affichage = new Scene(affichage);
-               affichage.afficherResultats(fenetre_menu, scene_affichage, client);
-               fenetre_menu.setScene(scene_affichage);
+                if(client.getMailCo()!=null)
+                {
+                    MenuConnecte menuC = new MenuConnecte();
+                    Scene scene_menuC = new Scene(menuC);
+                    menuC.menuConnecte(fenetre_menu, scene_menuC, client);
+                    fenetre_menu.setScene(scene_menuC);
+                }
+                else
+                {
+                    MenuAnonyme menuA = new MenuAnonyme();
+                    Scene scene_menuA = new Scene(menuA);
+                    menuA.menuAnonyme(fenetre_menu, scene_menuA, client);
+                    fenetre_menu.setScene(scene_menuA);
+                }
             }
         });
     }

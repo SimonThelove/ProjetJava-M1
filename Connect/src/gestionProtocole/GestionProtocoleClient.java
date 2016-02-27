@@ -82,7 +82,7 @@ System.out.println(message);
     //Methode de concatenation de la requete RechercherAvancee
     public void requeteRechNom(Client client){
 	//Creation de la requete
-	message = "RECH|NOM|" + client.getNom() + "|PRENOM|" + client.getPrenom() + "|MAIL|" + client.getMail() + "|DIPLOME|" + client.getDiplome() + "|ANNEE|" + client.getAnnee() + "|COMPETENCES|" + client.getCompetences();
+	message = "RECH|NOM|" + client.getNom() + "|PRENOM|" + client.getPrenom() + "|MAIL|" + client.getMail() + "|DIPLOMES|" + client.getDiplome() + "|ANNEE_DIPLOMATION|" + client.getAnnee() + "|COMPETENCES|" + client.getCompetences();
 	//Envoit du message a SocketClient
 	message = soc.socket(message);
 	//Appelle a la methode pour creer un affichage au client
@@ -159,7 +159,7 @@ System.out.println("MSG - chaine : " + client.getChaine());
 System.out.println("LIST - nb resultats : " + req[1]);
                     int j = 1;
                     for(int i = 0; !Integer.toString(i).matches(req[1]); i ++){
-System.out.println("client " + (i+1) + " :" + req[j+4] + " " + req[j+6]);
+System.out.println("client " + (i+1) + " :" + req[j+3] + " " + req[j+5]);
                         clients.add(new Client (req[j+2],req[j+4],req[j+6],req[j+10],req[j+12],req[j+14],Integer.toString(i)));
 System.out.println("liste clients : " + clients.get(i).getMail());
                         j += 14; // permet de récupérer les bonnes valeurs
@@ -182,10 +182,13 @@ System.out.println("PROF - req 1 : " + req[6]);
                     System.out.println("PROF - req avant switch : " + req[i]);
             		switch (req[i])
             		{
-                            //Si le contenu est 1, alors la requete est special (requete de recuperation d'info
-                            //du client lors de sa connexion
+                            //Si dans la req[1] il y a "1", alors la requete est special (requete de recuperation d'info du client lors de sa connexion
+                            //On met des variables propres au client qui permettra la gestion des boutons retour menu au menuConnecte
                             case "1" :
                                 i=0;
+                                client.setMailCo(req[3]);
+                                client.setNomCo(req[5]);
+                                client.setPrenomCo(req[7]);
                                 break;
                             case "mail" : 
                                 client.setMail(req[i+1]);
@@ -220,6 +223,9 @@ System.out.println("PROF - req 1 : " + req[6]);
             break;
         case "DECO" :
 System.out.println("DECO - req 1 : " + req[1]);
+            client.setMailCo(null);
+            client.setNomCo(null);
+            client.setPrenomCo(null);
             client.setChaine("Vous êtes bien déconnectés.");
         default :
 System.out.println("DEF - req 1 : " + req[1]);

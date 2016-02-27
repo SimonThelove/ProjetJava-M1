@@ -103,20 +103,20 @@ public class AffichageResultats extends GridPane {
             @Override
             public void handle (ActionEvent e) {
                 
-                // IF CONNECTE
-                /* 
+                if(client.getMailCo()!=null)
+                {
                     MenuConnecte menuC = new MenuConnecte();
                     Scene scene_menuC = new Scene(menuC);
-                    menuC.menuConnecte(fenetre_menu, scene_menuC);
+                    menuC.menuConnecte(fenetre_menu, scene_menuC, client);
                     fenetre_menu.setScene(scene_menuC);
-                */
-                // ELSE (NON CONNECTE)
-                /* 
+                }
+                else
+                {
                     MenuAnonyme menuA = new MenuAnonyme();
                     Scene scene_menuA = new Scene(menuA);
-                    menuA.menuAnonyme(fenetre_menu, scene_menuA);
+                    menuA.menuAnonyme(fenetre_menu, scene_menuA, client);
                     fenetre_menu.setScene(scene_menuA);
-                */
+                }
             }
         });
     }
@@ -179,19 +179,20 @@ public class AffichageResultats extends GridPane {
                 //utilisateur.setID();
                 //utilisateur.setMDP();
                 
-                // IF CONNECTE
-                /* 
+                if(client.getMailCo()!=null)
+                {
                     MenuConnecte menuC = new MenuConnecte();
                     Scene scene_menuC = new Scene(menuC);
                     menuC.menuConnecte(fenetre_menu, scene_menuC, client);
                     fenetre_menu.setScene(scene_menuC);
-                */
-                // ELSE (NON CONNECTE)
-                 
+                }
+                else
+                {
                     MenuAnonyme menuA = new MenuAnonyme();
                     Scene scene_menuA = new Scene(menuA);
                     menuA.menuAnonyme(fenetre_menu, scene_menuA, client);
                     fenetre_menu.setScene(scene_menuA);
+                }
                 
             }
         });
