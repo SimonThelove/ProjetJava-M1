@@ -16,10 +16,9 @@ import socketsTCP.SocketServeur;
 
 public class LanceurServeur extends Application {
     
-    
     @Override
+    //Creation d'un serveur d'ecoute
     public void start(Stage primaryStage) throws Exception {
-        
         SocketServeur soc = new SocketServeur();
         soc.socket();
     }
