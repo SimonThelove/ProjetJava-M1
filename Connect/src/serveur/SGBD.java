@@ -235,6 +235,10 @@ public class SGBD extends Thread {
             this.requeteCreation = "INSERT INTO VISIBILITE VALUES ('"+ mail +"','mail,nom,prenom','mail,nom,prenom');";
     }
 
+    public void setRequeteCreationMessage (String mail, String mailDest, String msg) {
+            this.requeteCreation = "INSERT INTO DEPOT_MSG (mail_exp, mail_des, message) VALUES ('" + mail + "','" + mailDest + "','" + msg + "'); ";
+    }
+    
     // Requete de modification dans la base de donnees
     public void setRequeteModification(String[] chaine, String adresseMail) {
         // initialisation des variables
@@ -437,6 +441,19 @@ public class SGBD extends Thread {
             }
             return i;
         }
+    }
+    
+    public synchronized int executeUpdateMessage() {
+        bdd2();
+        
+        try {
+            i = st.executeUpdate(requeteCreation);
+            con.close();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return i;
     }
 }
 

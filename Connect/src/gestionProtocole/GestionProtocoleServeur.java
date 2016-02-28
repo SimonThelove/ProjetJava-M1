@@ -112,6 +112,10 @@ System.out.println("Niveau GPS LIST||");
                     setReponse("LIST|" + result);
                 }
                 break;
+            case "MSSG":
+System.out.println("Niveau GPS MSSG : " + req[2] + " " + req[4]  +" "+ req[6]);
+                reponse = ("MSG|" + serveur.envoiMessage(req[2], req[4], req[6]));
+                break; 
             //Requete de deconnexion
             case "DECO":
                 setReponse("MSG|" + serveur.seDeconnecter());

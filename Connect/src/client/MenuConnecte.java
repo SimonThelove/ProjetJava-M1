@@ -84,12 +84,33 @@ public class MenuConnecte extends GridPane {
             }
         );
         
+        //Creation du bouton Message a envoyer
+        Button envoyerMessage = new Button("Envoyer un message");
+        HBox hbEnvoiMessage = new HBox(10);
+        hbEnvoiMessage.setAlignment(Pos.BOTTOM_RIGHT);
+        hbEnvoiMessage.getChildren().add(envoyerMessage);
+        this.add(hbEnvoiMessage, 3, 2);
+        
+        //Action lors de l'appui sur le bouton Rechercher
+        envoyerMessage.setOnAction(new EventHandler<ActionEvent>()
+            {
+                @Override
+                //Affichage du menu Rechercher
+                public void handle(ActionEvent e) {
+                    EnvoiMessage envoiMessage = new EnvoiMessage();
+                    Scene scene_recherche = new Scene(envoiMessage);
+                    envoiMessage.envoyerMessage(fenetre_menuC, scene_recherche, client);
+                    fenetre_menuC.setScene(scene_recherche);
+                }
+            }
+        );
+        
         //Creation du bouton Se deconnecter
         Button seDeconnecter = new Button("Se Deconnecter");
         HBox hbDeco = new HBox(10);
         hbDeco.setAlignment(Pos.BOTTOM_RIGHT);
         hbDeco.getChildren().add(seDeconnecter);
-        this.add(hbDeco, 3, 2);
+        this.add(hbDeco, 4, 2);
         
         //Action lors de l'appui sur le bouton seDeconnecter
         seDeconnecter.setOnAction(new EventHandler<ActionEvent>()

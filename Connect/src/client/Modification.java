@@ -33,7 +33,7 @@ public class Modification extends GridPane {
     private Text titre;
     private Label nom, prenom, mail, diplome, annee, competences;
     private TextField saisie_nom, saisie_prenom, saisie_mail, saisie_diplome, saisie_annee, saisie_competences;
-    private Button modifier;
+    private Button modifier, retour;
     
     public void modifier (Stage fenetre_menu, Scene rootScene, Client client) {
         
@@ -89,7 +89,7 @@ public class Modification extends GridPane {
         hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
         hbBtn.getChildren().add(modifier);
         this.add(hbBtn, 1, 8);
-                
+        
         //Action lors de l'appui sur le bouton Valider
         modifier.setOnAction(new EventHandler<ActionEvent>()
             {
@@ -123,5 +123,26 @@ public class Modification extends GridPane {
                 }
             }
         );
+        
+        //Creation du bouton retour
+        retour = new Button("Retour");
+        HBox hbRetour = new HBox(10);
+        hbRetour.setAlignment(Pos.BOTTOM_RIGHT);
+        hbRetour.getChildren().add(retour);
+        this.add(hbRetour, 1, 9);
+        
+        //Action lors de l'appui sur le bouton retour
+        retour.setOnAction(new EventHandler<ActionEvent>()
+            {
+                @Override
+                //Renvoit le client au menu connecte
+                public void handle (ActionEvent e) {
+                    MenuConnecte menuC = new MenuConnecte();
+                    Scene scene_menuC = new Scene(menuC);
+                    menuC.menuConnecte(fenetre_menu, scene_menuC, client);
+                    fenetre_menu.setScene(scene_menuC);
+                }
+            }
+        ); 
     }
 }
