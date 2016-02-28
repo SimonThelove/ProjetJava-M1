@@ -2,38 +2,37 @@ package socketsTCP;
 import java.io.*;
 import java.net.*;
 
-
 public class SocketClient {
 	
-	 public String socket(String message){
-		    Socket          leSocket;
-		    PrintStream     fluxSortieSocket;
-		    BufferedReader  fluxEntreeSocket;
-		    
-		    String retour = null;
-		    
-		    try {
-		      leSocket = new Socket("localhost", 12314); // socket sur echo
-		      System.err.println("Connecter sur : "+leSocket);
-		      
-		      fluxSortieSocket = new PrintStream(leSocket.getOutputStream());
-		      fluxEntreeSocket = new BufferedReader(new InputStreamReader(leSocket.getInputStream()));
-		      
-		      fluxSortieSocket.println(message);//Envoit vers serveur
-		      retour = fluxEntreeSocket.readLine();// Lecture et reception du flux serveur
+    public String socket(String message){
+        Socket          leSocket;
+        PrintStream     fluxSortieSocket;
+        BufferedReader  fluxEntreeSocket;
 
-		      leSocket.close();
-		    }
-		    catch (UnknownHostException ex)
-		    {
-		      System.err.println("Machine inconnue : "+ex);
-		      ex.printStackTrace();
-		    }
-		    catch (IOException ex)
-		    {
-		      System.err.println("Erreur : "+ex);
-		      ex.printStackTrace();
-		    }
-			return retour;    
-		  }
+        String retour = null;
+
+        try {
+            leSocket = new Socket("localhost", 12314); // socket sur echo
+            System.err.println("Connecter sur : "+leSocket);
+
+            fluxSortieSocket = new PrintStream(leSocket.getOutputStream());
+            fluxEntreeSocket = new BufferedReader(new InputStreamReader(leSocket.getInputStream()));
+
+            fluxSortieSocket.println(message);//Envoit vers serveur
+            retour = fluxEntreeSocket.readLine();// Lecture et reception du flux serveur
+
+            leSocket.close();
+        }
+        catch (UnknownHostException ex)
+        {
+            System.err.println("Machine inconnue : "+ex);
+            ex.printStackTrace();
+        }
+        catch (IOException ex)
+        {
+            System.err.println("Erreur : "+ex);
+            ex.printStackTrace();
+        }
+            return retour;    
+      }
 }

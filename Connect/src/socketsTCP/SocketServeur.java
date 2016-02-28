@@ -20,55 +20,51 @@ import serveur.Serveur;
 
 public class SocketServeur
 {
-  /** Port par defaut */
-  public final static int portDefault = 12314;
-  // port au cas ou ca marche pas sur port par defaut
-  public int port;
-  // Variables serveur
-  private Serveur serveur;
-  private GestionProtocoleServeur gp;
-  // Variable socket
-  private ServerSocket    leServeur;
-  
-  public void socket ()
-  {
-    serveur = new Serveur();
-    gp = new GestionProtocoleServeur(serveur);
-    leServeur = null;
-    try
+    public final static int portDefault = 12314; /** Port par defaut */
+    public int port;// port au cas ou ca marche pas sur port par defaut
+    private Serveur serveur; // Variables serveur
+    private GestionProtocoleServeur gp;
+    private ServerSocket leServeur; // Variable socket
+
+    public void socket ()
     {
-      leServeur = new ServerSocket(portDefault);
-      port = portDefault;
+        serveur = new Serveur();
+        gp = new GestionProtocoleServeur(serveur);
+        leServeur = null;
+        try
+        {
+            leServeur = new ServerSocket(portDefault);
+            port = portDefault;
+        }
+        catch (IOException ex)
+        {
+            // fin de connexion
+            System.err.println("Impossible de crer un socket serveur sur ce port : " + ex);
+            try
+            {
+                // on demande un port anonyme 
+                leServeur = new ServerSocket();
+                port = leServeur.getLocalPort();
+                System.out.println("Port serveur : " + port);
+            }
+            catch (IOException ex2)
+            {
+                // fin de connexion
+                System.err.println("Impossible de creer un socket serveur : " + ex2);
+            }
+        }
+        while (true)
+        {
+            System.out.println("En attente de connexion sur le port : " + port);
+            try
+            {                                
+                new Conversation(leServeur.accept(), gp).start();
+                System.out.println("Conversation start : OK");
+            }
+            catch (IOException ex)
+            {
+                Logger.getLogger(SocketServeur.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
-    catch (IOException ex)
-    {
-      // fin de connexion
-      System.err.println("Impossible de crer un socket serveur sur ce port : " + ex);
-      try
-      {
-        // on demande un port anonyme 
-        leServeur = new ServerSocket();
-        port = leServeur.getLocalPort();
-        System.out.println("Port serveur : " + port);
-      }
-      catch (IOException ex2)
-      {
-        // fin de connexion
-        System.err.println("Impossible de creer un socket serveur : " + ex2);
-      }
-    }
-    while (true)
-    {
-      System.out.println("En attente de connexion sur le port : " + port);
-      try
-      {                                
-        new Conversation(leServeur.accept(), gp).start();
-        System.out.println("Conversation start : OK");
-      }
-      catch (IOException ex)
-      {
-        Logger.getLogger(SocketServeur.class.getName()).log(Level.SEVERE, null, ex);
-      }
-    }
-  }
 }

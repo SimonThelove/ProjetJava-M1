@@ -47,21 +47,19 @@ public class Conversation extends Thread {
       
     public void echanger(){
       try {
-          entree = entreeSocket.readLine();
-          if (entree != null){
-              // Traitement requete
-              sortie = gp.requete(entree);
-              // Envoi au client
-              sortieSocket.println(sortie);
-          } else
-              stop = true;
-      } catch (IOException ex) {
-          Logger.getLogger(SocketServeur.class.getName()).log(Level.SEVERE, null, ex);
-          stop = true;
-      }
-
+            entree = entreeSocket.readLine();
+            if (entree != null){
+                // Traitement requete
+                sortie = gp.requete(entree);
+                // Envoi au client
+                sortieSocket.println(sortie);
+            } else
+                stop = true;
+        } catch (IOException ex) {
+            Logger.getLogger(SocketServeur.class.getName()).log(Level.SEVERE, null, ex);
+            stop = true;
+        }
     }
-  
     @Override
     public void run() {
         while(!stop){
