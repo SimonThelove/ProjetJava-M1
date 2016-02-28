@@ -22,9 +22,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
 import gestionProtocole.GestionProtocoleClient;
-import javafx.scene.control.cell.PropertyValueFactory;
 
 /**
  *
@@ -33,12 +31,12 @@ import javafx.scene.control.cell.PropertyValueFactory;
 public class AffichageResultats extends GridPane {
     
     private final GestionProtocoleClient gp = new GestionProtocoleClient();
-    
     private Button retour, consulter;
     private TableView resultats;
     private Text titre;
     private Label nom, prenom, mail, tel, diplome, annee, competences;
     
+    //Creation du menu Resultats
     public void afficherResultats(Stage fenetre_menu, Scene rootScene, Client client) {
         
         this.setAlignment(Pos.CENTER);
@@ -70,59 +68,65 @@ public class AffichageResultats extends GridPane {
         resultats.getColumns().addAll(nom, prenom, mail);
         this.add(resultats, 0, 2);
         
+        //Creation du bouton consulter
         consulter = new Button("Consulter");
         HBox hbConsult = new HBox(10);
         hbConsult.setAlignment(Pos.BOTTOM_RIGHT);
         hbConsult.getChildren().add(consulter);
         this.add(hbConsult, 0, 3);
         
-        consulter.setOnAction(new EventHandler<ActionEvent>() {
+        //Action lors de l'appui du bouton consulter
+        consulter.setOnAction(new EventHandler<ActionEvent>() 
+            {
+                @Override
+                public void handle(ActionEvent event) {
 
-            @Override
-            public void handle(ActionEvent event) {
-                
-                if(resultats.getSelectionModel().getSelectedItem().getClass() == Client.class)
-                    gp.requeteCons(resultats.getSelectionModel().getSelectedIndex(), client);
+                    if(resultats.getSelectionModel().getSelectedItem().getClass() == Client.class)
+                        gp.requeteCons(resultats.getSelectionModel().getSelectedIndex(), client);
 
-                AffichageResultats affichage = new AffichageResultats();
-                Scene scene_affichage = new Scene(affichage);
-                affichage.afficherProfil(fenetre_menu, scene_affichage, client);
-                fenetre_menu.setScene(scene_affichage);
+                    AffichageResultats affichage = new AffichageResultats();
+                    Scene scene_affichage = new Scene(affichage);
+                    affichage.afficherProfil(fenetre_menu, scene_affichage, client);
+                    fenetre_menu.setScene(scene_affichage);
+                }
             }
-        }
         );
         
+        //Creation du bouton retour
         retour = new Button("Retour");
         HBox hbBtn = new HBox(10);
         hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
         hbBtn.getChildren().add(retour);
         this.add(hbBtn, 0, 4);
         
-        retour.setOnAction(new EventHandler<ActionEvent>(){
-            
-            @Override
-            public void handle (ActionEvent e) {
-                
-                if(client.getMailCo()!=null)
-                {
-                    MenuConnecte menuC = new MenuConnecte();
-                    Scene scene_menuC = new Scene(menuC);
-                    menuC.menuConnecte(fenetre_menu, scene_menuC, client);
-                    fenetre_menu.setScene(scene_menuC);
-                }
-                else
-                {
-                    MenuAnonyme menuA = new MenuAnonyme();
-                    Scene scene_menuA = new Scene(menuA);
-                    menuA.menuAnonyme(fenetre_menu, scene_menuA, client);
-                    fenetre_menu.setScene(scene_menuA);
+        //Action lors de l'appui sur le bouton retour
+        retour.setOnAction(new EventHandler<ActionEvent>()
+            {
+                @Override
+                public void handle (ActionEvent e) {
+                    //Si le client est connecte, on le renvoit au menuConnecte
+                    if(client.getMailCo()!=null)
+                    {
+                        MenuConnecte menuC = new MenuConnecte();
+                        Scene scene_menuC = new Scene(menuC);
+                        menuC.menuConnecte(fenetre_menu, scene_menuC, client);
+                        fenetre_menu.setScene(scene_menuC);
+                    }
+                    //Sinon on le renvoit au menuAnonyme
+                    else
+                    {
+                        MenuAnonyme menuA = new MenuAnonyme();
+                        Scene scene_menuA = new Scene(menuA);
+                        menuA.menuAnonyme(fenetre_menu, scene_menuA, client);
+                        fenetre_menu.setScene(scene_menuA);
+                    }
                 }
             }
-        });
+        );
     }
     
-    public void afficherProfil(Stage fenetre_menu, Scene rootScene, Client client){
-        
+    public void afficherProfil(Stage fenetre_menu, Scene rootScene, Client client)
+    {
         this.setAlignment(Pos.CENTER);
         this.setHgap(10);
         this.setVgap(10);
@@ -132,6 +136,7 @@ public class AffichageResultats extends GridPane {
         titre.setFont(Font.font("Calibri", FontWeight.NORMAL, 16));
         this.add(titre, 0, 0, 2, 1);
         
+        //Creation des differents labels
         nom = new Label("NOM");
         nom.setText("Nom : ");
         this.add(nom, 0, 2);
@@ -160,6 +165,7 @@ public class AffichageResultats extends GridPane {
         competences.setText("Compétences : ");
         this.add(competences, 2, 5);
         
+        //Creation du bouton retour
         retour = new Button("Retour");
         HBox hbBtn = new HBox(10);
         hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
@@ -172,29 +178,34 @@ public class AffichageResultats extends GridPane {
          * 
          */
         
-        retour.setOnAction(new EventHandler<ActionEvent>(){
-            
-            @Override
-            public void handle (ActionEvent e) {
-                //utilisateur.setID();
-                //utilisateur.setMDP();
-                
-                if(client.getMailCo()!=null)
+        //Action lors de l'appui sur le bouton retour
+        retour.setOnAction(new EventHandler<ActionEvent>()
                 {
-                    MenuConnecte menuC = new MenuConnecte();
-                    Scene scene_menuC = new Scene(menuC);
-                    menuC.menuConnecte(fenetre_menu, scene_menuC, client);
-                    fenetre_menu.setScene(scene_menuC);
-                }
-                else
+
+                @Override
+                public void handle (ActionEvent e)
                 {
-                    MenuAnonyme menuA = new MenuAnonyme();
-                    Scene scene_menuA = new Scene(menuA);
-                    menuA.menuAnonyme(fenetre_menu, scene_menuA, client);
-                    fenetre_menu.setScene(scene_menuA);
+                    //utilisateur.setID();
+                    //utilisateur.setMDP();
+
+                    //Si le client est connecte, on le renvoit au menuConnecte
+                    if(client.getMailCo()!=null)
+                    {
+                        MenuConnecte menuC = new MenuConnecte();
+                        Scene scene_menuC = new Scene(menuC);
+                        menuC.menuConnecte(fenetre_menu, scene_menuC, client);
+                        fenetre_menu.setScene(scene_menuC);
+                    }
+                    //Sinon on le renvoit au menuAnonyme
+                    else
+                    {
+                        MenuAnonyme menuA = new MenuAnonyme();
+                        Scene scene_menuA = new Scene(menuA);
+                        menuA.menuAnonyme(fenetre_menu, scene_menuA, client);
+                        fenetre_menu.setScene(scene_menuA);
+                    }
                 }
-                
             }
-        });
+        );
     }
 }

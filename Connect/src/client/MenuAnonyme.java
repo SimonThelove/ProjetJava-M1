@@ -37,75 +37,85 @@ public class MenuAnonyme extends GridPane {
         titre.setFont(Font.font("Calibri", FontWeight.NORMAL, 16));
         this.add(titre, 0, 0, 2, 1);
         
+        //Creation du bouton Inscription
         Button sInscrire = new Button("Inscription");
         HBox hbInscription = new HBox(10);
         hbInscription.setAlignment(Pos.BOTTOM_RIGHT);
         hbInscription.getChildren().add(sInscrire);
         this.add(hbInscription, 0, 2);
         
-        
-        sInscrire.setOnAction(new EventHandler<ActionEvent>() {
-            
-            @Override
-            public void handle(ActionEvent e) {
-                Inscription inscription = new Inscription();
-                Scene scene_insciption = new Scene(inscription);
-                inscription.sInscrire(fenetre_menu, scene_insciption, client);
-                fenetre_menu.setScene(scene_insciption);
+        //Action lors de l'appui sur le bouton Inscription
+        sInscrire.setOnAction(new EventHandler<ActionEvent>()
+            {
+                @Override
+                //Affichge du menu Inscription
+                public void handle(ActionEvent e) {
+                    Inscription inscription = new Inscription();
+                    Scene scene_insciption = new Scene(inscription);
+                    inscription.sInscrire(fenetre_menu, scene_insciption, client);
+                    fenetre_menu.setScene(scene_insciption);
+                }
             }
-        });
+        );
         
+        //Creation du bouton Connexion
         Button seConnecter = new Button("Connexion");
         HBox hbSeConnecter=  new HBox(10);
         hbSeConnecter.setAlignment(Pos.BOTTOM_RIGHT);
         hbSeConnecter.getChildren().add(seConnecter);
         this.add(hbSeConnecter, 1, 2);
         
-        
-        seConnecter.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent e) {
-                Connexion connexion = new Connexion();
-                Scene scene_connexion = new Scene(connexion);
-                connexion.seConnecter(fenetre_menu, scene_connexion, client);
-                fenetre_menu.setScene(scene_connexion);
+        //Action lors de l'appui sur le bouton Connexion
+        seConnecter.setOnAction(new EventHandler<ActionEvent>()
+            {
+                @Override
+                //Affichge du menu Connexion
+                public void handle(ActionEvent e) {
+                    Connexion connexion = new Connexion();
+                    Scene scene_connexion = new Scene(connexion);
+                    connexion.seConnecter(fenetre_menu, scene_connexion, client);
+                    fenetre_menu.setScene(scene_connexion);
+                }
             }
-        });
+        );
 
+        //Creation du bouton Rechercher
         Button rechercher = new Button("Rechercher");
         HBox hbRech = new HBox(10);
         hbRech.setAlignment(Pos.BOTTOM_RIGHT);
         hbRech.getChildren().add(rechercher);
         this.add(hbRech, 2, 2);
         
-        
-        rechercher.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent e) {
-                Recherche recherche = new Recherche();
-                Scene scene_recherche = new Scene(recherche);
-                recherche.rechercher(fenetre_menu, scene_recherche, client);
-                fenetre_menu.setScene(scene_recherche);
+        //Action lors de l'appui sur le bouton Rechercher
+        rechercher.setOnAction(new EventHandler<ActionEvent>()
+            {
+                @Override
+                //Affichge du menu Rechercher
+                public void handle(ActionEvent e) {
+                    Recherche recherche = new Recherche();
+                    Scene scene_recherche = new Scene(recherche);
+                    recherche.rechercher(fenetre_menu, scene_recherche, client);
+                    fenetre_menu.setScene(scene_recherche);
+                }
             }
-        });
+        );
         
+        //Creation du bouton Quitter
         Button quitter = new Button("Quitter");
         HBox hbQuit = new HBox(10);
         hbQuit.setAlignment(Pos.BOTTOM_RIGHT);
         hbQuit.getChildren().add(quitter);
         this.add(hbQuit, 3, 2);
         
-        
-        quitter.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent e) {
-                Platform.exit();
+        //Action lors de l'appui sur le bouton Quitter
+        quitter.setOnAction(new EventHandler<ActionEvent>() 
+            {
+                @Override
+                //Quitter l'application
+                public void handle(ActionEvent e) {
+                    Platform.exit();
+                }
             }
-            
-        });
-        
+        );
     }
 }

@@ -21,7 +21,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
 import gestionProtocole.GestionProtocoleClient;
 import javafx.scene.control.Alert;
 import javafx.scene.paint.Color;
@@ -33,18 +32,12 @@ import javafx.scene.paint.Color;
 public class Recherche extends GridPane {
         
     private final GestionProtocoleClient gp = new GestionProtocoleClient();
-    
     private String motsCherches;
-    
     private Text titre;
-    private Label motsCles;
-    private TextField saisie_motsCles;
     private Hyperlink rechercheAvancee;
-    private Button rechercher, retour;
-    
-    private Label nom, prenom, mail, diplome, annee, competences;
-    private TextField saisie_nom, saisie_prenom, saisie_mail, saisie_diplome, saisie_annee, saisie_competences;
-    private Button rechercherPlus;
+    private Label nom, prenom, mail, diplome, annee, competences, motsCles;
+    private TextField saisie_nom, saisie_prenom, saisie_mail, saisie_diplome, saisie_annee, saisie_competences, saisie_motsCles;
+    private Button rechercher, retour, rechercherPlus;
 
     public void rechercher(Stage fenetre_menu, Scene rootScene, Client client) {
         
@@ -57,89 +50,104 @@ public class Recherche extends GridPane {
         titre.setFont(Font.font("Calibri", FontWeight.NORMAL, 16));
         this.add(titre, 0, 0, 2, 1);
 
+        //Creation des differents labels et textField
         motsCles = new Label("Mots clés :");
         this.add(motsCles, 0, 1);
 
         saisie_motsCles = new TextField();
         this.add(saisie_motsCles, 1, 1);
         
-        rechercheAvancee = new Hyperlink("Recherche Avancée");
+        //Creation d'un lien vers la recherche avancee
+        rechercheAvancee = new Hyperlink("Recherche Avancee");
         this.add(rechercheAvancee, 0, 2);
         
-        rechercheAvancee.setOnAction(new EventHandler<ActionEvent>(){
-            
-            @Override
-            public void handle(ActionEvent e) {
-                Recherche recherche = new Recherche();
-                Scene scene_recherche = new Scene(recherche);
-                recherche.rechercheAvancee(fenetre_menu, scene_recherche, client);
-                fenetre_menu.setScene(scene_recherche);
+        //Action lors de l'appui sur le lien rechercheAvancee
+        rechercheAvancee.setOnAction(new EventHandler<ActionEvent>()
+            {
+                @Override
+                public void handle(ActionEvent e) {
+                    Recherche recherche = new Recherche();
+                    Scene scene_recherche = new Scene(recherche);
+                    recherche.rechercheAvancee(fenetre_menu, scene_recherche, client);
+                    fenetre_menu.setScene(scene_recherche);
+                }
             }
-    });
+        );
         
+        //Creation du bouton rechercher
         rechercher = new Button("Rechercher");
         HBox hbBtn = new HBox(10);
         hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
         hbBtn.getChildren().add(rechercher);
         this.add(hbBtn, 1, 2);
         
-        rechercher.setOnAction(new EventHandler<ActionEvent>() {
+        //Action lors de l'appui sur le bouton rechercher
+        rechercher.setOnAction(new EventHandler<ActionEvent>()
+            {
+                @Override
+                public void handle(ActionEvent e) {
 
-            @Override
-            public void handle(ActionEvent e) {
-                
-               //Verification qu'aucun champs soit vide
-                if(saisie_motsCles.getText().length() == 0)
-                {
-                    final Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Connect - information");
-                    alert.setHeaderText("Mot(s) Cle(s) manquant !");
-                    alert.setContentText("Veuillez saisir au moins un mot cle.");
-                    alert.showAndWait();
-                    motsCles.setTextFill(Color.RED);
-                }
-                else
-                {
-                motsCherches = saisie_motsCles.getText();
-
-                gp.requeteRechMotsCles(motsCherches, client);
-                //client = gp.getClient();
-
-                AffichageResultats affichage = new AffichageResultats();
-                Scene scene_affichage = new Scene(affichage);
-                affichage.afficherResultats(fenetre_menu, scene_affichage, client);
-                fenetre_menu.setScene(scene_affichage);
+                   //Verification qu'aucun champs soit vide
+                    if(saisie_motsCles.getText().length() == 0)
+                    {
+                        final Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Connect - information");
+                        alert.setHeaderText("Mot(s) Cle(s) manquant !");
+                        alert.setContentText("Veuillez saisir au moins un mot cle.");
+                        alert.showAndWait();
+                        motsCles.setTextFill(Color.RED);
+                    }
+                    //Sinon on execute la requete de recheche
+                    else
+                    {
+                        //On recupere le(s) mot(s) cle(s)
+                        motsCherches = saisie_motsCles.getText();
+                        
+                        //Appel a la fonction de rechercheMotsCles
+                        gp.requeteRechMotsCles(motsCherches, client);
+                        //client = gp.getClient();
+                        
+                        //On affiche le(s) resultat(s) de la recherche
+                        AffichageResultats affichage = new AffichageResultats();
+                        Scene scene_affichage = new Scene(affichage);
+                        affichage.afficherResultats(fenetre_menu, scene_affichage, client);
+                        fenetre_menu.setScene(scene_affichage);
+                    }
                 }
             }
-        });
+        );
         
+        //Creation du bouton retour
         retour = new Button("Retour");
         HBox hbRetour = new HBox(10);
         hbRetour.setAlignment(Pos.BOTTOM_RIGHT);
         hbRetour.getChildren().add(retour);
         this.add(hbRetour, 1, 4);
         
-        retour.setOnAction(new EventHandler<ActionEvent>(){
-            
-            @Override
-            public void handle (ActionEvent e) {
-                
-                if(client.getMailCo()!=null)
-                {
-                    MenuConnecte menuC = new MenuConnecte();
-                    Scene scene_menuC = new Scene(menuC);
-                    menuC.menuConnecte(fenetre_menu, scene_menuC, client);
-                    fenetre_menu.setScene(scene_menuC);
-                }
-                else
-                {
-                    MenuAnonyme menuA = new MenuAnonyme();
-                    Scene scene_menuA = new Scene(menuA);
-                    menuA.menuAnonyme(fenetre_menu, scene_menuA, client);
-                    fenetre_menu.setScene(scene_menuA);
+        //Action lors de l'appui sur le bouton retour
+        retour.setOnAction(new EventHandler<ActionEvent>()
+            {
+                @Override
+                public void handle (ActionEvent e) {
+                    //Si le client est connecte, on le renvoit au menuConnecte
+                    if(client.getMailCo()!=null)
+                    {
+                        MenuConnecte menuC = new MenuConnecte();
+                        Scene scene_menuC = new Scene(menuC);
+                        menuC.menuConnecte(fenetre_menu, scene_menuC, client);
+                        fenetre_menu.setScene(scene_menuC);
+                    }
+                    //Sinon on le renvoit au menuAnonyme
+                    else
+                    {
+                        MenuAnonyme menuA = new MenuAnonyme();
+                        Scene scene_menuA = new Scene(menuA);
+                        menuA.menuAnonyme(fenetre_menu, scene_menuA, client);
+                        fenetre_menu.setScene(scene_menuA);
+                    }
                 }
             }
-        });
+        );
     }
     
     public void rechercheAvancee (Stage fenetre_menu, Scene rootScene, Client client) {
@@ -153,6 +161,7 @@ public class Recherche extends GridPane {
         titre.setFont(Font.font("Calibri", FontWeight.NORMAL, 16));
         this.add(titre, 0, 0, 2, 1);
 
+        //Creation des differents labales et TextField
         nom = new Label("Nom :");
         this.add(nom, 0, 1);
 
@@ -189,79 +198,89 @@ public class Recherche extends GridPane {
         saisie_competences = new TextField();
         this.add(saisie_competences, 1, 6);
         
+        //Creation du bouton rechercher
         rechercherPlus = new Button("Rechercher");
         HBox hbBtn = new HBox(10);
         hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
         hbBtn.getChildren().add(rechercherPlus);
         this.add(hbBtn, 1, 8);
-                
-
         
-        rechercherPlus.setOnAction(new EventHandler<ActionEvent>() {
-            
-            @Override
-            public void handle(ActionEvent e) {
-            //Verification qu'aucun champs soit vide
-            if((saisie_nom.getText().length() == 0) && (saisie_prenom.getText().length() == 0) && (saisie_mail.getText().length() == 0)
-                && (saisie_diplome.getText().length() == 0) && (saisie_annee.getText().length() == 0) && (saisie_competences.getText().length() == 0))
+        //Action lors de l'appui sur le bouton rechercher
+        rechercherPlus.setOnAction(new EventHandler<ActionEvent>()
             {
-                final Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Connect - information");
-                alert.setHeaderText("Information(s) manquante(s) !");
-                alert.setContentText("Veuillez saisir au moins un champs.");
-                alert.showAndWait();
-                nom.setTextFill(Color.RED);
-                prenom.setTextFill(Color.RED);
-                mail.setTextFill(Color.RED);
-                diplome.setTextFill(Color.RED);
-                annee.setTextFill(Color.RED);
-                competences.setTextFill(Color.RED);
-            }
-            else
-            {
-                   client.setNom(saisie_nom.getText());
-                   client.setPrenom(saisie_prenom.getText());
-                   client.setTel(saisie_mail.getText());
-                   client.setDiplome(saisie_diplome.getText());
-                   client.setAnnee(saisie_annee.getText());
-                   client.setCompetences(saisie_competences.getText());
+                @Override
+                public void handle(ActionEvent e) {
+                    //Verification qu'aucun champs soit vide
+                    if((saisie_nom.getText().length() == 0) && (saisie_prenom.getText().length() == 0) && (saisie_mail.getText().length() == 0)
+                        && (saisie_diplome.getText().length() == 0) && (saisie_annee.getText().length() == 0) && (saisie_competences.getText().length() == 0))
+                    {
+                        //Affichage POPUP car il n'y as pas au moins un champs renseigne
+                        final Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Connect - information");
+                        alert.setHeaderText("Information(s) manquante(s) !");
+                        alert.setContentText("Veuillez saisir au moins un champs.");
+                        alert.showAndWait();
+                        nom.setTextFill(Color.RED);
+                        prenom.setTextFill(Color.RED);
+                        mail.setTextFill(Color.RED);
+                        diplome.setTextFill(Color.RED);
+                        annee.setTextFill(Color.RED);
+                        competences.setTextFill(Color.RED);
+                    }
+                    //S'il y a au moins un champs renseigne, on execute le requete de recherche avancee
+                    else
+                    {
+                        //On recupere les informations
+                        client.setNom(saisie_nom.getText());
+                        client.setPrenom(saisie_prenom.getText());
+                        client.setTel(saisie_mail.getText());
+                        client.setDiplome(saisie_diplome.getText());
+                        client.setAnnee(saisie_annee.getText());
+                        client.setCompetences(saisie_competences.getText());
+                           
+                        //Execution de la requete rechNom
+                        gp.requeteRechNom(client);
 
-                   gp.requeteRechNom(client);
-
-                   AffichageResultats affichage = new AffichageResultats();
-                   Scene scene_affichage = new Scene(affichage);
-                   affichage.afficherResultats(fenetre_menu, scene_affichage, client);
-                   fenetre_menu.setScene(scene_affichage);
+                        //Affichage des resultats de la requete
+                        AffichageResultats affichage = new AffichageResultats();
+                        Scene scene_affichage = new Scene(affichage);
+                        affichage.afficherResultats(fenetre_menu, scene_affichage, client);
+                        fenetre_menu.setScene(scene_affichage);
+                    }
                 }
             }
-        });
+        );
         
+        //Creation du bouton retour
         retour = new Button("Retour");
         HBox hbRetour = new HBox(10);
         hbRetour.setAlignment(Pos.BOTTOM_RIGHT);
         hbRetour.getChildren().add(retour);
         this.add(hbRetour, 1, 9);
         
-        retour.setOnAction(new EventHandler<ActionEvent>(){
-            
-            @Override
-            public void handle (ActionEvent e) {
-                
-                if(client.getMailCo()!=null)
-                {
-                    MenuConnecte menuC = new MenuConnecte();
-                    Scene scene_menuC = new Scene(menuC);
-                    menuC.menuConnecte(fenetre_menu, scene_menuC, client);
-                    fenetre_menu.setScene(scene_menuC);
-                }
-                else
-                {
-                    MenuAnonyme menuA = new MenuAnonyme();
-                    Scene scene_menuA = new Scene(menuA);
-                    menuA.menuAnonyme(fenetre_menu, scene_menuA, client);
-                    fenetre_menu.setScene(scene_menuA);
+        //Action lors de l'appui sur le bouton retour
+        retour.setOnAction(new EventHandler<ActionEvent>()
+            {
+                @Override
+                public void handle (ActionEvent e) {
+                    //Si le client est connecte, on le renvoit au menuConnecte
+                    if(client.getMailCo()!=null)
+                    {
+                        MenuConnecte menuC = new MenuConnecte();
+                        Scene scene_menuC = new Scene(menuC);
+                        menuC.menuConnecte(fenetre_menu, scene_menuC, client);
+                        fenetre_menu.setScene(scene_menuC);
+                    }
+                    //Sinon on le renvoit au menuAnonyme
+                    else
+                    {
+                        MenuAnonyme menuA = new MenuAnonyme();
+                        Scene scene_menuA = new Scene(menuA);
+                        menuA.menuAnonyme(fenetre_menu, scene_menuA, client);
+                        fenetre_menu.setScene(scene_menuA);
+                    }
                 }
             }
-        });
+        );
     }
 }

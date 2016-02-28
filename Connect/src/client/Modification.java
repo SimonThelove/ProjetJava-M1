@@ -20,7 +20,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
 import gestionProtocole.GestionProtocoleClient;
 import javafx.scene.control.Alert;
 
@@ -31,7 +30,6 @@ import javafx.scene.control.Alert;
 public class Modification extends GridPane {
         
     private final GestionProtocoleClient gp = new GestionProtocoleClient();
-    
     private Text titre;
     private Label nom, prenom, mail, diplome, annee, competences;
     private TextField saisie_nom, saisie_prenom, saisie_mail, saisie_diplome, saisie_annee, saisie_competences;
@@ -48,6 +46,7 @@ public class Modification extends GridPane {
         titre.setFont(Font.font("Calibri", FontWeight.NORMAL, 16));
         this.add(titre, 0, 0, 2, 1);
 
+        //Creation des differents labels et TextField
         nom = new Label("Nom :");
         this.add(nom, 0, 1);
 
@@ -84,43 +83,45 @@ public class Modification extends GridPane {
         saisie_competences = new TextField();
         this.add(saisie_competences, 1, 6);
         
+        //Creation du bouton Valider
         modifier = new Button("Valider");
         HBox hbBtn = new HBox(10);
         hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
         hbBtn.getChildren().add(modifier);
         this.add(hbBtn, 1, 8);
                 
-        
-        modifier.setOnAction(new EventHandler<ActionEvent>() {
+        //Action lors de l'appui sur le bouton Valider
+        modifier.setOnAction(new EventHandler<ActionEvent>()
+            {
+                @Override
+                public void handle(ActionEvent e) {
+                    //Recuperation des informations des champs
+                    client.setNom(saisie_nom.getText());
+                    client.setPrenom(saisie_prenom.getText());
+                    client.setMail(saisie_mail.getText());
+                    client.setDiplome(saisie_diplome.getText());
+                    client.setAnnee(saisie_annee.getText());
+                    client.setCompetences(saisie_competences.getText());
+                    
+                    //Creation de la requete a envoyer puis execution de la requete Modification
+                    gp.setMessage(client);
+                    gp.requeteModi(client);
 
-            @Override
-            public void handle(ActionEvent e) {
-                client.setNom(saisie_nom.getText());
-                client.setPrenom(saisie_prenom.getText());
-                client.setMail(saisie_mail.getText());
-                client.setDiplome(saisie_diplome.getText());
-                client.setAnnee(saisie_annee.getText());
-                client.setCompetences(saisie_competences.getText());
-                
-                gp.setMessage(client);
-                gp.requeteModi(client);
-                //client = gp.getClient();
-                
-                // POP-UP DU MESSAGE DE RESULTAT
-                final Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.initOwner(fenetre_menu);
-                alert.setTitle("Connect - information");
-                alert.setHeaderText("Message");
-                alert.setContentText(client.getChaine());
-                alert.showAndWait();
-                
-                // RETOUR MENU CONNECTE
-                
-                MenuConnecte menuC = new MenuConnecte();
-                Scene scene_menuC = new Scene(menuC);
-                menuC.menuConnecte(fenetre_menu, scene_menuC, client);
-                fenetre_menu.setScene(scene_menuC);
+                    // POP-UP de message de resultat
+                    final Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.initOwner(fenetre_menu);
+                    alert.setTitle("Connect - information");
+                    alert.setHeaderText("Message");
+                    alert.setContentText(client.getChaine());
+                    alert.showAndWait();
+
+                    // Retour au menu connecte
+                    MenuConnecte menuC = new MenuConnecte();
+                    Scene scene_menuC = new Scene(menuC);
+                    menuC.menuConnecte(fenetre_menu, scene_menuC, client);
+                    fenetre_menu.setScene(scene_menuC);
+                }
             }
-        });
+        );
     }
 }

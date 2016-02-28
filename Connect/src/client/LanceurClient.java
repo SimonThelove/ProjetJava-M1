@@ -23,6 +23,7 @@ public class LanceurClient extends Application {
     public void start(Stage application) {
         application.setTitle("Connect!");
         
+        //Creation et affichage du menu Principal en tant qu'anonyme
         menuA = new MenuAnonyme();
         Scene sceneRoot = new Scene(menuA);
         menuA.menuAnonyme(application, sceneRoot, client);
