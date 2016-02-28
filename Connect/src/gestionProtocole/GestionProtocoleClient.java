@@ -120,7 +120,18 @@ public class GestionProtocoleClient {
     //Methode de concatenation de la requete deconnexion
     public void requeteEnvoiMsg(String mailDes, String msg, Client client){
 	//Creation de la requete
-	message = "MSSG|MAIL_EXP|" + client.getMail() + "|MAIL_DES|" + mailDes + "|MESSAGE|" + msg;
+	message = "MSSG|ENVOI|MAIL_EXP|" + client.getMail() + "|MAIL_DES|" + mailDes + "|MESSAGE|" + msg;
+ System.out.println(msg);
+	//Envoit du message a SocketClient
+	message = soc.socket(message);
+	//Appelle a la methode pour creer un affichage au client
+	decoupage(message, client);
+    }
+    
+    //Methode de concatenation de la requete deconnexion
+    public void requeteRecupMsg(Client client){
+	//Creation de la requete
+	message = "MSSG|RECUP|MAIL_DES|" + client.getMail();
 	//Envoit du message a SocketClient
 	message = soc.socket(message);
 	//Appelle a la methode pour creer un affichage au client
@@ -224,6 +235,14 @@ System.out.println("PROF - req 1 : " + req[6]);
                 // TODO Auto-generated catch block
                 client.setChaine("Erreur format");
             }
+            break;
+        case "MSSG":
+            int i;
+            for(i = 1; i < (req.length-2); i += 2)
+                {
+                    System.out.println("Test : " + req[i] + "   " + req[i+1]);
+                }
+            System.out.println("Test : " + req[i]);
             break;
         case "DECO" :
             client.setMailCo(null);

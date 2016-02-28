@@ -95,12 +95,33 @@ public class MenuConnecte extends GridPane {
         envoyerMessage.setOnAction(new EventHandler<ActionEvent>()
             {
                 @Override
-                //Affichage du menu Rechercher
+                //Affichage du menu Message a envoyer
                 public void handle(ActionEvent e) {
                     EnvoiMessage envoiMessage = new EnvoiMessage();
-                    Scene scene_recherche = new Scene(envoiMessage);
-                    envoiMessage.envoyerMessage(fenetre_menuC, scene_recherche, client);
-                    fenetre_menuC.setScene(scene_recherche);
+                    Scene scene_envoiMessage = new Scene(envoiMessage);
+                    envoiMessage.envoyerMessage(fenetre_menuC, scene_envoiMessage, client);
+                    fenetre_menuC.setScene(scene_envoiMessage);
+                }
+            }
+        );
+        
+        //Creation du bouton Mes messages
+        Button recupererMessage = new Button("Mes messages");
+        HBox hbrecupererMessage = new HBox(10);
+        hbrecupererMessage.setAlignment(Pos.BOTTOM_RIGHT);
+        hbrecupererMessage.getChildren().add(recupererMessage);
+        this.add(hbrecupererMessage, 4, 2);
+        
+        //Action lors de l'appui sur le bouton Rechercher
+        recupererMessage.setOnAction(new EventHandler<ActionEvent>()
+            {
+                @Override
+                //Affichage du menu Mes messages
+                public void handle(ActionEvent e) {
+                    RecuperationMessage recuperationMessage = new RecuperationMessage();
+                    Scene scene_recuperationMessagee = new Scene(recuperationMessage);
+                    recuperationMessage.recupererMessage(fenetre_menuC, scene_recuperationMessagee, client);
+                    fenetre_menuC.setScene(scene_recuperationMessagee);
                 }
             }
         );
@@ -110,7 +131,7 @@ public class MenuConnecte extends GridPane {
         HBox hbDeco = new HBox(10);
         hbDeco.setAlignment(Pos.BOTTOM_RIGHT);
         hbDeco.getChildren().add(seDeconnecter);
-        this.add(hbDeco, 4, 2);
+        this.add(hbDeco, 4, 3);
         
         //Action lors de l'appui sur le bouton seDeconnecter
         seDeconnecter.setOnAction(new EventHandler<ActionEvent>()
