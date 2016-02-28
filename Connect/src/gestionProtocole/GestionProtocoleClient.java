@@ -19,7 +19,6 @@ public class GestionProtocoleClient {
     
     private final SocketClient soc = new SocketClient();
     private final ObservableList<Client> clients;
-            
     private String message = null;//Variable ou est stockee la requete
     private int nbPersonne = 0;//Nombre de profil que renvoit les requetes de recherche
     private String req[] = null;//Requete de retour du serveur 
@@ -45,8 +44,6 @@ public class GestionProtocoleClient {
             this.message += "|ANNEE_DIPLOMATION|" + client.getAnnee();
             this.message += "|COMPETENCES|" + client.getCompetences();
             this.message += " |";
-
-System.out.println(message);
     }
     
     //Methode de concatenation de la requete creerCompte
@@ -119,7 +116,6 @@ System.out.println(message);
 	//Appelle a la methode pour creer un affichage au client
 	decoupage(requete, client);
 	}
-
     
     //Methode de concatenation de la requete deconnexion
     public void requeteDeco(Client client){
@@ -135,8 +131,7 @@ System.out.println(message);
     public void decoupage(String reponse, Client client){
         
 System.out.println("reponse : " + reponse);
-        client.setChaine("Aucune information disponible");
-System.out.println("GPC - chaine 1 : " + client.getChaine());        
+        client.setChaine("Aucune information disponible");       
         req = reponse.split("[|]");
         
         switch(req[0]){
@@ -169,7 +164,6 @@ System.out.println("liste clients : " + clients.get(i).getMail());
             catch (NumberFormatException e) {
                 // TODO Auto-generated catch block
                 client.setChaine("Erreur format");
-
             }
             break;
         //Affiche un profil
@@ -179,7 +173,7 @@ System.out.println("PROF - req 1 : " + req[6]);
 
             	for(int i = 1; i < (req.length) && !client.getChaine().equals("Erreur GPC"); i += 2)
             	{
-                    System.out.println("PROF - req avant switch : " + req[i]);
+        System.out.println("PROF - req avant switch : " + req[i]);
             		switch (req[i])
             		{
                             //Si dans la req[1] il y a "1", alors la requete est special (requete de recuperation d'info du client lors de sa connexion
@@ -222,13 +216,11 @@ System.out.println("PROF - req 1 : " + req[6]);
             }
             break;
         case "DECO" :
-System.out.println("DECO - req 1 : " + req[1]);
             client.setMailCo(null);
             client.setNomCo(null);
             client.setPrenomCo(null);
             client.setChaine("Vous êtes bien déconnectés.");
         default :
-System.out.println("DEF - req 1 : " + req[1]);
             client.setChaine("Erreur dans votre choix");
         }
     }
