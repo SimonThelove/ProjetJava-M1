@@ -105,7 +105,6 @@ public class Recherche extends GridPane {
                         
                         //Appel a la fonction de rechercheMotsCles
                         gp.requeteRechMotsCles(motsCherches, client);
-                        //client = gp.getClient();
                         
                         //On affiche le(s) resultat(s) de la recherche
                         AffichageResultats affichage = new AffichageResultats();

@@ -57,7 +57,11 @@ public class Messenger extends GridPane {
         ListView<String> liste_clients = new ListView<>(connectes);
         
 // Recuperation des clients connectes sur le serveur (anonymes ou non)
-// EN COURS DE DEVELOPPEMENT...
+// EN COURS DE DEVELOPPEMENT... (création socket permanent pour établir une liste des connectés)
+// Une fois la liste établie sur le serveur, on la récupère sur les clients au moment de la connexion
+// Ce qui permet aux clients en ligne de communiquer entre eux directement.
+// côté serveur : liste (mail / port d'écoute messenger)
+// côté client : socket d'écoute + récupération liste
         
         // Recuperation du mail des clients connectes
         for (int i = 0; i < gp.getClients().size(); i++){

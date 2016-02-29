@@ -237,6 +237,7 @@ System.out.println("PROF - req 1 : " + req[6]);
                                 break;
             		}
             	}
+                clients.add(client);
             } catch (NumberFormatException e) {
                 // TODO Auto-generated catch block
                 client.setChaine("Erreur format");
