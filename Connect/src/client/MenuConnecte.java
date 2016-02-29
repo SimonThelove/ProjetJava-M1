@@ -27,7 +27,6 @@ import javafx.scene.control.Alert;
  */
 public class MenuConnecte extends GridPane {
     
-    private Client client = new Client();
     private final GestionProtocoleClient gp = new GestionProtocoleClient();
 
     public void menuConnecte(Stage fenetre_menuC, Scene rootScene, Client client) {
@@ -37,13 +36,13 @@ public class MenuConnecte extends GridPane {
         this.setVgap(10);
         this.setPadding(new Insets(25, 25, 25, 25));
         
-        //Affichage au client d'un message de bienvenu avec son nom et prenom
+        //Affichage au client d'un message de bienvenue avec son nom et prenom
         Text titre = new Text("Bienvenue : " + client.getNomCo() + " " + client.getPrenomCo());
         titre.setFont(Font.font("Calibri", FontWeight.NORMAL, 16));
         this.add(titre, 0, 0, 2, 1);
-        
+                
         //Creation du bouton Modification
-        Button modifier = new Button("Modification");
+        Button modifier = new Button("Modifier");
         HBox hbModifier = new HBox(10);
         hbModifier.setAlignment(Pos.BOTTOM_RIGHT);
         hbModifier.getChildren().add(modifier);
@@ -85,22 +84,43 @@ public class MenuConnecte extends GridPane {
         );
         
         //Creation du bouton Message a envoyer
-        Button envoyerMessage = new Button("Envoyer un message");
+        Button envoyerMessage = new Button("Nouveau message");
         HBox hbEnvoiMessage = new HBox(10);
         hbEnvoiMessage.setAlignment(Pos.BOTTOM_RIGHT);
         hbEnvoiMessage.getChildren().add(envoyerMessage);
         this.add(hbEnvoiMessage, 3, 2);
         
-        //Action lors de l'appui sur le bouton Rechercher
+        //Action lors de l'appui sur le bouton Nouveau message
         envoyerMessage.setOnAction(new EventHandler<ActionEvent>()
             {
                 @Override
-                //Affichage du menu Rechercher
+                //Affichage du menu Message a envoyer
                 public void handle(ActionEvent e) {
                     EnvoiMessage envoiMessage = new EnvoiMessage();
-                    Scene scene_recherche = new Scene(envoiMessage);
-                    envoiMessage.envoyerMessage(fenetre_menuC, scene_recherche, client);
-                    fenetre_menuC.setScene(scene_recherche);
+                    Scene scene_envoiMessage = new Scene(envoiMessage);
+                    envoiMessage.envoyerMessage(fenetre_menuC, scene_envoiMessage, client);
+                    fenetre_menuC.setScene(scene_envoiMessage);
+                }
+            }
+        );
+        
+        //Creation du bouton Mes messages
+        Button recupererMessage = new Button("Mes messages");
+        HBox hbrecupererMessage = new HBox(10);
+        hbrecupererMessage.setAlignment(Pos.BOTTOM_RIGHT);
+        hbrecupererMessage.getChildren().add(recupererMessage);
+        this.add(hbrecupererMessage, 4, 2);
+        
+        //Action lors de l'appui sur le bouton Mes messages
+        recupererMessage.setOnAction(new EventHandler<ActionEvent>()
+            {
+                @Override
+                //Affichage du menu Mes messages
+                public void handle(ActionEvent e) {
+                    RecuperationMessage recuperationMessage = new RecuperationMessage();
+                    Scene scene_recuperationMessagee = new Scene(recuperationMessage);
+                    recuperationMessage.recupererMessage(fenetre_menuC, scene_recuperationMessagee, client);
+                    fenetre_menuC.setScene(scene_recuperationMessagee);
                 }
             }
         );
@@ -110,7 +130,7 @@ public class MenuConnecte extends GridPane {
         HBox hbDeco = new HBox(10);
         hbDeco.setAlignment(Pos.BOTTOM_RIGHT);
         hbDeco.getChildren().add(seDeconnecter);
-        this.add(hbDeco, 4, 2);
+        this.add(hbDeco, 5, 2);
         
         //Action lors de l'appui sur le bouton seDeconnecter
         seDeconnecter.setOnAction(new EventHandler<ActionEvent>()

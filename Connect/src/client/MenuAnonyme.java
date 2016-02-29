@@ -100,12 +100,33 @@ public class MenuAnonyme extends GridPane {
             }
         );
         
+        //Creation du bouton Messenger
+        Button mssenger = new Button("Messenger");
+        HBox hbMsgr = new HBox(10);
+        hbMsgr.setAlignment(Pos.BOTTOM_RIGHT);
+        hbMsgr.getChildren().add(mssenger);
+        this.add(hbMsgr, 3, 2);
+        
+        //Action lors de l'appui sur le bouton Messenger
+        mssenger.setOnAction(new EventHandler<ActionEvent>()
+            {
+                @Override
+                //Affichge du menu Messenger
+                public void handle(ActionEvent e) {
+                    Messenger discuter = new Messenger();
+                    Scene scene_discuter = new Scene(discuter);
+                    discuter.dialoguer(fenetre_menu, scene_discuter, client);
+                    fenetre_menu.setScene(scene_discuter);
+                }
+            }
+        );
+        
         //Creation du bouton Quitter
         Button quitter = new Button("Quitter");
         HBox hbQuit = new HBox(10);
         hbQuit.setAlignment(Pos.BOTTOM_RIGHT);
         hbQuit.getChildren().add(quitter);
-        this.add(hbQuit, 3, 2);
+        this.add(hbQuit, 4, 2);
         
         //Action lors de l'appui sur le bouton Quitter
         quitter.setOnAction(new EventHandler<ActionEvent>() 

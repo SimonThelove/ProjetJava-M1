@@ -49,7 +49,7 @@ public class Connexion extends GridPane {
         
         titre = new Text("Connexion");
         titre.setFont(Font.font("Calibri", FontWeight.NORMAL, 16));
-        this.add(titre, 0, 0, 2, 1);
+        this.add(titre, 0, 0, 3, 1);
         
         //Creation des differents labels
         identifiant = new Label("Mail utilisateur : ");
@@ -116,7 +116,7 @@ public class Connexion extends GridPane {
                         alert.showAndWait();
 
                         //Si les identifiants sont bon et que la connexion c'est bien deroulee
-                        if (client.getChaine().equals("Vous etes bien connectes."))
+                        if (client.getChaine().startsWith("Vous etes bien connecte"))
                         {
                             //Appel a la fonction pour recuperer les informations du client
                             gp.requeteNomConnecte(client);

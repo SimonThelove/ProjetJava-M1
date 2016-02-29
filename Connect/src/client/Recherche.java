@@ -110,7 +110,7 @@ public class Recherche extends GridPane {
                         //On affiche le(s) resultat(s) de la recherche
                         AffichageResultats affichage = new AffichageResultats();
                         Scene scene_affichage = new Scene(affichage);
-                        affichage.afficherResultats(fenetre_menu, scene_affichage, client);
+                        affichage.afficherResultats(fenetre_menu, scene_affichage, client, gp);
                         fenetre_menu.setScene(scene_affichage);
                     }
                 }
@@ -244,7 +244,7 @@ public class Recherche extends GridPane {
                         //Affichage des resultats de la requete
                         AffichageResultats affichage = new AffichageResultats();
                         Scene scene_affichage = new Scene(affichage);
-                        affichage.afficherResultats(fenetre_menu, scene_affichage, client);
+                        affichage.afficherResultats(fenetre_menu, scene_affichage, client, gp);
                         fenetre_menu.setScene(scene_affichage);
                     }
                 }

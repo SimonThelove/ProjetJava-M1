@@ -79,7 +79,12 @@ public class GestionProtocoleClient {
     //Methode de concatenation de la requete RechercherAvancee
     public void requeteRechNom(Client client){
 	//Creation de la requete
-	message = "RECH|NOM|" + client.getNom() + "|PRENOM|" + client.getPrenom() + "|MAIL|" + client.getMail() + "|DIPLOMES|" + client.getDiplome() + "|ANNEE_DIPLOMATION|" + client.getAnnee() + "|COMPETENCES|" + client.getCompetences();
+	message = "RECH|NOM|" + client.getNom() +
+                "|PRENOM|" + client.getPrenom() +
+                "|MAIL|" + client.getMail() +
+                "|DIPLOMES|" + client.getDiplome() +
+                "|ANNEE_DIPLOMATION|" + client.getAnnee() +
+                "|COMPETENCES|" + client.getCompetences();
 	//Envoit du message a SocketClient
 	message = soc.socket(message);
 	//Appelle a la methode pour creer un affichage au client
@@ -89,7 +94,8 @@ public class GestionProtocoleClient {
     //Methode de concatenation de la requete consultation
     public void requeteCons(int index, Client client){
 	//Creation de la requete
-	message = "CONS|" + clients.get(index).getMail();
+	message = "CONS|MAIL|" + clients.get(index).getMail() + "|0|";
+System.out.println("GPC CONS : " + message);
 	//Envoit du message a SocketClient
 	message = soc.socket(message);
 	//Appelle a la methode pour creer un affichage au client
@@ -120,7 +126,18 @@ public class GestionProtocoleClient {
     //Methode de concatenation de la requete deconnexion
     public void requeteEnvoiMsg(String mailDes, String msg, Client client){
 	//Creation de la requete
-	message = "MSSG|MAIL_EXP|" + client.getMail() + "|MAIL_DES|" + mailDes + "|MESSAGE|" + msg;
+	message = "MSSG|ENVOI|MAIL_EXP|" + client.getMail() + "|MAIL_DES|" + mailDes + "|MESSAGE|" + msg;
+ System.out.println(msg);
+	//Envoit du message a SocketClient
+	message = soc.socket(message);
+	//Appelle a la methode pour creer un affichage au client
+	decoupage(message, client);
+    }
+    
+    //Methode de concatenation de la requete deconnexion
+    public void requeteRecupMsg(Client client){
+	//Creation de la requete
+	message = "MSSG|RECUP|MAIL_DES|" + client.getMail();
 	//Envoit du message a SocketClient
 	message = soc.socket(message);
 	//Appelle a la methode pour creer un affichage au client
@@ -164,7 +181,7 @@ System.out.println("MSG - chaine : " + client.getChaine());
 System.out.println("LIST - nb resultats : " + req[1]);
                     int j = 1;
                     for(int i = 0; !Integer.toString(i).matches(req[1]); i ++){
-System.out.println("client " + (i+1) + " :" + req[j+3] + " " + req[j+5]);
+System.out.println("client " + (i+1) + " :" + req[j+4] + " " + req[j+6]);
                         clients.add(new Client (req[j+2],req[j+4],req[j+6],req[j+10],req[j+12],req[j+14],Integer.toString(i)));
 System.out.println("liste clients : " + clients.get(i).getMail());
                         j += 14; // permet de récupérer les bonnes valeurs
@@ -224,6 +241,14 @@ System.out.println("PROF - req 1 : " + req[6]);
                 // TODO Auto-generated catch block
                 client.setChaine("Erreur format");
             }
+            break;
+        case "MSSG":
+            int i;
+            for(i = 1; i < (req.length-2); i += 2)
+                {
+                    System.out.println("Test : " + req[i] + "   " + req[i+1]);
+                }
+            System.out.println("Test : " + req[i]);
             break;
         case "DECO" :
             client.setMailCo(null);

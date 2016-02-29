@@ -14,8 +14,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
@@ -23,21 +21,23 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import gestionProtocole.GestionProtocoleClient;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.ListView;
 
 /**
  *
  * @author lamoure
  */
 public class AffichageResultats extends GridPane {
-    
-    private final GestionProtocoleClient gp = new GestionProtocoleClient();
+
     private Button retour, consulter;
-    private TableView resultats;
+    private ListView resultats;
     private Text titre;
-    private Label nom, prenom, mail, tel, diplome, annee, competences;
+    private Label nom, mail, tel, diplome, competences;
     
     //Creation du menu Resultats
-    public void afficherResultats(Stage fenetre_menu, Scene rootScene, Client client) {
+    public void afficherResultats(Stage fenetre_menu, Scene rootScene, Client client, GestionProtocoleClient gp) {
         
         this.setAlignment(Pos.CENTER);
         this.setHgap(10);
@@ -57,15 +57,14 @@ public class AffichageResultats extends GridPane {
         titre.setFont(Font.font("Calibri", FontWeight.NORMAL, 16));
         this.add(titre, 0, 0, 2, 1);
         
-        resultats = new TableView();
- // REMPLISSAGE DE LA TABLEVIEW ???
-        TableColumn<Client, String> nom = new TableColumn("Nom");
-        //nom.setCellValueFactory(new PropertyValueFactory<Client, String>("nom"));
-        TableColumn<Client, String> prenom = new TableColumn("Prénom");
-        //prenom.setCellValueFactory(new PropertyValueFactory<Client, String>("prenom"));
-        TableColumn<Client, String> mail = new TableColumn("E-mail");
-        //mail.setCellValueFactory(new PropertyValueFactory<Client, String>("mail"));
-        resultats.getColumns().addAll(nom, prenom, mail);
+        ObservableList clients = FXCollections.observableArrayList();
+        
+        resultats = new ListView(clients);      
+        for (int i = 0; i < gp.getClients().size(); i++){
+System.out.println("Affchage : " + gp.getClients().get(i).getPrenom() + " " + gp.getClients().get(i).getNom());
+            clients.add(i, gp.getClients().get(i).getPrenom() + " " + gp.getClients().get(i).getNom());
+        }
+        resultats.setItems(clients);
         this.add(resultats, 0, 2);
         
         //Creation du bouton consulter
@@ -80,10 +79,9 @@ public class AffichageResultats extends GridPane {
             {
                 @Override
                 public void handle(ActionEvent event) {
-
-                    if(resultats.getSelectionModel().getSelectedItem().getClass() == Client.class)
-                        gp.requeteCons(resultats.getSelectionModel().getSelectedIndex(), client);
-
+                    
+                    gp.requeteCons(resultats.getSelectionModel().getSelectedIndex(), client);
+System.out.println("Consultation profil - index " + resultats.getSelectionModel().getSelectedIndex());
                     AffichageResultats affichage = new AffichageResultats();
                     Scene scene_affichage = new Scene(affichage);
                     affichage.afficherProfil(fenetre_menu, scene_affichage, client);
@@ -132,38 +130,31 @@ public class AffichageResultats extends GridPane {
         this.setVgap(10);
         this.setPadding(new Insets(25, 25, 25, 25));
         
-        titre = new Text("Profil");
+        titre = new Text("PROFIL de ");
         titre.setFont(Font.font("Calibri", FontWeight.NORMAL, 16));
-        this.add(titre, 0, 0, 2, 1);
+        this.add(titre, 0, 0);
         
         //Creation des differents labels
-        nom = new Label("NOM");
-        nom.setText("Nom : ");
-        this.add(nom, 0, 2);
-        
-        prenom = new Label();
-        prenom.setText("Prénom : ");
-        this.add(prenom, 2, 2);
+        nom = new Label();
+        nom.setText(client.getNom() + " " + client.getPrenom());
+        nom.setFont(Font.font("Calibri", FontWeight.NORMAL, 16));
+        this.add(nom, 1, 0);
         
         mail = new Label();
-        mail.setText("E-mail : ");
-        this.add(mail, 0, 3);
+        mail.setText("E-mail : " + client.getMail());
+        this.add(mail, 0, 1, 2, 1);
         
         tel = new Label();
-        tel.setText("Téléphone : ");
-        this.add(tel, 0, 4);
+        tel.setText("Téléphone : " + client.getTel());
+        this.add(tel, 0, 2);
         
         diplome = new Label();
-        diplome.setText("Diplôme : ");
-        this.add(diplome, 4, 3);
-        
-        annee = new Label();
-        annee.setText("Année d'obtention : ");
-        this.add(annee, 4, 4);
+        diplome.setText("Diplôme : " + client.getDiplome() + " (" + client.getAnnee() + ")");
+        this.add(diplome, 0, 3);
         
         competences = new Label();
-        competences.setText("Compétences : ");
-        this.add(competences, 2, 5);
+        competences.setText("Compétences : " + client.getCompetences());
+        this.add(competences, 0, 4, 3, 1);
         
         //Creation du bouton retour
         retour = new Button("Retour");
@@ -185,8 +176,6 @@ public class AffichageResultats extends GridPane {
                 @Override
                 public void handle (ActionEvent e)
                 {
-                    //utilisateur.setID();
-                    //utilisateur.setMDP();
 
                     //Si le client est connecte, on le renvoit au menuConnecte
                     if(client.getMailCo()!=null)

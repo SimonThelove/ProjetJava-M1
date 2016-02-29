@@ -63,6 +63,8 @@ public class Modification extends GridPane {
         this.add(mail, 0, 3);
 
         saisie_mail = new TextField();
+        saisie_mail.setEditable(false);
+        saisie_mail.setText(client.getMail());
         this.add(saisie_mail, 1, 3);
         
         diplome = new Label("Diplome :");

@@ -62,7 +62,7 @@ public class Serveur {
             // VerificationMotDePasse
             setTest(sgbd.verifierMotDePasse(motDePasse));
             if (!isTest()) {
-                return "Votre mot de passe n'est pas securiser.";
+                return "Votre mot de passe n'est pas securise.";
             }
             else {
                 // Traitement de la requete par le SGBD
@@ -78,7 +78,7 @@ public class Serveur {
                 if (valide != 0)
                     return "Votre compte a bien ete creer, vous pouvez maintenant vous connecter.";
                 else	
-                    return "Erreur creation : votre compte n'a pas ete creer.";
+                    return "Erreur creation : votre compte n'a pas ete cree.";
             }
         }
     }
@@ -102,7 +102,7 @@ public class Serveur {
             }
             else {
                 //creationThread et ID client de maniere unique
-                return "Vous etes bien connectes.";
+                return "Vous etes bien connecte.";
             }
         }
     }
@@ -110,7 +110,7 @@ public class Serveur {
     public String seDeconnecter() {
         //fermetureThread et deconnexion du client
         System.out.println("Deconnexion client ...");
-        return "Vous vous etes bien deconnecter.";
+        return "Vous vous etes bien deconnecte.";
     }
 
     // Methode de modification des informations sur le compte connecter
@@ -161,6 +161,7 @@ public class Serveur {
         }
         else
         {
+            //Creation et execution de la requete pour envoyer un message a un client
             System.out.println("Creation message ...");
             sgbd.setRequeteCreationMessage(mail, mailDest, msg);
             setValide(sgbd.executeUpdateMessage());
@@ -170,4 +171,9 @@ public class Serveur {
                     return "Erreur d'envoi : votre message n'a pas ete envoye.";
         }
     }
+     public String recupererMessage(String mail) {
+        //Execution de la requete
+        reponse = sgbd.getMessage(mail);
+        return reponse;         
+     }
 }
