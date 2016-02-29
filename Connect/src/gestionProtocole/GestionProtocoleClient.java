@@ -243,12 +243,17 @@ System.out.println("PROF - req 1 : " + req[6]);
             }
             break;
         case "MSSG":
-            int i;
-            for(i = 1; i < (req.length-2); i += 2)
+            if(Integer.toString(0).matches(req[1]))
+            {
+                //Mettre un message pas de resultat
+            }
+            else
+            {
+                for(int i = 3; i < (req.length-2); i += 7)
                 {
-                    System.out.println("Test : " + req[i] + "   " + req[i+1]);
+                    System.out.println("message envoyé par " + req[i+2] + " message " + req[i+6]);
                 }
-            System.out.println("Test : " + req[i]);
+            }
             break;
         case "DECO" :
             client.setMailCo(null);
