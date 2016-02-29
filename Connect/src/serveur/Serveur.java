@@ -161,7 +161,6 @@ public class Serveur {
         }
         else
         {
-            //Creation et execution de la requete pour envoyer un message a un client
             System.out.println("Creation message ...");
             sgbd.setRequeteCreationMessage(mail, mailDest, msg);
             setValide(sgbd.executeUpdateMessage());
@@ -171,9 +170,4 @@ public class Serveur {
                     return "Erreur d'envoi : votre message n'a pas ete envoye.";
         }
     }
-     public String recupererMessage(String mail) {
-        //Execution de la requete
-        reponse = sgbd.getMessage(mail);
-        return reponse;         
-     }
 }

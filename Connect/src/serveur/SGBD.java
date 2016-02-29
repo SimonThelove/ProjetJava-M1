@@ -239,11 +239,6 @@ public class SGBD extends Thread {
             this.requeteCreation = "INSERT INTO DEPOT_MSG (mail_exp, mail_des, message) VALUES ('" + mail + "','" + mailDest + "','" + msg + "'); ";
     }
     
-    //Requete recuperation de message client
-    public void setRequeteRecupMessage(String mail) {
-         this.requeteConsultation = "SELECT * FROM DEPOT_MSG WHERE mail_des =  '" + mail + "';";
-    }
-    
     // Requete de modification dans la base de donnees
     public void setRequeteModification(String[] chaine, String adresseMail) {
         // initialisation des variables
@@ -423,34 +418,6 @@ public class SGBD extends Thread {
         return resultats;
     }
 
-    // Requete de recherche d'utilisateurs selon des mots clees
-    public String getMessage(String mail) {
-        bdd2();
-        String message = "";
-        // On fabrique la requete
-        setRequeteRecupMessage(mail);
-        // On l'execute sur la BDD et on recupere les informations sur ces resultats
-        try {
-            rslt = st.executeQuery(requeteConsultation);
-            rsmd = rslt.getMetaData();
-            // On standardise les resultats
-            setResultats(rslt,rsmd,null);
-            con.close();
-            //Creation d'un string a retourner aux fonctions
-            for(i = 0; i < (resultats.size() -2); i += 2)
-                {
-                    message += resultats.get(i) + "|" + resultats.get(i+1) + "|";
-                    System.out.println(message);
-                }
-            //Ajout du dernier champs
-            message += resultats.get(i);
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return message;
-    }
-    
     // Mise à jour de la BDD = Action d'ecriture donc besoin de gestion des acces concurrents
     // Creation ou Modification (Synchronized)
     public synchronized int executeUpdate(String type) {
@@ -487,6 +454,6 @@ public class SGBD extends Thread {
             e.printStackTrace();
         }
         return i;
-    }  
+    }
 }
 

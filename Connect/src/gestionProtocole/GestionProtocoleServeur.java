@@ -113,16 +113,8 @@ System.out.println("Niveau GPS LIST||");
                 }
                 break;
             case "MSSG":
-                if (req[1].compareTo("ENVOI") == 0)
-                {
-System.out.println("Niveau GPS MSSG : " + req[3] + " " + req[5]  +" "+ req[7]);
-                reponse = ("MSG|" + serveur.envoiMessage(req[3], req[5], req[7]));
-                }
-                else if (req[1].compareTo("RECUP") == 0)
-                {
-                    reponse = ("MSSG|" + serveur.recupererMessage(req[3]));
-                    System.out.println(reponse);
-                }
+System.out.println("Niveau GPS MSSG : " + req[2] + " " + req[4]  +" "+ req[6]);
+                reponse = ("MSG|" + serveur.envoiMessage(req[2], req[4], req[6]));
                 break; 
             //Requete de deconnexion
             case "DECO":

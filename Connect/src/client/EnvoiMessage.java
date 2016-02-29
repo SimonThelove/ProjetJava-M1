@@ -23,7 +23,6 @@ import javafx.stage.Stage;
 import gestionProtocole.GestionProtocoleClient;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
-import javafx.scene.paint.Color;
 
 /**
  *
@@ -75,49 +74,26 @@ public class EnvoiMessage extends GridPane {
             {
                 @Override
                 public void handle(ActionEvent e) {
-                    if(saisie_mail.getText().length() == 0)
-                    {
-                        final Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setTitle("Connect - information");
-                        alert.setHeaderText("Mail manquant !");
-                        alert.setContentText("Veuillez saisir le mail destinataire.");
-                        alert.showAndWait();
-                        mail.setTextFill(Color.RED);
-                        message.setTextFill(Color.BLACK);
-                    }
-                    else if(saisie_message.getText().length() == 0)
-                    {
-                        final Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setTitle("Connect - information");
-                        alert.setHeaderText("Message manquant !");
-                        alert.setContentText("Veuillez saisir votre message.");
-                        alert.showAndWait();
-                        message.setTextFill(Color.RED);
-                        mail.setTextFill(Color.BLACK);
-                    }
-                    else
-                    {
-                        //On recupere le mail destinataire et le message
-                        mailDest = saisie_mail.getText();
-                        messageEnvoyer = saisie_message.getText();
+                    //On recupere le mail destinataire et le message
+                    mailDest = saisie_mail.getText();
+                    messageEnvoyer = saisie_message.getText();
+                    
+                    //Creation de la requete a envoyer puis execution de la requete Modification
+                    gp.requeteEnvoiMsg(mailDest, messageEnvoyer, client);
 
-                        //Creation de la requete a envoyer puis execution de la requete Modification
-                        gp.requeteEnvoiMsg(mailDest, messageEnvoyer, client);
+                    // POP-UP de message de resultat
+                    final Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.initOwner(fenetre_menu);
+                    alert.setTitle("Connect - information");
+                    alert.setHeaderText("Message");
+                    alert.setContentText(client.getChaine());
+                    alert.showAndWait();
 
-                        // POP-UP de message de resultat
-                        final Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.initOwner(fenetre_menu);
-                        alert.setTitle("Connect - information");
-                        alert.setHeaderText("Message");
-                        alert.setContentText(client.getChaine());
-                        alert.showAndWait();
-
-                        // Retour au menu connecte
-                        MenuConnecte menuC = new MenuConnecte();
-                        Scene scene_menuC = new Scene(menuC);
-                        menuC.menuConnecte(fenetre_menu, scene_menuC, client);
-                        fenetre_menu.setScene(scene_menuC);
-                    }
+                    // Retour au menu connecte
+                    MenuConnecte menuC = new MenuConnecte();
+                    Scene scene_menuC = new Scene(menuC);
+                    menuC.menuConnecte(fenetre_menu, scene_menuC, client);
+                    fenetre_menu.setScene(scene_menuC);
                 }
             }
         );
