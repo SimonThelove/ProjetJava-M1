@@ -38,13 +38,14 @@ public class GestionProtocoleClient {
 
     // Methode de conception de requete (utilise depuis Modification.java)
     public void setMessage(Client client) {
-            this.message = "NOM|" + client.getNom();
-            this.message += "|PRENOM|" + client.getPrenom();
-            this.message += "|MAIL|" + client.getMail();
-            this.message += "|DIPLOMES|" + client.getDiplome();
-            this.message += "|ANNEE_DIPLOMATION|" + client.getAnnee();
-            this.message += "|COMPETENCES|" + client.getCompetences();
-            this.message += " |";
+        this.message = client.getMailCo();    
+        this.message += "|NOM|" + client.getNom();
+        this.message += "|PRENOM|" + client.getPrenom();
+        this.message += "|TELEPHONE|" + client.getTel();
+        this.message += "|DIPLOMES|" + client.getDiplome();
+        this.message += "|ANNEE_DIPLOMATION|" + client.getAnnee();
+        this.message += "|COMPETENCES|" + client.getCompetences();
+        this.message += " |";
     }
     
     //Methode de concatenation de la requete creerCompte
@@ -118,7 +119,7 @@ System.out.println("GPC CONS : " + message);
     public void requeteModi(Client client){
         String requete;
 	//Creation de la requete
-	requete = "MODI|MAIL|" + "yohann@gm.fr" + "|" + message;
+	requete = "MODI|MAIL|" + message;
 	//Envoit du message a SocketClient
 	requete = soc.echangeServeur(requete);
 	//Appelle a la methode pour creer un affichage au client
@@ -170,6 +171,13 @@ System.out.println("reponse : " + reponse);
 System.out.println("MSG - req 1 : " + req[1]);
                 client.setChaine(req[1]);
 System.out.println("MSG - chaine : " + client.getChaine());
+                //Si le message est le suivant, alors on met a jours les variables de connexion du client
+                // (le message de bienvenu sera a jours directement sans passer par une reconnexion)
+                if("Vos modifications ont ete prises en compte.".equals(req[1]))
+                {
+                    client.setNomCo(client.getNom());
+                    client.setPrenomCo(client.getPrenom());
+                }
             } catch (NumberFormatException e) {
                 // TODO Auto-generated catch block
                 client.setChaine("Erreur format");
