@@ -24,6 +24,7 @@ import gestionProtocole.GestionProtocoleClient;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
 import javafx.scene.paint.Color;
+import socketsTCP.SocketClient;
 
 /**
  *
@@ -31,7 +32,7 @@ import javafx.scene.paint.Color;
  */
 public class EnvoiMessage extends GridPane {
         
-    private final GestionProtocoleClient gp = new GestionProtocoleClient();
+    private GestionProtocoleClient gp;
     private Text titre;
     private Label mail, message;
     private TextArea saisie_message;
@@ -39,12 +40,14 @@ public class EnvoiMessage extends GridPane {
     private String mailDest, messageEnvoyer;
     private Button modifier, retour;
     
-    public void envoyerMessage (Stage fenetre_menu, Scene rootScene, Client client) {
+    public void envoyerMessage (Stage fenetre_menu, Scene rootScene, Client client, SocketClient socket) {
         
         this.setAlignment(Pos.CENTER);
         this.setHgap(10);
         this.setVgap(10);
         this.setPadding(new Insets(25, 25, 25, 25));
+        
+        this.gp = new GestionProtocoleClient(socket);
         
         titre = new Text("Envoyer un message");
         titre.setFont(Font.font("Calibri", FontWeight.NORMAL, 16));
@@ -115,7 +118,7 @@ public class EnvoiMessage extends GridPane {
                         // Retour au menu connecte
                         MenuConnecte menuC = new MenuConnecte();
                         Scene scene_menuC = new Scene(menuC);
-                        menuC.menuConnecte(fenetre_menu, scene_menuC, client);
+                        menuC.menuConnecte(fenetre_menu, scene_menuC, client, gp, socket);
                         fenetre_menu.setScene(scene_menuC);
                     }
                 }
@@ -137,7 +140,7 @@ public class EnvoiMessage extends GridPane {
                 public void handle (ActionEvent e) {
                     MenuConnecte menuC = new MenuConnecte();
                     Scene scene_menuC = new Scene(menuC);
-                    menuC.menuConnecte(fenetre_menu, scene_menuC, client);
+                    menuC.menuConnecte(fenetre_menu, scene_menuC, client, gp, socket);
                     fenetre_menu.setScene(scene_menuC);
                 }
             }

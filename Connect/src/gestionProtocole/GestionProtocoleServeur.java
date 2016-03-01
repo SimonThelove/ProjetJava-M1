@@ -8,6 +8,9 @@ package gestionProtocole;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import serveur.Serveur;
 
 /**
@@ -16,15 +19,27 @@ import serveur.Serveur;
  */
  
 public class GestionProtocoleServeur {
-    private Serveur serveur;
+    private final Serveur serveur;
+    private final Hashtable clients_co;
+    
     private String reponse;
     private String mailConnecte;
     private String type;
-    private ArrayList<String> temp = new ArrayList<String>();
+    private ArrayList<String> temp;
 
-    public GestionProtocoleServeur(Serveur serveur) {
+    public Hashtable getClients_co() {
+        return clients_co;
+    }
+    
+    public GestionProtocoleServeur(Serveur serveur, Hashtable clients) {
         super();
+        this.temp = new ArrayList<>();
         this.serveur = serveur;
+        this.clients_co = clients;
+    }
+
+    public Serveur getServeur() {
+        return serveur;
     }
 
     public String getMailConnecte() {
@@ -67,7 +82,7 @@ public class GestionProtocoleServeur {
                     setReponse("MSG|" + serveur.seConnecter(this.getMailConnecte(), req[4]));
                 } catch (SQLException e) {
                     // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    Logger.getLogger(Serveur.class.getName()).log(Level.SEVERE, null, e);
                 }
                 break;
             //Requete de modification d'information client
@@ -77,18 +92,18 @@ System.out.println("GPS MODI :" + req[(req.length - 1)]);
                     setReponse("MSG|" + serveur.modifierInformations(req,req[2]));
                 } catch (SQLException e) {
                     // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    Logger.getLogger(Serveur.class.getName()).log(Level.SEVERE, null, e);
                 }
                 break;
             //Requete de consultation d'un profil
             case "CONS":
                 try {
 System.out.println("GPS CONS fonction 1 - req :" + req[2]);
-                    temp = (serveur.consulter(req[2], req[3]));
+                    temp = serveur.consulter(req[2], req[3]);
 System.out.println("GPS CONS fonction 2 - temp :" + temp);
                 } catch (SQLException e) {
                     // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    Logger.getLogger(Serveur.class.getName()).log(Level.SEVERE, null, e);
                 }
                 String resultat = String.join("|",temp);
                 setReponse("PROF|" + resultat);

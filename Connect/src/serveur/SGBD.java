@@ -145,7 +145,7 @@ public class SGBD extends Thread {
                         resultats.add(champ);
                         // On ajoute la valeur du champ
                         resultats.add(retour);
-                        System.out.println("Niveau SGBD getAllInfo" +resultats);
+//System.out.println("Niveau SGBD getAllInfo" +resultats);
                     }
                 }
                 rslt.last();
@@ -219,7 +219,7 @@ public class SGBD extends Thread {
             // On finit par rechercher le dernier mot clee en cloturant la requete
             requeteConsultation += "competences LIKE '%" + mots[i] + "%');";
          }
-        System.out.println("SGBD requeteConsultation - " + requeteConsultation);
+System.out.println("SGBD requeteConsultation - " + requeteConsultation);
     }
 
     // Requetes de creation dans la base de donnees
@@ -353,7 +353,7 @@ public class SGBD extends Thread {
         bdd();
         // On fabrique les informations a transmettre
         String[] req = {"MAIL", adresseMail};
-        System.out.println("SGBD getAllInfo - req :" + req[1]);
+System.out.println("SGBD getAllInfo - req :" + req[1]);
         setRequeteConsultation(req);
 
         // On l'execute sur la BDD et on recupere les informations sur ces resultats

@@ -9,6 +9,7 @@ package socketsTCP;
 import java.net.*;
 import java.io.*;
 import gestionProtocole.GestionProtocoleServeur;
+import java.util.Hashtable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import serveur.Serveur;
@@ -21,15 +22,24 @@ import serveur.Serveur;
 public class SocketServeur
 {
     public final static int portDefault = 12314; /** Port par defaut */
-    public int port;// port au cas ou ca marche pas sur port par defaut
+    public int port; // port serveur associe au client connecte
+    private Boolean done = false; // condition de fermeture de la connexion
+    
+    private ConversationServeur conversation;
     private Serveur serveur; // Variables serveur
     private GestionProtocoleServeur gp;
     private ServerSocket leServeur; // Variable socket
+    private Hashtable clients_co;
 
+    public Hashtable getClients_co() {
+        return clients_co;
+    }
+    
     public void socket ()
     {
         serveur = new Serveur();
-        gp = new GestionProtocoleServeur(serveur);
+        clients_co = new Hashtable();
+        gp = new GestionProtocoleServeur(serveur, clients_co);
         leServeur = null;
         try
         {
@@ -53,18 +63,28 @@ public class SocketServeur
                 System.err.println("Impossible de creer un socket serveur : " + ex2);
             }
         }
-        while (true)
+        while (!done)
         {
             System.out.println("En attente de connexion sur le port : " + port);
             try
             {                                
-                new Conversation(leServeur.accept(), gp).start();
-                System.out.println("Conversation start : OK");
+                conversation = new ConversationServeur(leServeur.accept(), gp, clients_co);
+                conversation.start();
             }
             catch (IOException ex)
             {
                 Logger.getLogger(SocketServeur.class.getName()).log(Level.SEVERE, null, ex);
             }
+            done = conversation.getDone();
+        }
+        close();
+    }
+    
+    public void close(){
+        try {
+            leServeur.accept().close();
+        } catch (IOException ex) {
+            Logger.getLogger(SocketServeur.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

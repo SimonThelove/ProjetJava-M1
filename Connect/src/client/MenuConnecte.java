@@ -6,6 +6,7 @@
  */
 package client;
 
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -18,8 +19,10 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import gestionProtocole.GestionProtocoleClient;
 import javafx.scene.control.Alert;
+
+import socketsTCP.SocketClient;
+import gestionProtocole.GestionProtocoleClient;
 
 /**
  *
@@ -27,9 +30,8 @@ import javafx.scene.control.Alert;
  */
 public class MenuConnecte extends GridPane {
     
-    private final GestionProtocoleClient gp = new GestionProtocoleClient();
 
-    public void menuConnecte(Stage fenetre_menuC, Scene rootScene, Client client) {
+    public void menuConnecte(Stage fenetre_menuC, Scene rootScene, Client client, GestionProtocoleClient gp, SocketClient socket) {
         
         this.setAlignment(Pos.CENTER);
         this.setHgap(10);
@@ -56,7 +58,7 @@ public class MenuConnecte extends GridPane {
                 public void handle(ActionEvent e) {
                     Modification modifier = new Modification();
                     Scene scene_modifier = new Scene(modifier);
-                    modifier.modifier(fenetre_menuC,scene_modifier, client);
+                    modifier.modifier(fenetre_menuC,scene_modifier, client, socket);
                     fenetre_menuC.setScene(scene_modifier);
                 }
             }
@@ -77,7 +79,7 @@ public class MenuConnecte extends GridPane {
                 public void handle(ActionEvent e) {
                     Recherche recherche = new Recherche();
                     Scene scene_recherche = new Scene(recherche);
-                    recherche.rechercher(fenetre_menuC, scene_recherche, client);
+                    recherche.rechercher(fenetre_menuC, scene_recherche, client, socket);
                     fenetre_menuC.setScene(scene_recherche);
                 }
             }
@@ -98,7 +100,7 @@ public class MenuConnecte extends GridPane {
                 public void handle(ActionEvent e) {
                     EnvoiMessage envoiMessage = new EnvoiMessage();
                     Scene scene_envoiMessage = new Scene(envoiMessage);
-                    envoiMessage.envoyerMessage(fenetre_menuC, scene_envoiMessage, client);
+                    envoiMessage.envoyerMessage(fenetre_menuC, scene_envoiMessage, client, socket);
                     fenetre_menuC.setScene(scene_envoiMessage);
                 }
             }
@@ -119,7 +121,7 @@ public class MenuConnecte extends GridPane {
                 public void handle(ActionEvent e) {
                     RecuperationMessage recuperationMessage = new RecuperationMessage();
                     Scene scene_recuperationMessagee = new Scene(recuperationMessage);
-                    recuperationMessage.recupererMessage(fenetre_menuC, scene_recuperationMessagee, client);
+                    recuperationMessage.recupererMessage(fenetre_menuC, scene_recuperationMessagee, client, socket);
                     fenetre_menuC.setScene(scene_recuperationMessagee);
                 }
             }
@@ -139,6 +141,7 @@ public class MenuConnecte extends GridPane {
                 //Deonnexion et affichage du menu Anonyme
                 public void handle(ActionEvent e) {
                     gp.requeteDeco(client);
+                    socket.close();
 
                     // POP-UP du message resultat de deconnexion
                     final Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -151,7 +154,7 @@ public class MenuConnecte extends GridPane {
                     //Affichage du menu Anonyme
                     MenuAnonyme menuA = new MenuAnonyme();
                     Scene scene_menuA = new Scene(menuA);
-                    menuA.menuAnonyme(fenetre_menuC, scene_menuA, client);
+                    menuA.menuAnonyme(fenetre_menuC, scene_menuA, client, socket);
                     fenetre_menuC.setScene(scene_menuA);
                 }
             }

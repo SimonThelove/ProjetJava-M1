@@ -24,6 +24,7 @@ import gestionProtocole.GestionProtocoleClient;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
+import socketsTCP.SocketClient;
 
 /**
  *
@@ -37,7 +38,7 @@ public class AffichageResultats extends GridPane {
     private Label nom, mail, tel, diplome, competences;
     
     //Creation du menu Resultats
-    public void afficherResultats(Stage fenetre_menu, Scene rootScene, Client client, GestionProtocoleClient gp) {
+    public void afficherResultats(Stage fenetre_menu, Scene rootScene, Client client, GestionProtocoleClient gp, SocketClient socket) {
         
         this.setAlignment(Pos.CENTER);
         this.setHgap(10);
@@ -84,7 +85,7 @@ System.out.println("Affchage : " + gp.getClients().get(i).getPrenom() + " " + gp
 System.out.println("Consultation profil - index " + resultats.getSelectionModel().getSelectedIndex());
                     AffichageResultats affichage = new AffichageResultats();
                     Scene scene_affichage = new Scene(affichage);
-                    affichage.afficherProfil(fenetre_menu, scene_affichage, client);
+                    affichage.afficherProfil(fenetre_menu, scene_affichage, client, gp, socket);
                     fenetre_menu.setScene(scene_affichage);
                 }
             }
@@ -107,7 +108,7 @@ System.out.println("Consultation profil - index " + resultats.getSelectionModel(
                     {
                         MenuConnecte menuC = new MenuConnecte();
                         Scene scene_menuC = new Scene(menuC);
-                        menuC.menuConnecte(fenetre_menu, scene_menuC, client);
+                        menuC.menuConnecte(fenetre_menu, scene_menuC, client, gp, socket);
                         fenetre_menu.setScene(scene_menuC);
                     }
                     //Sinon on le renvoit au menuAnonyme
@@ -115,7 +116,7 @@ System.out.println("Consultation profil - index " + resultats.getSelectionModel(
                     {
                         MenuAnonyme menuA = new MenuAnonyme();
                         Scene scene_menuA = new Scene(menuA);
-                        menuA.menuAnonyme(fenetre_menu, scene_menuA, client);
+                        menuA.menuAnonyme(fenetre_menu, scene_menuA, client, socket);
                         fenetre_menu.setScene(scene_menuA);
                     }
                 }
@@ -123,7 +124,7 @@ System.out.println("Consultation profil - index " + resultats.getSelectionModel(
         );
     }
     
-    public void afficherProfil(Stage fenetre_menu, Scene rootScene, Client client)
+    public void afficherProfil(Stage fenetre_menu, Scene rootScene, Client client, GestionProtocoleClient gp, SocketClient socket)
     {
         this.setAlignment(Pos.CENTER);
         this.setHgap(10);
@@ -182,7 +183,7 @@ System.out.println("Consultation profil - index " + resultats.getSelectionModel(
                     {
                         MenuConnecte menuC = new MenuConnecte();
                         Scene scene_menuC = new Scene(menuC);
-                        menuC.menuConnecte(fenetre_menu, scene_menuC, client);
+                        menuC.menuConnecte(fenetre_menu, scene_menuC, client, gp, socket);
                         fenetre_menu.setScene(scene_menuC);
                     }
                     //Sinon on le renvoit au menuAnonyme
@@ -190,7 +191,7 @@ System.out.println("Consultation profil - index " + resultats.getSelectionModel(
                     {
                         MenuAnonyme menuA = new MenuAnonyme();
                         Scene scene_menuA = new Scene(menuA);
-                        menuA.menuAnonyme(fenetre_menu, scene_menuA, client);
+                        menuA.menuAnonyme(fenetre_menu, scene_menuA, client, socket);
                         fenetre_menu.setScene(scene_menuA);
                     }
                 }

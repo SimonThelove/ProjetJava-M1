@@ -25,6 +25,8 @@ import javafx.stage.Stage;
 import gestionProtocole.GestionProtocoleClient;
 import javafx.scene.control.Alert;
 
+import socketsTCP.SocketClient;
+
 /**
  *
  * @author lamoure
@@ -32,7 +34,8 @@ import javafx.scene.control.Alert;
 
 public class Connexion extends GridPane {
     
-    private final GestionProtocoleClient gp = new GestionProtocoleClient();
+    private GestionProtocoleClient gp;
+    private SocketClient soc;
     private Text titre;
     private Label identifiant, mdp;
     private TextField saisie_id;
@@ -40,12 +43,15 @@ public class Connexion extends GridPane {
     private Button seConnecter, retour;
        
     //Creation de la fenetre connexion au client
-    public void seConnecter (Stage fenetre_menu, Scene rootScene, Client client){
+    public void seConnecter (Stage fenetre_menu, Scene rootScene, Client client, SocketClient socket){
         
         this.setAlignment(Pos.CENTER);
         this.setHgap(10);
         this.setVgap(10);
         this.setPadding(new Insets(25, 25, 25, 25));
+        
+        this.gp = new GestionProtocoleClient(socket);
+        this.soc = socket;
         
         titre = new Text("Connexion");
         titre.setFont(Font.font("Calibri", FontWeight.NORMAL, 16));
@@ -76,7 +82,7 @@ public class Connexion extends GridPane {
                 {
                 @Override
                 public void handle (ActionEvent e) {
-                    //Verification qu'aucun champs soit vide
+                    //Verification qu'aucun champ soit vide
                     if(saisie_id.getText().length() == 0)
                     {
                         final Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -100,7 +106,7 @@ public class Connexion extends GridPane {
                     //Sinon on execute la requete de connexion
                     else
                     {
-                        //Aucun champs est vide, alors on recupere les valeurs des deux champs
+                        //Aucun champ n'est vide, alors on recupere les valeurs des deux champs
                         client.setMail(saisie_id.getText());
                         client.setMdp(saisie_mdp.getText());
 
@@ -124,7 +130,7 @@ public class Connexion extends GridPane {
                             //Creation du menu connecter
                             MenuConnecte menuC = new MenuConnecte();
                             Scene scene_menuC = new Scene(menuC);
-                            menuC.menuConnecte(fenetre_menu, scene_menuC, client);
+                            menuC.menuConnecte(fenetre_menu, scene_menuC, client, gp, soc);
                             fenetre_menu.setScene(scene_menuC);
                         }
                         //Sinon on le renvoit au menu principal anonyme
@@ -132,7 +138,7 @@ public class Connexion extends GridPane {
                         {
                             MenuAnonyme menuA = new MenuAnonyme();
                             Scene scene_menuA = new Scene(menuA);
-                            menuA.menuAnonyme(fenetre_menu, scene_menuA, client);
+                            menuA.menuAnonyme(fenetre_menu, scene_menuA, client, soc);
                             fenetre_menu.setScene(scene_menuA);
                         }
                     }
@@ -155,7 +161,7 @@ public class Connexion extends GridPane {
                 public void handle (ActionEvent e) {
                     MenuAnonyme menuA = new MenuAnonyme();
                     Scene scene_menuA = new Scene(menuA);
-                    menuA.menuAnonyme(fenetre_menu, scene_menuA, client);
+                    menuA.menuAnonyme(fenetre_menu, scene_menuA, client, socket);
                     fenetre_menu.setScene(scene_menuA);
                 }
             }

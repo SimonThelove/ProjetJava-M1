@@ -17,13 +17,14 @@ import javafx.collections.ObservableList;
  */
 public class GestionProtocoleClient {
     
-    private final SocketClient soc = new SocketClient();
     private final ObservableList<Client> clients;
+    private SocketClient soc; //recuperation du socket d'echange
     private String message = null;//Variable ou est stockee la requete
     private int nbPersonne = 0;//Nombre de profil que renvoit les requetes de recherche
     private String req[] = null;//Requete de retour du serveur 
 
-    public GestionProtocoleClient() {
+    public GestionProtocoleClient(SocketClient socket) {
+        this.soc = socket;
         this.clients = FXCollections.observableArrayList();
     }
     
@@ -51,7 +52,7 @@ public class GestionProtocoleClient {
 	//Creation de la requete
 	message = "CREA|NOM|" + client.getNom() + "|PRENOM|" + client.getPrenom()  + "|MAIL|" + client.getMail() + "|MOTDEPASSE|" + client.getMdp();
 	//Envoit du message a SocketClient
-	message = soc.socket(message);
+	message = soc.echangeServeur(message);
 	//Appelle a la methode pour creer un affichage au client
 	decoupage(message, client);
     }
@@ -60,8 +61,9 @@ public class GestionProtocoleClient {
     public void requeteConx(String mail, String motDePasse, Client client){
 	//Creation de la requete
 	message = "CONX|MAIL|" + mail + "|MOTDEPASSE|" + motDePasse;
-	//Envoit du message a SocketClient
-	message = soc.socket(message);
+System.out.println("CONX : " + message);
+	//Envoi du message a SocketClient
+	message = soc.echangeServeur(message);
 	//Appelle a la methode pour creer un affichage au client
 	decoupage(message, client);
     }
@@ -71,7 +73,7 @@ public class GestionProtocoleClient {
 	//Creation de la requete
 	message = "RECH|MOTSCLES|" + motCles;
 	//Envoit du message a SocketClient
-	message = soc.socket(message);
+	message = soc.echangeServeur(message);
 	//Appelle a la methode pour creer un affichage au client
 	decoupage(message, client);
     }
@@ -86,7 +88,7 @@ public class GestionProtocoleClient {
                 "|ANNEE_DIPLOMATION|" + client.getAnnee() +
                 "|COMPETENCES|" + client.getCompetences();
 	//Envoit du message a SocketClient
-	message = soc.socket(message);
+	message = soc.echangeServeur(message);
 	//Appelle a la methode pour creer un affichage au client
 	decoupage(message, client);
     }
@@ -97,7 +99,7 @@ public class GestionProtocoleClient {
 	message = "CONS|MAIL|" + clients.get(index).getMail() + "|0|";
 System.out.println("GPC CONS : " + message);
 	//Envoit du message a SocketClient
-	message = soc.socket(message);
+	message = soc.echangeServeur(message);
 	//Appelle a la methode pour creer un affichage au client
 	decoupage(message, client);
     }
@@ -107,7 +109,7 @@ System.out.println("GPC CONS : " + message);
 	//Creation de la requete
 	message = "CONS|MAIL|" + client.getMail() + "|1|";
 	//Envoit du message a SocketClient
-	message = soc.socket(message);
+	message = soc.echangeServeur(message);
 	//Appelle a la methode pour creer un affichage au client
 	decoupage(message, client);
     }
@@ -118,7 +120,7 @@ System.out.println("GPC CONS : " + message);
 	//Creation de la requete
 	requete = "MODI|MAIL|" + "yohann@gm.fr" + "|" + message;
 	//Envoit du message a SocketClient
-	requete = soc.socket(requete);
+	requete = soc.echangeServeur(requete);
 	//Appelle a la methode pour creer un affichage au client
 	decoupage(requete, client);
 	}
@@ -129,7 +131,7 @@ System.out.println("GPC CONS : " + message);
 	message = "MSSG|ENVOI|MAIL_EXP|" + client.getMail() + "|MAIL_DES|" + mailDes + "|MESSAGE|" + msg;
  System.out.println(msg);
 	//Envoit du message a SocketClient
-	message = soc.socket(message);
+	message = soc.echangeServeur(message);
 	//Appelle a la methode pour creer un affichage au client
 	decoupage(message, client);
     }
@@ -139,7 +141,7 @@ System.out.println("GPC CONS : " + message);
 	//Creation de la requete
 	message = "MSSG|RECUP|MAIL_DES|" + client.getMail();
 	//Envoit du message a SocketClient
-	message = soc.socket(message);
+	message = soc.echangeServeur(message);
 	//Appelle a la methode pour creer un affichage au client
 	decoupage(message, client);
     }
@@ -149,7 +151,7 @@ System.out.println("GPC CONS : " + message);
 	//Creation de la requete
 	message = "DECO|";
 	//Envoit du message a SocketClient
-	message = soc.socket(message);
+	message = soc.echangeServeur(message);
 	//Appelle a la methode pour creer un affichage au client
 	decoupage(message, client);
     }

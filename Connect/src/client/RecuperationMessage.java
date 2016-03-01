@@ -21,8 +21,9 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import gestionProtocole.GestionProtocoleClient;
-import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
+
+import socketsTCP.SocketClient;
 
 /**
  *
@@ -30,7 +31,7 @@ import javafx.scene.control.TextArea;
  */
 public class RecuperationMessage extends GridPane {
 
-    private final GestionProtocoleClient gp = new GestionProtocoleClient();
+    private GestionProtocoleClient gp;
     private Text titre;
     private Label mail, message;
     private TextArea saisie_message;
@@ -38,12 +39,14 @@ public class RecuperationMessage extends GridPane {
     private String mailDest, messageEnvoyer;
     private Button modifier, retour;
     
-    public void recupererMessage (Stage fenetre_menu, Scene rootScene, Client client) {
+    public void recupererMessage (Stage fenetre_menu, Scene rootScene, Client client, SocketClient socket) {
         
         this.setAlignment(Pos.CENTER);
         this.setHgap(10);
         this.setVgap(10);
         this.setPadding(new Insets(25, 25, 25, 25));
+        
+        this.gp = new GestionProtocoleClient(socket);
         
         titre = new Text("Envoyer un message");
         titre.setFont(Font.font("Calibri", FontWeight.NORMAL, 16));
@@ -141,7 +144,7 @@ public class RecuperationMessage extends GridPane {
                 public void handle (ActionEvent e) {
                     MenuConnecte menuC = new MenuConnecte();
                     Scene scene_menuC = new Scene(menuC);
-                    menuC.menuConnecte(fenetre_menu, scene_menuC, client);
+                    menuC.menuConnecte(fenetre_menu, scene_menuC, client, gp, socket);
                     fenetre_menu.setScene(scene_menuC);
                 }
             }

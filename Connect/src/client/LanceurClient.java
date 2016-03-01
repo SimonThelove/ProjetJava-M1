@@ -7,8 +7,11 @@
 package client;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import socketsTCP.SocketClient;
 
 /**
  *
@@ -18,6 +21,7 @@ public class LanceurClient extends Application {
     
     private MenuAnonyme menuA;
     private Client client = new Client();
+    private SocketClient soc = new SocketClient();
     
     @Override
     public void start(Stage application) {
@@ -26,9 +30,10 @@ public class LanceurClient extends Application {
         //Creation et affichage du menu Principal en tant qu'anonyme
         menuA = new MenuAnonyme();
         Scene sceneRoot = new Scene(menuA);
-        menuA.menuAnonyme(application, sceneRoot, client);
+        menuA.menuAnonyme(application, sceneRoot, client, soc);
         application.setScene(sceneRoot);
         application.show();
+
     }
     
     public static void main(String[] args) {

@@ -22,26 +22,31 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
+import socketsTCP.SocketClient;
+import socketsTCP.SocketEcouteMsgr;
+
 /**
  *
  * @author lamoure
  */
 public class Messenger extends GridPane {
     
-    private final GestionProtocoleClient gp = new GestionProtocoleClient();
+    private GestionProtocoleClient gp;
     private final ObservableList<String> connectes;
     
     public Messenger() {
         this.connectes = FXCollections.observableArrayList();
     }
     
-    public void dialoguer (Stage fenetre_menu, Scene rootScene, Client client) {
+    public void dialoguer (Stage fenetre_menu, Scene rootScene, Client client, SocketClient socket, SocketEcouteMsgr ecoute) {
 
         // Dimensions de la fenêtre de dialogue
         this.setPrefSize(600, 600);
         this.setHgap(10);
         this.setVgap(10);
         this.setPadding(new Insets(25, 25, 25, 25));
+        
+        this.gp = new GestionProtocoleClient(socket);
         
         // Zone d'affichage des messages
         TextArea messages = new TextArea();
@@ -56,22 +61,19 @@ public class Messenger extends GridPane {
         // Creation de la liste des clients connectes
         ListView<String> liste_clients = new ListView<>(connectes);
         
-// Recuperation des clients connectes sur le serveur (anonymes ou non)
-// EN COURS DE DEVELOPPEMENT... (création socket permanent pour établir une liste des connectés)
-// Une fois la liste établie sur le serveur, on la récupère sur les clients au moment de la connexion
-// Ce qui permet aux clients en ligne de communiquer entre eux directement.
-// côté serveur : liste (mail / port d'écoute messenger)
-// côté client : socket d'écoute + récupération liste
+        // Recuperation des clients connectes sur le serveur (anonymes ou non)
+                // RETOURNER UNE HASHTABLE DANS UNE OBSERVABLE LIST / LISTVIEW ?
+        //gp.requeteP2P(); >> Récup Hashtable
         
-        // Recuperation du mail des clients connectes
-        for (int i = 0; i < gp.getClients().size(); i++){
-            connectes.add(i, gp.getClients().get(i).getMail());
-        }
         
-        // Ajout des mails a la liste
+        // Ajout des noms a la liste
         liste_clients.setItems(connectes);
         liste_clients.setPrefSize(100, 550);
         this.add(liste_clients, 1, 0);
+        
+        // Connexion avec client sélectionné dans la ListView
+        //gp.connecterP2P(portEcouteP2P); >> Demande au serveur une connexion avec le client sélectionné
+                // LE SERVEUR VA TRANSMETTRE LA DEMANDE A L'AUTRE CLIENT
         
         // Bouton d'envoi du message
         Button envoyer = new Button("Envoyer");
@@ -83,7 +85,10 @@ public class Messenger extends GridPane {
         envoyer.setOnAction(new EventHandler<ActionEvent>(){
             
             @Override
-            public void handle(ActionEvent event) {
+            public void handle(ActionEvent event)
+            {
+                // Envoi du message au client sélectionné +  affichage de la conversation
+                //gp.echangerP2P(saisie_msg.getText()); >> Envoi du message directement au client
                 
                 messages.setText(messages.getText() + saisie_msg.getText() + System.lineSeparator());
                 saisie_msg.clear();

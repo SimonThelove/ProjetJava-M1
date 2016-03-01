@@ -24,6 +24,7 @@ import javafx.stage.Stage;
 import gestionProtocole.GestionProtocoleClient;
 import javafx.scene.control.Alert;
 import javafx.scene.paint.Color;
+import socketsTCP.SocketClient;
 
 /**
  *
@@ -31,7 +32,7 @@ import javafx.scene.paint.Color;
  */
 public class Recherche extends GridPane {
         
-    private final GestionProtocoleClient gp = new GestionProtocoleClient();
+    private GestionProtocoleClient gp;
     private String motsCherches;
     private Text titre;
     private Hyperlink rechercheAvancee;
@@ -39,12 +40,14 @@ public class Recherche extends GridPane {
     private TextField saisie_nom, saisie_prenom, saisie_mail, saisie_diplome, saisie_annee, saisie_competences, saisie_motsCles;
     private Button rechercher, retour, rechercherPlus;
 
-    public void rechercher(Stage fenetre_menu, Scene rootScene, Client client) {
+    public void rechercher(Stage fenetre_menu, Scene rootScene, Client client, SocketClient socket) {
         
         this.setAlignment(Pos.CENTER);
         this.setHgap(10);
         this.setVgap(10);
         this.setPadding(new Insets(25, 25, 25, 25));
+        
+        this.gp = new GestionProtocoleClient(socket);
         
         titre = new Text("Recherche");
         titre.setFont(Font.font("Calibri", FontWeight.NORMAL, 16));
@@ -68,7 +71,7 @@ public class Recherche extends GridPane {
                 public void handle(ActionEvent e) {
                     Recherche recherche = new Recherche();
                     Scene scene_recherche = new Scene(recherche);
-                    recherche.rechercheAvancee(fenetre_menu, scene_recherche, client);
+                    recherche.rechercheAvancee(fenetre_menu, scene_recherche, client, socket);
                     fenetre_menu.setScene(scene_recherche);
                 }
             }
@@ -109,7 +112,7 @@ public class Recherche extends GridPane {
                         //On affiche le(s) resultat(s) de la recherche
                         AffichageResultats affichage = new AffichageResultats();
                         Scene scene_affichage = new Scene(affichage);
-                        affichage.afficherResultats(fenetre_menu, scene_affichage, client, gp);
+                        affichage.afficherResultats(fenetre_menu, scene_affichage, client, gp, socket);
                         fenetre_menu.setScene(scene_affichage);
                     }
                 }
@@ -133,7 +136,7 @@ public class Recherche extends GridPane {
                     {
                         MenuConnecte menuC = new MenuConnecte();
                         Scene scene_menuC = new Scene(menuC);
-                        menuC.menuConnecte(fenetre_menu, scene_menuC, client);
+                        menuC.menuConnecte(fenetre_menu, scene_menuC, client, gp, socket);
                         fenetre_menu.setScene(scene_menuC);
                     }
                     //Sinon on le renvoit au menuAnonyme
@@ -141,7 +144,7 @@ public class Recherche extends GridPane {
                     {
                         MenuAnonyme menuA = new MenuAnonyme();
                         Scene scene_menuA = new Scene(menuA);
-                        menuA.menuAnonyme(fenetre_menu, scene_menuA, client);
+                        menuA.menuAnonyme(fenetre_menu, scene_menuA, client, socket);
                         fenetre_menu.setScene(scene_menuA);
                     }
                 }
@@ -149,7 +152,7 @@ public class Recherche extends GridPane {
         );
     }
     
-    public void rechercheAvancee (Stage fenetre_menu, Scene rootScene, Client client) {
+    public void rechercheAvancee (Stage fenetre_menu, Scene rootScene, Client client, SocketClient socket) {
         
         this.setAlignment(Pos.CENTER);
         this.setHgap(10);
@@ -243,7 +246,7 @@ public class Recherche extends GridPane {
                         //Affichage des resultats de la requete
                         AffichageResultats affichage = new AffichageResultats();
                         Scene scene_affichage = new Scene(affichage);
-                        affichage.afficherResultats(fenetre_menu, scene_affichage, client, gp);
+                        affichage.afficherResultats(fenetre_menu, scene_affichage, client, gp, socket);
                         fenetre_menu.setScene(scene_affichage);
                     }
                 }
@@ -267,7 +270,7 @@ public class Recherche extends GridPane {
                     {
                         MenuConnecte menuC = new MenuConnecte();
                         Scene scene_menuC = new Scene(menuC);
-                        menuC.menuConnecte(fenetre_menu, scene_menuC, client);
+                        menuC.menuConnecte(fenetre_menu, scene_menuC, client, gp, socket);
                         fenetre_menu.setScene(scene_menuC);
                     }
                     //Sinon on le renvoit au menuAnonyme
@@ -275,7 +278,7 @@ public class Recherche extends GridPane {
                     {
                         MenuAnonyme menuA = new MenuAnonyme();
                         Scene scene_menuA = new Scene(menuA);
-                        menuA.menuAnonyme(fenetre_menu, scene_menuA, client);
+                        menuA.menuAnonyme(fenetre_menu, scene_menuA, client, socket);
                         fenetre_menu.setScene(scene_menuA);
                     }
                 }

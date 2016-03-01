@@ -23,8 +23,9 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import gestionProtocole.GestionProtocoleClient;
 import javafx.scene.control.Alert;
-import javafx.scene.layout.Border;
 import javafx.scene.paint.Color;
+
+import socketsTCP.SocketClient;
 
 /**
  *
@@ -32,19 +33,21 @@ import javafx.scene.paint.Color;
  */
 public class Inscription extends GridPane {
     
-    private final GestionProtocoleClient gp = new GestionProtocoleClient();
+    private GestionProtocoleClient gp;
     private Text titre;
     private Label nom, prenom, mail, mdp;
     private TextField saisie_nom, saisie_prenom, saisie_mail;
     private PasswordField saisie_mdp;
     private Button sInscrire, retour;
     
-    public void sInscrire (Stage fenetre_menu, Scene rootScene, Client client) {
+    public void sInscrire (Stage fenetre_menu, Scene rootScene, Client client, SocketClient socket) {
         
         this.setAlignment(Pos.CENTER);
         this.setHgap(10);
         this.setVgap(10);
         this.setPadding(new Insets(25, 25, 25, 25));
+        
+        this.gp = new GestionProtocoleClient(socket);
 
         titre = new Text("Inscription");
         titre.setFont(Font.font("Calibri", FontWeight.NORMAL, 16));
@@ -159,7 +162,7 @@ public class Inscription extends GridPane {
                         //Retour au menu anonyme
                         MenuAnonyme menuA = new MenuAnonyme();
                         Scene scene_menuA = new Scene(menuA);
-                        menuA.menuAnonyme(fenetre_menu, scene_menuA, client);
+                        menuA.menuAnonyme(fenetre_menu, scene_menuA, client, socket);
                         fenetre_menu.setScene(scene_menuA);
                     }
                 }
@@ -181,7 +184,7 @@ public class Inscription extends GridPane {
                 public void handle (ActionEvent e) {
                     MenuAnonyme menuA = new MenuAnonyme();
                     Scene scene_menuA = new Scene(menuA);
-                    menuA.menuAnonyme(fenetre_menu, scene_menuA, client);
+                    menuA.menuAnonyme(fenetre_menu, scene_menuA, client, socket);
                     fenetre_menu.setScene(scene_menuA);
                 }
             }

@@ -20,13 +20,16 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import socketsTCP.SocketClient;
+import socketsTCP.SocketEcouteMsgr;
+
 /**
  *
  * @author lamoure
  */
 public class MenuAnonyme extends GridPane {
 
-    public void menuAnonyme (Stage fenetre_menu, Scene rootScene, Client client) {
+    public void menuAnonyme (Stage fenetre_menu, Scene rootScene, Client client, SocketClient soc) {
         
         this.setAlignment(Pos.CENTER);
         this.setHgap(10);
@@ -52,7 +55,7 @@ public class MenuAnonyme extends GridPane {
                 public void handle(ActionEvent e) {
                     Inscription inscription = new Inscription();
                     Scene scene_insciption = new Scene(inscription);
-                    inscription.sInscrire(fenetre_menu, scene_insciption, client);
+                    inscription.sInscrire(fenetre_menu, scene_insciption, client, soc);
                     fenetre_menu.setScene(scene_insciption);
                 }
             }
@@ -73,7 +76,7 @@ public class MenuAnonyme extends GridPane {
                 public void handle(ActionEvent e) {
                     Connexion connexion = new Connexion();
                     Scene scene_connexion = new Scene(connexion);
-                    connexion.seConnecter(fenetre_menu, scene_connexion, client);
+                    connexion.seConnecter(fenetre_menu, scene_connexion, client, soc);
                     fenetre_menu.setScene(scene_connexion);
                 }
             }
@@ -94,29 +97,37 @@ public class MenuAnonyme extends GridPane {
                 public void handle(ActionEvent e) {
                     Recherche recherche = new Recherche();
                     Scene scene_recherche = new Scene(recherche);
-                    recherche.rechercher(fenetre_menu, scene_recherche, client);
+                    recherche.rechercher(fenetre_menu, scene_recherche, client, soc);
                     fenetre_menu.setScene(scene_recherche);
                 }
             }
         );
         
         //Creation du bouton Messenger
-        Button mssenger = new Button("Messenger");
+        Button messenger = new Button("Messenger");
         HBox hbMsgr = new HBox(10);
         hbMsgr.setAlignment(Pos.BOTTOM_RIGHT);
-        hbMsgr.getChildren().add(mssenger);
+        hbMsgr.getChildren().add(messenger);
         this.add(hbMsgr, 3, 2);
         
         //Action lors de l'appui sur le bouton Messenger
-        mssenger.setOnAction(new EventHandler<ActionEvent>()
+        messenger.setOnAction(new EventHandler<ActionEvent>()
             {
                 @Override
                 //Affichge du menu Messenger
                 public void handle(ActionEvent e) {
+                    
+                    // Lancement d'un socket d'ecoute pour connexion P2P
+                    SocketEcouteMsgr ecoute = new SocketEcouteMsgr();
+                    ecoute.socket();
+                    
+                    // Ouverture de la scene messenger
                     Messenger discuter = new Messenger();
                     Scene scene_discuter = new Scene(discuter);
-                    discuter.dialoguer(fenetre_menu, scene_discuter, client);
+                    discuter.dialoguer(fenetre_menu, scene_discuter, client, soc, ecoute);
                     fenetre_menu.setScene(scene_discuter);
+                    
+                   
                 }
             }
         );
@@ -132,9 +143,9 @@ public class MenuAnonyme extends GridPane {
         quitter.setOnAction(new EventHandler<ActionEvent>() 
             {
                 @Override
-                //Quitter l'application
+                //Fermer le socket et quitter l'application
                 public void handle(ActionEvent e) {
-                    Platform.exit();
+                   Platform.exit();
                 }
             }
         );

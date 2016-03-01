@@ -1,38 +1,57 @@
 package socketsTCP;
 import java.io.*;
 import java.net.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class SocketClient {
+    
+        private Socket leSocket;
+        private PrintStream fluxSortieSocket;
+        private BufferedReader fluxEntreeSocket;
+        private Integer portClient;
+        private String retour = null;
+    
+    public SocketClient(){
+            try {
+                leSocket = new Socket("localhost", 12314);
+                System.err.println("Connecte sur : "+leSocket);
+                portClient = leSocket.getLocalPort();
+            
+                this.fluxSortieSocket = new PrintStream(leSocket.getOutputStream());
+                this.fluxEntreeSocket = new BufferedReader(new InputStreamReader(leSocket.getInputStream()));
+                
+                // Envoi du port client a serveur
+                fluxSortieSocket.println(portClient);
+                
+            } catch (IOException ex) {
+                Logger.getLogger(SocketClient.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+    }
+    
+    public Socket getSocket(){
+        return leSocket;
+    }
 	
-    public String socket(String message){
-        Socket          leSocket;
-        PrintStream     fluxSortieSocket;
-        BufferedReader  fluxEntreeSocket;
-
-        String retour = null;
+    public String echangeServeur(String message){
 
         try {
-            leSocket = new Socket("localhost", 12314); // socket sur echo
-            System.err.println("Connecter sur : "+leSocket);
 
-            fluxSortieSocket = new PrintStream(leSocket.getOutputStream());
-            fluxEntreeSocket = new BufferedReader(new InputStreamReader(leSocket.getInputStream()));
-
-            fluxSortieSocket.println(message);//Envoit vers serveur
+            fluxSortieSocket.println(message);// Envoi vers serveur
             retour = fluxEntreeSocket.readLine();// Lecture et reception du flux serveur
 
-            leSocket.close();
+        } catch (IOException ex) {
+            Logger.getLogger(SocketClient.class.getName()).log(Level.SEVERE, null, ex);
         }
-        catch (UnknownHostException ex)
-        {
-            System.err.println("Machine inconnue : "+ex);
-            ex.printStackTrace();
-        }
-        catch (IOException ex)
-        {
-            System.err.println("Erreur : "+ex);
-            ex.printStackTrace();
-        }
-            return retour;    
+        return retour;
       }
+    
+    public void close () {
+        try {
+            leSocket.close();
+        } catch (IOException ex) {
+            Logger.getLogger(SocketClient.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }
