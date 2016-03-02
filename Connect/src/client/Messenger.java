@@ -46,6 +46,8 @@ public class Messenger extends GridPane {
         this.setVgap(10);
         this.setPadding(new Insets(25, 25, 25, 25));
         
+System.out.println(">>>> Lancement Messenger.java");
+        
         this.gp = new GestionProtocoleClient(socket);
         this.gpMsgr = new GestionProtocoleClient(ecoute);
         
@@ -59,6 +61,8 @@ public class Messenger extends GridPane {
         TextField saisie_msg = new TextField();
         this.add(saisie_msg, 0, 1);
         
+System.out.println("Creation liste des clients connectés...");
+        
         // Creation de la liste des clients connectes
         ListView<String> liste_clients = new ListView<>(connectes);
         
@@ -71,6 +75,8 @@ public class Messenger extends GridPane {
         liste_clients.setItems(connectes);
         liste_clients.setPrefSize(200, 550);
         this.add(liste_clients, 1, 0, 2, 1);
+
+System.out.println("Creation liste OK...");
         
         // Connexion avec client sélectionné dans la ListView
         //gp.connecterP2P(portEcouteP2P);
@@ -89,6 +95,8 @@ public class Messenger extends GridPane {
             @Override
             public void handle(ActionEvent event)
             {
+System.out.println("Ouverture socket d'ecoute P2P...");
+                
                 ecoute.socket();
             }
         
@@ -106,10 +114,15 @@ public class Messenger extends GridPane {
             @Override
             public void handle(ActionEvent event)
             {
+                
                 // Envoi du message au client sélectionné +  affichage de la conversation
+System.out.println("Initialisation de la conversation P2P...");                
                 ecoute.initEnvoiP2P();
+System.out.println("Envoi du message P2P...");                 
                 gpMsgr.echangerP2P(saisie_msg.getText(), client);
+System.out.println("Affichage de la conversation P2P reçue...");                 
                 messages.setText(messages.getText() + client.getChaine() + System.lineSeparator());
+System.out.println("Vidage de la zone de saisie...");                 
                 saisie_msg.clear();
             }
         
@@ -117,6 +130,7 @@ public class Messenger extends GridPane {
         
         // Bouton de retour au menu précédent
         // DEVELOPPEMENT EN COURS ...
-        
+System.out.println(">> Fermeture de Messenger.java (Retour)");
+
     }
 }

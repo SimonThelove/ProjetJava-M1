@@ -33,11 +33,7 @@ public class RecuperationMessage extends GridPane {
 
     private GestionProtocoleClient gp;
     private Text titre;
-    private Label mail, message;
-    private TextArea saisie_message;
-    private TextField saisie_mail;
-    private String mailDest, messageEnvoyer;
-    private Button modifier, retour;
+    private Button retour;
     
     public void recupererMessage (Stage fenetre_menu, Scene rootScene, Client client, SocketClient socket) {
         
@@ -46,12 +42,18 @@ public class RecuperationMessage extends GridPane {
         this.setVgap(10);
         this.setPadding(new Insets(25, 25, 25, 25));
         
+System.out.println(">>>> Lancement RecuperationMessage.java"); 
+        
         this.gp = new GestionProtocoleClient(socket);
         
-        //Creation de la requete a envoyer puis execution de la requete Modification
+System.out.println("Creation de la requete MSG..."); 
+        
+        //Creation de la requete a envoyer puis execution de la requete
         gp.requeteRecupMsg(client);
         
-        titre = new Text("Messages reçus : " + "");
+System.out.println("Messages récupérés..."); 
+        
+        titre = new Text("Messages reçus : " + " messages");
         titre.setFont(Font.font("Calibri", FontWeight.NORMAL, 16));
         this.add(titre, 0, 0, 2, 1);
 
@@ -72,6 +74,8 @@ public class RecuperationMessage extends GridPane {
                 @Override
                 //Renvoit le client au menu connecte
                 public void handle (ActionEvent e) {
+System.out.println(">> Fermeture de ReceptionMessage.java (Retour)"); 
+                    
                     MenuConnecte menuC = new MenuConnecte();
                     Scene scene_menuC = new Scene(menuC);
                     menuC.menuConnecte(fenetre_menu, scene_menuC, client, gp, socket);

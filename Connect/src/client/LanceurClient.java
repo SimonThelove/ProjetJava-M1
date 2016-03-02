@@ -7,8 +7,6 @@
 package client;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import socketsTCP.SocketClient;
@@ -20,8 +18,8 @@ import socketsTCP.SocketClient;
 public class LanceurClient extends Application {
     
     private MenuAnonyme menuA;
-    private Client client = new Client();
-    private SocketClient soc = new SocketClient();
+    private final Client client = new Client();
+    private final SocketClient soc = new SocketClient();
     
     @Override
     public void start(Stage application) {

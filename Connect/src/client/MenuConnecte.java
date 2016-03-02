@@ -37,6 +37,7 @@ public class MenuConnecte extends GridPane {
         this.setHgap(10);
         this.setVgap(10);
         this.setPadding(new Insets(25, 25, 25, 25));
+System.out.println(">>>> Lancement MenuConnecte.java");
         
         //Affichage au client d'un message de bienvenue avec son nom et prenom
         Text titre = new Text("Bienvenue : " + client.getNomCo() + " " + client.getPrenomCo());
@@ -56,6 +57,8 @@ public class MenuConnecte extends GridPane {
                 @Override
                 //Affichage du menu Modification
                 public void handle(ActionEvent e) {
+System.out.println(">> Fermeture MenuConnecte.java (Modification)");
+                    
                     Modification modifier = new Modification();
                     Scene scene_modifier = new Scene(modifier);
                     modifier.modifier(fenetre_menuC,scene_modifier, client, socket);
@@ -77,6 +80,8 @@ public class MenuConnecte extends GridPane {
                 @Override
                 //Affichage du menu Rechercher
                 public void handle(ActionEvent e) {
+System.out.println(">> Fermeture MenuConnecte.java (Rechercher)");
+                    
                     Recherche recherche = new Recherche();
                     Scene scene_recherche = new Scene(recherche);
                     recherche.rechercher(fenetre_menuC, scene_recherche, client, socket);
@@ -98,6 +103,8 @@ public class MenuConnecte extends GridPane {
                 @Override
                 //Affichage du menu Message a envoyer
                 public void handle(ActionEvent e) {
+System.out.println(">> Fermeture MenuConnecte.java (Envoi Message)");
+                    
                     EnvoiMessage envoiMessage = new EnvoiMessage();
                     Scene scene_envoiMessage = new Scene(envoiMessage);
                     envoiMessage.envoyerMessage(fenetre_menuC, scene_envoiMessage, client, socket);
@@ -119,6 +126,8 @@ public class MenuConnecte extends GridPane {
                 @Override
                 //Affichage du menu Mes messages
                 public void handle(ActionEvent e) {
+System.out.println(">> Fermeture MenuConnecte.java (Recuperation Message)");
+                    
                     RecuperationMessage recuperationMessage = new RecuperationMessage();
                     Scene scene_recuperationMessagee = new Scene(recuperationMessage);
                     recuperationMessage.recupererMessage(fenetre_menuC, scene_recuperationMessagee, client, socket);
@@ -140,8 +149,11 @@ public class MenuConnecte extends GridPane {
                 @Override
                 //Deonnexion et affichage du menu Anonyme
                 public void handle(ActionEvent e) {
+System.out.println("Fermeture socket client connecté...");
+                    
                     gp.requeteDeco(client);
                     socket.close();
+System.out.println(">> Fermeture MenuConnecte.java (Deconnexion)");
 
                     // POP-UP du message resultat de deconnexion
                     final Alert alert = new Alert(Alert.AlertType.INFORMATION);

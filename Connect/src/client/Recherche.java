@@ -47,6 +47,8 @@ public class Recherche extends GridPane {
         this.setVgap(10);
         this.setPadding(new Insets(25, 25, 25, 25));
         
+System.out.println(">>>> Lancement de Recherche.java"); 
+        
         this.gp = new GestionProtocoleClient(socket);
         
         titre = new Text("Recherche");
@@ -69,6 +71,8 @@ public class Recherche extends GridPane {
             {
                 @Override
                 public void handle(ActionEvent e) {
+System.out.println("Recherche avancée..."); 
+                    
                     Recherche recherche = new Recherche();
                     Scene scene_recherche = new Scene(recherche);
                     recherche.rechercheAvancee(fenetre_menu, scene_recherche, client, socket);
@@ -89,6 +93,7 @@ public class Recherche extends GridPane {
             {
                 @Override
                 public void handle(ActionEvent e) {
+System.out.println("Vérification saisie..."); 
 
                    //Verification qu'aucun champs soit vide
                     if(saisie_motsCles.getText().length() == 0)
@@ -103,11 +108,17 @@ public class Recherche extends GridPane {
                     //Sinon on execute la requete de recheche
                     else
                     {
+System.out.println("Récupération saisie..."); 
+                        
                         //On recupere le(s) mot(s) cle(s)
                         motsCherches = saisie_motsCles.getText();
                         
+System.out.println("Envoi requête..."); 
+                        
                         //Appel a la fonction de rechercheMotsCles
                         gp.requeteRechMotsCles(motsCherches, client);
+
+System.out.println(">> Fermeture Recherche.java (Exec OK)"); 
                         
                         //On affiche le(s) resultat(s) de la recherche
                         AffichageResultats affichage = new AffichageResultats();
@@ -131,6 +142,8 @@ public class Recherche extends GridPane {
             {
                 @Override
                 public void handle (ActionEvent e) {
+System.out.println(">> Fermeture Recherche.java (Retour)"); 
+                    
                     //Si le client est connecte, on le renvoit au menuConnecte
                     if(client.getMailCo()!=null)
                     {
@@ -158,6 +171,8 @@ public class Recherche extends GridPane {
         this.setHgap(10);
         this.setVgap(10);
         this.setPadding(new Insets(25, 25, 25, 25));
+        
+System.out.println("Affichage champs de recherche..."); 
         
         titre = new Text("Recherche Avancée");
         titre.setFont(Font.font("Calibri", FontWeight.NORMAL, 16));
@@ -212,6 +227,8 @@ public class Recherche extends GridPane {
             {
                 @Override
                 public void handle(ActionEvent e) {
+System.out.println("Verification saisie..."); 
+                    
                     //Verification qu'aucun champs soit vide
                     if((saisie_nom.getText().length() == 0) && (saisie_prenom.getText().length() == 0) && (saisie_mail.getText().length() == 0)
                         && (saisie_diplome.getText().length() == 0) && (saisie_annee.getText().length() == 0) && (saisie_competences.getText().length() == 0))
@@ -232,6 +249,8 @@ public class Recherche extends GridPane {
                     //S'il y a au moins un champs renseigne, on execute le requete de recherche avancee
                     else
                     {
+System.out.println("Recuperation saisie..."); 
+                        
                         //On recupere les informations
                         client.setNom(saisie_nom.getText());
                         client.setPrenom(saisie_prenom.getText());
@@ -239,9 +258,13 @@ public class Recherche extends GridPane {
                         client.setDiplome(saisie_diplome.getText());
                         client.setAnnee(saisie_annee.getText());
                         client.setCompetences(saisie_competences.getText());
-                           
+
+System.out.println("Envoi requête..."); 
+                        
                         //Execution de la requete rechNom
                         gp.requeteRechNom(client);
+                        
+System.out.println(">> Fermeture Recherche.java (Exec OK)"); 
 
                         //Affichage des resultats de la requete
                         AffichageResultats affichage = new AffichageResultats();
@@ -265,6 +288,8 @@ public class Recherche extends GridPane {
             {
                 @Override
                 public void handle (ActionEvent e) {
+System.out.println(">> Fermeture Recherche.java (Retour)"); 
+                   
                     //Si le client est connecte, on le renvoit au menuConnecte
                     if(client.getMailCo()!=null)
                     {

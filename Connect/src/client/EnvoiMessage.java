@@ -46,6 +46,8 @@ public class EnvoiMessage extends GridPane {
         this.setHgap(10);
         this.setVgap(10);
         this.setPadding(new Insets(25, 25, 25, 25));
+
+System.out.println(">>>> Lancement EnvoiMessage.java");
         
         this.gp = new GestionProtocoleClient(socket);
         
@@ -78,6 +80,9 @@ public class EnvoiMessage extends GridPane {
             {
                 @Override
                 public void handle(ActionEvent e) {
+                    
+System.out.println("Verification message...");
+                    
                     if(saisie_mail.getText().length() == 0)
                     {
                         final Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -100,6 +105,8 @@ public class EnvoiMessage extends GridPane {
                     }
                     else
                     {
+System.out.println("Envoi message...");
+                        
                         //On recupere le mail destinataire et le message
                         mailDest = saisie_mail.getText();
                         messageEnvoyer = saisie_message.getText();
@@ -114,6 +121,7 @@ public class EnvoiMessage extends GridPane {
                         alert.setHeaderText("Message");
                         alert.setContentText(client.getChaine());
                         alert.showAndWait();
+System.out.println(">> Fermeture de EnvoiMessage.java (Exec OK)");
 
                         // Retour au menu connecte
                         MenuConnecte menuC = new MenuConnecte();
@@ -138,6 +146,8 @@ public class EnvoiMessage extends GridPane {
                 @Override
                 //Renvoit le client au menu connecte
                 public void handle (ActionEvent e) {
+System.out.println(">> Fermeture de EnvoiMessage.java (Retour)");
+                    
                     MenuConnecte menuC = new MenuConnecte();
                     Scene scene_menuC = new Scene(menuC);
                     menuC.menuConnecte(fenetre_menu, scene_menuC, client, gp, socket);

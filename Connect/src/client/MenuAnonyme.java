@@ -36,6 +36,8 @@ public class MenuAnonyme extends GridPane {
         this.setVgap(10);
         this.setPadding(new Insets(25, 25, 25, 25));
         
+System.out.println(">>>> Lancement MenuAnonyme.java");        
+        
         Text titre = new Text("Menu Principal");
         titre.setFont(Font.font("Calibri", FontWeight.NORMAL, 16));
         this.add(titre, 0, 0, 2, 1);
@@ -53,6 +55,8 @@ public class MenuAnonyme extends GridPane {
                 @Override
                 //Affichge du menu Inscription
                 public void handle(ActionEvent e) {
+System.out.println(">> Fermeture MenuAnonyme.java (Inscription)");
+                    
                     Inscription inscription = new Inscription();
                     Scene scene_insciption = new Scene(inscription);
                     inscription.sInscrire(fenetre_menu, scene_insciption, client, soc);
@@ -74,6 +78,8 @@ public class MenuAnonyme extends GridPane {
                 @Override
                 //Affichge du menu Connexion
                 public void handle(ActionEvent e) {
+System.out.println(">> Fermeture MenuAnonyme.java (Connexion)");
+                    
                     Connexion connexion = new Connexion();
                     Scene scene_connexion = new Scene(connexion);
                     connexion.seConnecter(fenetre_menu, scene_connexion, client, soc);
@@ -95,6 +101,8 @@ public class MenuAnonyme extends GridPane {
                 @Override
                 //Affichge du menu Rechercher
                 public void handle(ActionEvent e) {
+System.out.println(">> Fermeture MenuAnonyme.java (Rechercher)");
+                    
                     Recherche recherche = new Recherche();
                     Scene scene_recherche = new Scene(recherche);
                     recherche.rechercher(fenetre_menu, scene_recherche, client, soc);
@@ -116,6 +124,7 @@ public class MenuAnonyme extends GridPane {
                 @Override
                 //Affichge du menu Messenger
                 public void handle(ActionEvent e) {
+System.out.println(">> Fermeture MenuAnonyme.java (Messenger)");
                     
                     // Creation d'un socket d'ecoute pour connexion P2P
                     SocketEcouteMsgr ecoute = new SocketEcouteMsgr();
@@ -144,9 +153,12 @@ public class MenuAnonyme extends GridPane {
                 @Override
                 //Fermer le socket et quitter l'application
                 public void handle(ActionEvent e) {
+                    
                     if (!soc.getSocket().isClosed()){
+System.out.println("Fermeture Socket client anonyme...");                        
                         soc.quit();
                     }
+System.out.println(">> Fermeture MenuAnonyme.java (Quitter)");
                    Platform.exit();
                 }
             }

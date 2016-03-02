@@ -45,29 +45,22 @@ public class AffichageResultats extends GridPane {
         this.setVgap(10);
         this.setPadding(new Insets(25, 25, 25, 25));
         
-        /**
-         * 
-         * AFFICHAGE EN MODE RESULTATS (0 ou Plusieurs)
-         * 
-         * > Aucun résultat = "Aucun résultat"
-         * > Plusieurs résultats = Tableau sélectionnable (Nom, Prenom, Mail)
-         *          >> Sélection du tableau = Recherche sur un seul profil (CONSULTATION)
-         * 
-         */
+System.out.println(">>>> Lancement AffichageResultats.java");
         titre = new Text("Resultats");
         titre.setFont(Font.font("Calibri", FontWeight.NORMAL, 16));
         this.add(titre, 0, 0, 2, 1);
         
         ObservableList clients = FXCollections.observableArrayList();
-        
-        resultats = new ListView(clients);      
+
+        resultats = new ListView(clients);
+
         for (int i = 0; i < gp.getClients().size(); i++){
-System.out.println("Affchage : " + gp.getClients().get(i).getPrenom() + " " + gp.getClients().get(i).getNom());
             clients.add(i, gp.getClients().get(i).getPrenom() + " " + gp.getClients().get(i).getNom());
         }
         resultats.setItems(clients);
         this.add(resultats, 0, 2);
-        
+System.out.println("liste résultats OK..."); 
+
         //Creation du bouton consulter
         consulter = new Button("Consulter");
         HBox hbConsult = new HBox(10);
@@ -81,8 +74,8 @@ System.out.println("Affchage : " + gp.getClients().get(i).getPrenom() + " " + gp
                 @Override
                 public void handle(ActionEvent event) {
                     
+System.out.println("Selection d'un profil...");                    
                     gp.requeteCons(resultats.getSelectionModel().getSelectedIndex(), client);
-System.out.println("Consultation profil - index " + resultats.getSelectionModel().getSelectedIndex());
                     AffichageResultats affichage = new AffichageResultats();
                     Scene scene_affichage = new Scene(affichage);
                     affichage.afficherProfil(fenetre_menu, scene_affichage, client, gp, socket);
@@ -103,6 +96,8 @@ System.out.println("Consultation profil - index " + resultats.getSelectionModel(
             {
                 @Override
                 public void handle (ActionEvent e) {
+System.out.println(">> Fermeture AffichageResultats.java (Retour depuis résultats)");
+
                     //Si le client est connecte, on le renvoit au menuConnecte
                     if(client.getMailCo()!=null)
                     {
@@ -126,6 +121,8 @@ System.out.println("Consultation profil - index " + resultats.getSelectionModel(
     
     public void afficherProfil(Stage fenetre_menu, Scene rootScene, Client client, GestionProtocoleClient gp, SocketClient socket)
     {
+  System.out.println("Affichage d'un profil...");      
+        
         this.setAlignment(Pos.CENTER);
         this.setHgap(10);
         this.setVgap(10);
@@ -177,7 +174,7 @@ System.out.println("Consultation profil - index " + resultats.getSelectionModel(
                 @Override
                 public void handle (ActionEvent e)
                 {
-
+System.out.println(">> Fermeture d'AffichageResultats.java (Retour depuis profil)");
                     //Si le client est connecte, on le renvoit au menuConnecte
                     if(client.getMailCo()!=null)
                     {

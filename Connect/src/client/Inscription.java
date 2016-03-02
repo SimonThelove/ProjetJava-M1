@@ -47,6 +47,8 @@ public class Inscription extends GridPane {
         this.setVgap(10);
         this.setPadding(new Insets(25, 25, 25, 25));
         
+System.out.println(">>>> Lancement d'Inscription.java");
+        
         this.gp = new GestionProtocoleClient(socket);
 
         titre = new Text("Inscription");
@@ -90,6 +92,8 @@ public class Inscription extends GridPane {
             {
                 @Override
                 public void handle(ActionEvent e) {
+System.out.println("Verification champs...");
+                    
                     //Verification qu'aucun champs soit vide
                      if(saisie_nom.getText().length() == 0)
                     {
@@ -142,6 +146,8 @@ public class Inscription extends GridPane {
                     //Si aucun champs est vide, alors creation de la requete et execution de la requete
                     else
                     {
+System.out.println("Envoi informations...");
+                        
                         //Recuperation des informations renseignees
                         client.setNom(saisie_nom.getText());
                         client.setPrenom(saisie_prenom.getText());
@@ -158,6 +164,7 @@ public class Inscription extends GridPane {
                         alert.setHeaderText("Message");
                         alert.setContentText(client.getChaine());
                         alert.showAndWait();
+System.out.println(">> Fermeture Inscription.java (Exec OK)");
                         
                         //Retour au menu anonyme
                         MenuAnonyme menuA = new MenuAnonyme();
@@ -182,6 +189,8 @@ public class Inscription extends GridPane {
                 @Override
                 //Retour au menu anonyme
                 public void handle (ActionEvent e) {
+System.out.println(">> Fermeture Inscription.java (Retour)");
+                    
                     MenuAnonyme menuA = new MenuAnonyme();
                     Scene scene_menuA = new Scene(menuA);
                     menuA.menuAnonyme(fenetre_menu, scene_menuA, client, socket);

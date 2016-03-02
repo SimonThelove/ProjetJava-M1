@@ -44,6 +44,8 @@ public class Modification extends GridPane {
         this.setVgap(10);
         this.setPadding(new Insets(25, 25, 25, 25));
         
+System.out.println(">>>> Lancement de Modification.java"); 
+
         this.gp = new GestionProtocoleClient(socket);
         
         titre = new Text("Modification");
@@ -105,6 +107,8 @@ public class Modification extends GridPane {
             {
                 @Override
                 public void handle(ActionEvent e) {
+System.out.println("Verification champs..."); 
+                    
                     //Affichage POPUP car il n'y as pas le nom de renseigne
                     if(saisie_nom.getText().length() == 0)
                     {
@@ -132,6 +136,8 @@ public class Modification extends GridPane {
                     //Sinon on execute le requete de modification
                     else
                     {
+System.out.println("Recuperation des informations..."); 
+                        
                         //Recuperation des informations des champs
                         client.setNom(saisie_nom.getText());
                         client.setPrenom(saisie_prenom.getText());
@@ -139,6 +145,8 @@ public class Modification extends GridPane {
                         client.setDiplome(saisie_diplome.getText());
                         client.setAnnee(saisie_annee.getText());
                         client.setCompetences(saisie_competences.getText());
+                        
+System.out.println("Envoi de la requête..."); 
 
                         //Creation de la requete a envoyer puis execution de la requete Modification
                         gp.setMessage(client);
@@ -152,6 +160,8 @@ public class Modification extends GridPane {
                         alert.setContentText(client.getChaine());
                         alert.showAndWait();
 
+System.out.println(">> Fermeture de Modification.java (Exec OK)"); 
+                        
                         // Retour au menu connecte
                         MenuConnecte menuC = new MenuConnecte();
                         Scene scene_menuC = new Scene(menuC);
@@ -175,6 +185,8 @@ public class Modification extends GridPane {
                 @Override
                 //Renvoit le client au menu connecte
                 public void handle (ActionEvent e) {
+System.out.println(">> Fermeture de Modification.java (Retour)"); 
+                    
                     MenuConnecte menuC = new MenuConnecte();
                     Scene scene_menuC = new Scene(menuC);
                     menuC.menuConnecte(fenetre_menu, scene_menuC, client, gp, socket);

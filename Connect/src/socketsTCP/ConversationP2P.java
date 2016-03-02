@@ -35,6 +35,7 @@ public class ConversationP2P extends Thread{
                 
         try 
         {
+System.err.println("#### Construct ConversationP2P... ");            
             sortieSocket = new PrintStream(soc.getOutputStream());
             entreeSocket = new BufferedReader(new InputStreamReader(soc.getInputStream()));
         }
@@ -46,7 +47,7 @@ public class ConversationP2P extends Thread{
         stop = false;
         done = false;
         
-System.out.println("Conversation start : OK");
+System.out.println("Conversation P2P start : OK");
     }
     
     public Boolean getDone(){
@@ -56,20 +57,19 @@ System.out.println("Conversation start : OK");
     public void echanger(){
         try
         {
+System.err.println("@ConversationP2P echanger");            
             entree = entreeSocket.readLine();
             
             if (entree != null)
-            {
-                
-System.out.println("Reception Socket : " + entree);
-                    // Traitement requete >>>>>>>>>>>> ADAPTER AU P2P
+            {                
+System.out.println("## ENTREE = " + entree);
                     sortie = entree.substring(5);
-                    // Envoi au client >>>>>>>>>>>>>>> ADAPTER AU P2P
+System.out.println("# Recuperation message... " + entree.substring(5));                    
                     sortieSocket.println(sortie);
-System.out.println("Sortie Socket : " + sortie);                
+System.out.println("## SORTIE = " + sortie);
             }
             else stop = true;
-            
+System.out.println("@echanger FIN");            
         }
         catch (IOException ex) 
         {

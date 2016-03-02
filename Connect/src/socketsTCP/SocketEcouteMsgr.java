@@ -38,30 +38,30 @@ public class SocketEcouteMsgr {
         socketEcoute = null;
         try
         {
+System.err.println("@SocketEcouteMsgr socket");            
             socketEcoute = new ServerSocket(portDefault);
             port = portDefault;
-            
+System.out.println("# PORT ECOUTE P2P = " + port);
         }
         catch (IOException ex)
         {
             // fin de connexion
-            System.err.println("Impossible de crer un socket d'ecoute sur ce port : " + ex);
             try
             {
                 // on demande un port anonyme 
                 socketEcoute = new ServerSocket();
                 port = socketEcoute.getLocalPort();
-                System.out.println("Port serveur : " + port);
+System.err.println("# PORT ECOUTE P2P = " + port + " <!> DIFFERENT DU PORT PAR DEFAUT <!>");
             }
             catch (IOException ex2)
             {
                 // fin de connexion
-                System.err.println("Impossible de creer un socket d'ecoute : " + ex2);
+                System.err.println("SocketEcouteMsgr - Creation impossible " + ex2);
             }
         }
         while (!done)
         {
-            System.out.println("En attente de connexion sur le port : " + port);
+            System.out.println("# Attente de donnexion sur le port : " + port);
             try
             {                                
                 conversation = new ConversationP2P(socketEcoute.accept());
@@ -78,11 +78,12 @@ public class SocketEcouteMsgr {
     
     public void initEnvoiP2P () {
         try {
+System.err.println("@SocketEcouteMsgr initEnvoiP2P");            
             leSocket = new Socket("localhost", 12345);
-            System.err.println("Connecte sur : "+leSocket);
-            
+System.out.println("# Creation Buffer/Stream...");            
             this.fluxSortieSocket = new PrintStream(leSocket.getOutputStream());
             this.fluxEntreeSocket = new BufferedReader(new InputStreamReader(leSocket.getInputStream()));
+System.out.println("# Creation OK..." + leSocket);                        
         } catch (IOException ex) {
             Logger.getLogger(SocketEcouteMsgr.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -91,9 +92,12 @@ public class SocketEcouteMsgr {
      public String echangeP2P(String msg){
 
         try {
-System.out.println("SocketP2P MSG : " + msg);
+System.err.println("@SocketEcouteMsgr echangeP2P");
+System.out.println("## ENTREE = " + msg);
+
             fluxSortieSocket.println(msg);          // Envoi vers client P2P
             retour = fluxEntreeSocket.readLine();   // Lecture et reception du flux P2P
+System.out.println("## SORTIE = " + retour);
 
         } catch (IOException ex) {
             Logger.getLogger(SocketClient.class.getName()).log(Level.SEVERE, null, ex);
@@ -103,7 +107,9 @@ System.out.println("SocketP2P MSG : " + msg);
     
     public void close(){
         try {
+System.err.println("@SocketEcouteMsgr close");                        
             socketEcoute.accept().close();
+System.out.println("# Fermeture socket ecoute num. " + socketEcoute.getLocalPort());                        
         } catch (IOException ex) {
             Logger.getLogger(SocketEcouteMsgr.class.getName()).log(Level.SEVERE, null, ex);
         }

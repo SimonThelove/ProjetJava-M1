@@ -39,6 +39,7 @@ public class Conversation extends Thread {
     
     // Constructeur pour les echanges messenger (P2P)
     public Conversation(Socket soc){
+System.err.println("#### Construct Conversation pour P2P...");        
         this.socket = soc;
         
         try {
@@ -49,12 +50,12 @@ public class Conversation extends Thread {
         }
         stop = false;
         done = false;
-        System.out.println("Conversation start : OK");
+System.out.println("Conversation P2P start : OK");
     }
     
     // Constructeur pour les echanges client / serveur
     public Conversation(Socket soc, GestionProtocoleServeur gp, Hashtable clients_co) {
-        
+System.err.println("#### Construct Conversation sur Serveur...");        
         this.gp = gp;
         this.socket = soc;
         this.clients_co = clients_co;
@@ -67,7 +68,7 @@ public class Conversation extends Thread {
         }
         stop = false;
         done = false;
-        System.out.println("Conversation start : OK");
+System.out.println("Conversation Serveur start : OK");
     }
     
     public Boolean getDone(){
@@ -76,28 +77,29 @@ public class Conversation extends Thread {
       
     public void echanger(){
       try {
-            entree = entreeSocket.readLine();
+System.err.println("@Conversation echanger");
+            entree = entreeSocket.readLine();           
             if (entree != null){
 
                 if (entree.matches("[0-9]{5}")){ // Si le contenu du message est EXACTEMENT une suite de 5 chiffres alors il s'agit du numéro de port associé au client
-                    System.out.println("Port client = " + entree);
+System.out.println("## ENTREE - Port Cli > Srv = " + entree);
                     portClient = entree;
                     clients_co.put(portClient, "anon_" + portClient);
-System.out.println("Creation client connecte : " + clients_co.get(portClient));
+System.out.println("Creation client connecte...");
                 }
                 else {
-System.out.println("Reception Socket : " + entree);
+System.out.println("## ENTREE = " + entree);
                     // Traitement requete
                     sortie = gp.requete(entree);
                     // Envoi au client
                     sortieSocket.println(sortie);
-System.out.println("Sortie Socket : " + sortie);
+System.out.println("## SORTIE = " + sortie);
                     if (sortie.contains("MSG|Vous etes bien connecte.")){
                         mailCo = entree.substring(10, entree.indexOf("|", 10)); // récupération temporaire de l'adresse mail du client
-System.out.println(">>> MailCo SOCKET : " + mailCo);
+System.out.println("# Recuperation mail utilisateur connecté...");
                         try {
                             clients_co.replace(portClient, gp.getServeur().consulter(mailCo, "1").get(6) + " " + gp.getServeur().consulter(mailCo, "1").get(4));
-System.out.println("Clients_co - modif " + portClient + " : " + clients_co.get(portClient));
+System.out.println("# Modification Hashtable clients connectés...");
                         } catch (SQLException ex) {
                             Logger.getLogger(Conversation.class.getName()).log(Level.SEVERE, null, ex);
                         }
@@ -105,12 +107,12 @@ System.out.println("Clients_co - modif " + portClient + " : " + clients_co.get(p
                     if (sortie.contains("MSG|Vous vous etes bien deconnecte.")){
                         clients_co.remove(portClient);
                         done = true;
-System.out.println("Fermeture socket client : " + portClient);
-System.out.println("----------------------------------------");
+System.err.println(">> Fermeture SocketClient : " + portClient);
                     }
                 }
             } else
                 stop = true;
+System.out.println("@echanger FIN");            
         } catch (IOException ex) {
             Logger.getLogger(SocketServeur.class.getName()).log(Level.SEVERE, null, ex);
             stop = true;

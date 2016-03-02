@@ -50,6 +50,8 @@ public class Connexion extends GridPane {
         this.setVgap(10);
         this.setPadding(new Insets(25, 25, 25, 25));
         
+System.out.println(">>>> Lancement de Connexion.java");      
+
         this.gp = new GestionProtocoleClient(socket);
         this.soc = socket;
         
@@ -82,6 +84,9 @@ public class Connexion extends GridPane {
                 {
                 @Override
                 public void handle (ActionEvent e) {
+                    
+System.out.println("Vérification saisie...");         
+
                     //Verification qu'aucun champ soit vide
                     if(saisie_id.getText().length() == 0)
                     {
@@ -106,6 +111,8 @@ public class Connexion extends GridPane {
                     //Sinon on execute la requete de connexion
                     else
                     {
+System.out.println("Recuperation valeurs...");     
+
                         //Aucun champ n'est vide, alors on recupere les valeurs des deux champs
                         client.setMail(saisie_id.getText());
                         client.setMdp(saisie_mdp.getText());
@@ -124,8 +131,11 @@ public class Connexion extends GridPane {
                         //Si les identifiants sont bon et que la connexion c'est bien deroulee
                         if (client.getChaine().startsWith("Vous etes bien connecte"))
                         {
+System.out.println("Recuperation informations de l'utilisateur identifié...");  
+
                             //Appel a la fonction pour recuperer les informations du client
                             gp.requeteNomConnecte(client);
+System.out.println(">> Fermeture de Connexion.java (Connexion OK)");
 
                             //Creation du menu connecter
                             MenuConnecte menuC = new MenuConnecte();
@@ -136,6 +146,8 @@ public class Connexion extends GridPane {
                         //Sinon on le renvoit au menu principal anonyme
                         else
                         {
+System.out.println(">> Fermeture de Connexion.java (Echec Connexion)");
+                            
                             MenuAnonyme menuA = new MenuAnonyme();
                             Scene scene_menuA = new Scene(menuA);
                             menuA.menuAnonyme(fenetre_menu, scene_menuA, client, soc);
@@ -159,6 +171,8 @@ public class Connexion extends GridPane {
                 @Override
                 //On renvoit le client au menuAnonyme
                 public void handle (ActionEvent e) {
+System.out.println(">> Fermeture de Connexion.java (Retour)");
+                    
                     MenuAnonyme menuA = new MenuAnonyme();
                     Scene scene_menuA = new Scene(menuA);
                     menuA.menuAnonyme(fenetre_menu, scene_menuA, client, socket);

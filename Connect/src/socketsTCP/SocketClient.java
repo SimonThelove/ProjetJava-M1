@@ -14,16 +14,20 @@ public class SocketClient {
     
     public SocketClient(){
             try {
+System.err.println("#### Construct Socket vers Serveur...");  
+
                 leSocket = new Socket("localhost", 12314);
                 System.err.println("Connecte sur : "+leSocket);
                 portClient = leSocket.getLocalPort();
-            
+                
+System.out.println("# PORT CLIENT = " + portClient);
+
                 this.fluxSortieSocket = new PrintStream(leSocket.getOutputStream());
                 this.fluxEntreeSocket = new BufferedReader(new InputStreamReader(leSocket.getInputStream()));
                 
                 // Envoi du port client a serveur
                 fluxSortieSocket.println(portClient);
-                
+System.out.println("Creation socket serveur : OK");                
             } catch (IOException ex) {
                 Logger.getLogger(SocketClient.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -37,9 +41,12 @@ public class SocketClient {
     public String echangeServeur(String message){
 
         try {
+System.err.println("@SocketClient echangerServeur");
+System.out.println("## ENTREE = " + message);
 
             fluxSortieSocket.println(message);// Envoi vers serveur
             retour = fluxEntreeSocket.readLine();// Lecture et reception du flux serveur
+System.out.println("## SORTIE = " + retour);
 
         } catch (IOException ex) {
             Logger.getLogger(SocketClient.class.getName()).log(Level.SEVERE, null, ex);
@@ -49,7 +56,9 @@ public class SocketClient {
     
     public void close () {
         try {
+System.err.println("@SocketClient close");            
             leSocket.close();
+System.out.println("# Fermeture socket num. " + leSocket.getLocalPort());            
         } catch (IOException ex) {
             Logger.getLogger(SocketClient.class.getName()).log(Level.SEVERE, null, ex);
         }
