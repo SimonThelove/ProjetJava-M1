@@ -49,6 +49,7 @@ public class SocketClient {
     
     public void close () {
         try {
+            echangeServeur("QUIT|"); // Validation serveur de la fermeture du client
             leSocket.close();
         } catch (IOException ex) {
             Logger.getLogger(SocketClient.class.getName()).log(Level.SEVERE, null, ex);

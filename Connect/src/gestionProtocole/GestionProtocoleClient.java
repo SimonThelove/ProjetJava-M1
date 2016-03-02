@@ -18,6 +18,7 @@ import javafx.collections.ObservableList;
 public class GestionProtocoleClient {
     
     private final ObservableList<Client> clients;
+    private final ObservableList<String> clients_co;
     private SocketClient soc; //recuperation du socket d'echange
     private String message = null;//Variable ou est stockee la requete
     private int nbPersonne = 0;//Nombre de profil que renvoit les requetes de recherche
@@ -26,6 +27,11 @@ public class GestionProtocoleClient {
     public GestionProtocoleClient(SocketClient socket) {
         this.soc = socket;
         this.clients = FXCollections.observableArrayList();
+        this.clients_co = FXCollections.observableArrayList();
+    }
+
+    public ObservableList<String> getClients_co() {
+        return clients_co;
     }
     
     public ObservableList<Client> getClients() {
@@ -141,17 +147,30 @@ System.out.println("GPC CONS : " + message);
     public void requeteRecupMsg(Client client){
 	//Creation de la requete
 	message = "MSSG|RECUP|MAIL_DES|" + client.getMail();
-	//Envoit du message a SocketClient
+	//Envoi du message a SocketClient
 	message = soc.echangeServeur(message);
 	//Appelle a la methode pour creer un affichage au client
 	decoupage(message, client);
     }
     
+    //Méthode de récupération de la liste des clients connectés
+    public void requeteP2P (Client client){
+        //Creation de la requete
+        message = "P2PH|";
+        //Envoi du message a SocketClient
+        message = soc.echangeServeur(message);
+        //appel a la methode pour creer un affchage client
+        decoupage(message, client);
+    }
+    
+    //Methode de demande de connexion PeerToPeer
+    // EN COURS DE DEVELOPPEMENT...
+    
     //Methode de concatenation de la requete deconnexion
     public void requeteDeco(Client client){
 	//Creation de la requete
 	message = "DECO|";
-	//Envoit du message a SocketClient
+	//Envoi du message a SocketClient
 	message = soc.echangeServeur(message);
 	//Appelle a la methode pour creer un affichage au client
 	decoupage(message, client);
@@ -264,6 +283,13 @@ System.out.println("PROF - req 1 : " + req[6]);
                 {
                     System.out.println("message envoyé par " + req[i+2] + " message " + req[i+6]);
                 }
+            }
+            break;
+        case "P2PH" :
+            // Retour de la hashtable depuis le serveur
+System.out.println("P2PH : " + req[1]);
+            for (int i = 1; i < req.length; i++){
+                clients_co.add(req[i]);
             }
             break;
         case "DECO" :

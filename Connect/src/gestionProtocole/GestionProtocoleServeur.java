@@ -139,9 +139,16 @@ System.out.println("Niveau GPS MSSG : " + req[3] + " " + req[5]  +" "+ req[7]);
                     System.out.println(reponse);
                 }
                 break; 
+            case "P2PH":
+                setReponse("P2PH|" + String.join("|", clients_co.values()));
+                break;
             //Requete de deconnexion
             case "DECO":
                 setReponse("MSG|" + serveur.seDeconnecter());
+                break;
+            //Fermeture d'un socket de connexion anonyme
+            case "QUIT":
+                setReponse("QUIT|");
                 break;
         }
     

@@ -117,9 +117,8 @@ public class MenuAnonyme extends GridPane {
                 //Affichge du menu Messenger
                 public void handle(ActionEvent e) {
                     
-                    // Lancement d'un socket d'ecoute pour connexion P2P
+                    // Creation d'un socket d'ecoute pour connexion P2P
                     SocketEcouteMsgr ecoute = new SocketEcouteMsgr();
-                    ecoute.socket();
                     
                     // Ouverture de la scene messenger
                     Messenger discuter = new Messenger();
@@ -145,6 +144,9 @@ public class MenuAnonyme extends GridPane {
                 @Override
                 //Fermer le socket et quitter l'application
                 public void handle(ActionEvent e) {
+                    if (!soc.getSocket().isClosed()){
+                        soc.close();
+                    }
                    Platform.exit();
                 }
             }

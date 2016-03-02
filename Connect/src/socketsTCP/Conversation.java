@@ -21,10 +21,11 @@ import java.util.logging.Logger;
  *
  * @author Simon
  */
-public class ConversationServeur extends Thread {
+public class Conversation extends Thread {
     
     private PrintStream     sortieSocket;
     private BufferedReader  entreeSocket;
+    private Socket          socket;
     
     private GestionProtocoleServeur gp;
     private Hashtable clients_co;
@@ -36,27 +37,37 @@ public class ConversationServeur extends Thread {
     private String          mailCo;
     private String          portClient;
     
-    // Constructeur pour les echanges client / serveur
-    public ConversationServeur(Socket soc, GestionProtocoleServeur gp, Hashtable clients_co) {
+    // Constructeur pour les echanges messenger (P2P)
+    public Conversation(Socket soc){
+        this.socket = soc;
         
-        this.gp = gp;
-        this.clients_co = clients_co;
-        
-        try 
-        {
+        try {
             sortieSocket = new PrintStream(soc.getOutputStream());
             entreeSocket = new BufferedReader(new InputStreamReader(soc.getInputStream()));
+        } catch (IOException ex) {
+            Logger.getLogger(Conversation.class.getName()).log(Level.SEVERE, null, ex);
         }
-        catch (IOException ex) 
-        {
-            Logger.getLogger(ConversationServeur.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
         stop = false;
         done = false;
+        System.out.println("Conversation start : OK");
+    }
+    
+    // Constructeur pour les echanges client / serveur
+    public Conversation(Socket soc, GestionProtocoleServeur gp, Hashtable clients_co) {
         
-System.out.println("Conversation start : OK");
-
+        this.gp = gp;
+        this.socket = soc;
+        this.clients_co = clients_co;
+        
+        try {
+            sortieSocket = new PrintStream(soc.getOutputStream());
+            entreeSocket = new BufferedReader(new InputStreamReader(soc.getInputStream()));
+        } catch (IOException ex) {
+            Logger.getLogger(Conversation.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        stop = false;
+        done = false;
+        System.out.println("Conversation start : OK");
     }
     
     public Boolean getDone(){
@@ -67,76 +78,47 @@ System.out.println("Conversation start : OK");
       try {
             entree = entreeSocket.readLine();
             if (entree != null){
-                
-                // Si le contenu du message est EXACTEMENT une suite de 5 chiffres
-                // alors il s'agit du numéro de port associé au client
-                if (entree.matches("[0-9]{5}"))
-                {
+
+                if (entree.matches("[0-9]{5}")){ // Si le contenu du message est EXACTEMENT une suite de 5 chiffres alors il s'agit du numéro de port associé au client
                     System.out.println("Port client = " + entree);
                     portClient = entree;
                     clients_co.put(portClient, "anon_" + portClient);
-                    
-System.out.println("Creation client connecte : " + clients_co.values().toString());
-
+System.out.println("Creation client connecte : " + clients_co.get(portClient));
                 }
                 else {
-                    
 System.out.println("Reception Socket : " + entree);
-
                     // Traitement requete
                     sortie = gp.requete(entree);
                     // Envoi au client
                     sortieSocket.println(sortie);
-                    
 System.out.println("Sortie Socket : " + sortie);
-
-                    if (sortie.contains("MSG|Vous etes bien connecte."))
-                    {
-                        // récupération temporaire de l'adresse mail du client
-                        mailCo = entree.substring(10, entree.indexOf("|", 10));
-                        
+                    if (sortie.contains("MSG|Vous etes bien connecte.")){
+                        mailCo = entree.substring(10, entree.indexOf("|", 10)); // récupération temporaire de l'adresse mail du client
 System.out.println(">>> MailCo SOCKET : " + mailCo);
-
                         try {
-System.out.println(" Retour CONSULTER : " + gp.getServeur().consulter(mailCo, "1"));
-                            String nom = gp.getServeur().consulter(mailCo, "1").get(6);
-                            String prenom = gp.getServeur().consulter(mailCo, "1").get(4);
-                            clients_co.replace(portClient, nom + " " + prenom);
-                            
+                            clients_co.replace(portClient, gp.getServeur().consulter(mailCo, "1").get(6) + " " + gp.getServeur().consulter(mailCo, "1").get(4));
 System.out.println("Clients_co - modif " + portClient + " : " + clients_co.get(portClient));
-
-                        } catch (SQLException ex) 
-                        {
-                            Logger.getLogger(ConversationServeur.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (SQLException ex) {
+                            Logger.getLogger(Conversation.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
-                    
-                    if (sortie.contains("MSG|Vous vous etes bien deconnecte.") || sortie.contains("QUIT|"))
-                    {
+                    if (sortie.contains("MSG|Vous vous etes bien deconnecte.")){
                         clients_co.remove(portClient);
                         done = true;
-                        
 System.out.println("Fermeture socket client : " + portClient);
-System.out.println("Nettoyage hashtable : " + clients_co);
 System.out.println("----------------------------------------");
-
                     }
                 }
-            }
-            else stop = true;
-            
-        } catch (IOException ex) 
-        {
+            } else
+                stop = true;
+        } catch (IOException ex) {
             Logger.getLogger(SocketServeur.class.getName()).log(Level.SEVERE, null, ex);
             stop = true;
         }
     }
-    
     @Override
-    public void run() 
-    {
-        while(!stop)
-        {
+    public void run() {
+        while(!stop){
             echanger();
         }
     }

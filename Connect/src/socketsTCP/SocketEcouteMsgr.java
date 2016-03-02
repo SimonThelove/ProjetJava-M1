@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  */
 public class SocketEcouteMsgr {
     
-    public final static int portDefault = 12314; /** Port par defaut */
+    public final static int portDefault = 12345; /** Port par defaut */
     public int port; // port d'ecoute pour messenger
     private Boolean done = false; // condition de fermeture du socket d'écoute
     

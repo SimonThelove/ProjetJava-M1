@@ -32,7 +32,7 @@ import socketsTCP.SocketEcouteMsgr;
 public class Messenger extends GridPane {
     
     private GestionProtocoleClient gp;
-    private final ObservableList<String> connectes;
+    private ObservableList<String> connectes;
     
     public Messenger() {
         this.connectes = FXCollections.observableArrayList();
@@ -62,8 +62,8 @@ public class Messenger extends GridPane {
         ListView<String> liste_clients = new ListView<>(connectes);
         
         // Recuperation des clients connectes sur le serveur (anonymes ou non)
-                // RETOURNER UNE HASHTABLE DANS UNE OBSERVABLE LIST / LISTVIEW ?
-        //gp.requeteP2P(); >> Récup Hashtable
+        gp.requeteP2P(client);
+        connectes = gp.getClients_co();
         
         
         // Ajout des noms a la liste
@@ -72,8 +72,12 @@ public class Messenger extends GridPane {
         this.add(liste_clients, 1, 0);
         
         // Connexion avec client sélectionné dans la ListView
-        //gp.connecterP2P(portEcouteP2P); >> Demande au serveur une connexion avec le client sélectionné
+        //gp.connecterP2P(portEcouteP2P);
+                // >> Demande au serveur une connexion avec le client sélectionné
                 // LE SERVEUR VA TRANSMETTRE LA DEMANDE A L'AUTRE CLIENT
+                
+        // Attente de la connexion de l'autre client
+        ecoute.socket();
         
         // Bouton d'envoi du message
         Button envoyer = new Button("Envoyer");
@@ -95,6 +99,9 @@ public class Messenger extends GridPane {
             }
         
     });
+        
+        // Bouton de retour au menu précédent
+        // DEVELOPPEMENT EN COURS ...
         
     }
 }
