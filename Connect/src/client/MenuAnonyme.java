@@ -145,7 +145,7 @@ public class MenuAnonyme extends GridPane {
                 //Fermer le socket et quitter l'application
                 public void handle(ActionEvent e) {
                     if (!soc.getSocket().isClosed()){
-                        soc.close();
+                        soc.quit();
                     }
                    Platform.exit();
                 }
