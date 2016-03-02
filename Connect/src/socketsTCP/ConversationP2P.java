@@ -6,7 +6,7 @@
  */
 package socketsTCP;
 
-import gestionProtocole.GestionProtocoleServeur;
+import gestionProtocole.GestionProtocoleClient;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -23,7 +23,7 @@ public class ConversationP2P extends Thread{
     private PrintStream     sortieSocket;
     private BufferedReader  entreeSocket;
     
-    private GestionProtocoleServeur gp; // Adapter au P2P
+    private GestionProtocoleClient gp; // Adapter au P2P
     
     private Boolean         stop;
     private Boolean         done;
@@ -63,7 +63,7 @@ System.out.println("Conversation start : OK");
                 
 System.out.println("Reception Socket : " + entree);
                     // Traitement requete >>>>>>>>>>>> ADAPTER AU P2P
-                    sortie = gp.requete(entree);
+                    sortie = entree.substring(5);
                     // Envoi au client >>>>>>>>>>>>>>> ADAPTER AU P2P
                     sortieSocket.println(sortie);
 System.out.println("Sortie Socket : " + sortie);                

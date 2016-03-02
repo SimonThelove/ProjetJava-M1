@@ -32,20 +32,6 @@ public class SocketEcouteMsgr {
     private PrintStream fluxSortieSocket;
     private BufferedReader fluxEntreeSocket;
     private String retour = null;
-    
-    public SocketEcouteMsgr(){
-            try {
-                leSocket = new Socket("localhost", 12314);
-                System.err.println("Connecte sur : "+leSocket);
-            
-                this.fluxSortieSocket = new PrintStream(leSocket.getOutputStream());
-                this.fluxEntreeSocket = new BufferedReader(new InputStreamReader(leSocket.getInputStream()));
-                                
-            } catch (IOException ex) {
-                Logger.getLogger(SocketClient.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
-    }
 
     public void socket ()
     {
@@ -54,6 +40,7 @@ public class SocketEcouteMsgr {
         {
             socketEcoute = new ServerSocket(portDefault);
             port = portDefault;
+            
         }
         catch (IOException ex)
         {
@@ -89,10 +76,22 @@ public class SocketEcouteMsgr {
         close();
     }
     
+    public void initEnvoiP2P () {
+        try {
+            leSocket = new Socket("localhost", 12345);
+            System.err.println("Connecte sur : "+leSocket);
+            
+            this.fluxSortieSocket = new PrintStream(leSocket.getOutputStream());
+            this.fluxEntreeSocket = new BufferedReader(new InputStreamReader(leSocket.getInputStream()));
+        } catch (IOException ex) {
+            Logger.getLogger(SocketEcouteMsgr.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
      public String echangeP2P(String msg){
 
         try {
-
+System.out.println("SocketP2P MSG : " + msg);
             fluxSortieSocket.println(msg);          // Envoi vers client P2P
             retour = fluxEntreeSocket.readLine();   // Lecture et reception du flux P2P
 

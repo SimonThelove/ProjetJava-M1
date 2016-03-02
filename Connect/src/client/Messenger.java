@@ -70,7 +70,7 @@ public class Messenger extends GridPane {
         // Ajout des noms a la liste
         liste_clients.setItems(connectes);
         liste_clients.setPrefSize(200, 550);
-        this.add(liste_clients, 1, 0);
+        this.add(liste_clients, 1, 0, 2, 1);
         
         // Connexion avec client sélectionné dans la ListView
         //gp.connecterP2P(portEcouteP2P);
@@ -99,7 +99,7 @@ public class Messenger extends GridPane {
         HBox hbEnvoi = new HBox(10);
         hbEnvoi.setAlignment(Pos.BOTTOM_RIGHT);
         hbEnvoi.getChildren().add(envoyer);
-        this.add(hbEnvoi, 1, 1);
+        this.add(hbEnvoi, 2, 1);
         
         envoyer.setOnAction(new EventHandler<ActionEvent>(){
             
@@ -107,9 +107,9 @@ public class Messenger extends GridPane {
             public void handle(ActionEvent event)
             {
                 // Envoi du message au client sélectionné +  affichage de la conversation
+                ecoute.initEnvoiP2P();
                 gpMsgr.echangerP2P(saisie_msg.getText(), client);
-                
-                messages.setText(messages.getText() + saisie_msg.getText() + System.lineSeparator());
+                messages.setText(messages.getText() + client.getChaine() + System.lineSeparator());
                 saisie_msg.clear();
             }
         

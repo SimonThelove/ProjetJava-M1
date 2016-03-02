@@ -182,8 +182,9 @@ System.out.println("GPC CONS : " + message);
     public void echangerP2P (String msg, Client client) {
         //Creation de la requete
         message = "P2PM|" + msg;
+System.out.println("GPC - MSG P2P : " + message);
         //Envoi du message a SocketClient
-        message = soc.echangeServeur(message);
+        message = socMsgr.echangeP2P(message);
         //appel a la methode pour creer un affchage client
         decoupage(message, client);
     }
@@ -193,7 +194,7 @@ System.out.println("GPC CONS : " + message);
 	//Creation de la requete
 	message = "DECO|";
 	//Envoi du message a SocketClient
-	message = soc.echangeServeur(message);
+	message = socMsgr.echangeP2P(message);
 	//Appelle a la methode pour creer un affichage au client
 	decoupage(message, client);
     }
@@ -329,8 +330,10 @@ System.out.println("P2PH : " + req[1]);
             client.setNomCo(null);
             client.setPrenomCo(null);
             client.setChaine("Vous êtes bien déconnectés.");
+            break;
         default :
             client.setChaine("Erreur dans votre choix");
+            break;
         }
     }
 }
