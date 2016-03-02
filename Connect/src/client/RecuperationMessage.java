@@ -55,8 +55,6 @@ public class RecuperationMessage extends GridPane {
         titre.setFont(Font.font("Calibri", FontWeight.NORMAL, 16));
         this.add(titre, 0, 0, 2, 1);
 
-        
-        
         //Affichage des messages reçus
         
         

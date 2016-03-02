@@ -6,8 +6,12 @@
  */
 package socketsTCP;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,7 +26,26 @@ public class SocketEcouteMsgr {
     private Boolean done = false; // condition de fermeture du socket d'écoute
     
     private ConversationP2P conversation;
-    private ServerSocket socketEcoute; // Variable socket
+    private ServerSocket socketEcoute; // Variable socket d'ecoute
+    private Socket leSocket; // Socket d'envoi de messages P2P
+    
+    private PrintStream fluxSortieSocket;
+    private BufferedReader fluxEntreeSocket;
+    private String retour = null;
+    
+    public SocketEcouteMsgr(){
+            try {
+                leSocket = new Socket("localhost", 12314);
+                System.err.println("Connecte sur : "+leSocket);
+            
+                this.fluxSortieSocket = new PrintStream(leSocket.getOutputStream());
+                this.fluxEntreeSocket = new BufferedReader(new InputStreamReader(leSocket.getInputStream()));
+                                
+            } catch (IOException ex) {
+                Logger.getLogger(SocketClient.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+    }
 
     public void socket ()
     {
@@ -65,6 +88,19 @@ public class SocketEcouteMsgr {
         }
         close();
     }
+    
+     public String echangeP2P(String msg){
+
+        try {
+
+            fluxSortieSocket.println(msg);          // Envoi vers client P2P
+            retour = fluxEntreeSocket.readLine();   // Lecture et reception du flux P2P
+
+        } catch (IOException ex) {
+            Logger.getLogger(SocketClient.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return retour;
+      }
     
     public void close(){
         try {

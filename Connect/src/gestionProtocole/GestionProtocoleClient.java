@@ -10,6 +10,7 @@ import socketsTCP.SocketClient;
 import client.Client;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import socketsTCP.SocketEcouteMsgr;
 
 /**
  *
@@ -19,9 +20,10 @@ public class GestionProtocoleClient {
     
     private final ObservableList<Client> clients;
     private final ObservableList<String> clients_co;
-    //private final ObservableList<String> messagerie;
+    private final ObservableList<String> messagerie;
     
     private SocketClient soc; //recuperation du socket d'echange
+    private SocketEcouteMsgr socMsgr; //recuperation du socket P2P
     private String message = null;//Variable ou est stockee la requete
     private int nbPersonne = 0;//Nombre de profil que renvoit les requetes de recherche
     private String req[] = null;//Requete de retour du serveur 
@@ -33,7 +35,14 @@ public class GestionProtocoleClient {
         this.soc = socket;
         this.clients = FXCollections.observableArrayList();
         this.clients_co = FXCollections.observableArrayList();
-        //this.messagerie = FXCollections.observableArrayList();
+        this.messagerie = FXCollections.observableArrayList();
+    }
+    
+    public GestionProtocoleClient(SocketEcouteMsgr socket) {
+        this.socMsgr = socket;
+        this.clients = FXCollections.observableArrayList();
+        this.clients_co = FXCollections.observableArrayList();
+        this.messagerie = FXCollections.observableArrayList();
     }
 
     public ObservableList<String> getClients_co() {
@@ -170,7 +179,14 @@ System.out.println("GPC CONS : " + message);
     }
     
     //Methode de demande de connexion PeerToPeer
-    // EN COURS DE DEVELOPPEMENT...
+    public void echangerP2P (String msg, Client client) {
+        //Creation de la requete
+        message = "P2PM|" + msg;
+        //Envoi du message a SocketClient
+        message = soc.echangeServeur(message);
+        //appel a la methode pour creer un affchage client
+        decoupage(message, client);
+    }
     
     //Methode de concatenation de la requete deconnexion
     public void requeteDeco(Client client){
@@ -287,9 +303,9 @@ System.out.println("PROF - req 1 : " + req[6]);
             {
                 for(int i = 2; i < (req.length-2); i += 8)
                 {
-                    //expediteur = req[i+3];
-                    //mailRecu = req[i+7];
-                    //messagerie.add(expediteur);
+                    expediteur = req[i+3];
+                    mailRecu = req[i+7];
+                    messagerie.add(expediteur + "|" + mailRecu);
 System.out.println("message envoyé par " + req[i+3] + " - message : " + req[i+7]);
                 }
             }
@@ -300,6 +316,13 @@ System.out.println("P2PH : " + req[1]);
             for (int i = 1; i < req.length; i++){
                 clients_co.add(req[i]);
             }
+            break;
+        case "P2PC" :
+            // Reception demande de connexion
+            break;
+        case "P2PM" :
+            // Reception message P2P
+            client.setChaine(req[1]);
             break;
         case "DECO" :
             client.setMailCo(null);

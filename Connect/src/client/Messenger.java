@@ -31,7 +31,7 @@ import socketsTCP.SocketEcouteMsgr;
  */
 public class Messenger extends GridPane {
     
-    private GestionProtocoleClient gp;
+    private GestionProtocoleClient gp, gpMsgr;
     private ObservableList<String> connectes;
     
     public Messenger() {
@@ -47,10 +47,11 @@ public class Messenger extends GridPane {
         this.setPadding(new Insets(25, 25, 25, 25));
         
         this.gp = new GestionProtocoleClient(socket);
+        this.gpMsgr = new GestionProtocoleClient(ecoute);
         
         // Zone d'affichage des messages
         TextArea messages = new TextArea();
-        messages.setPrefSize(450, 550);
+        messages.setPrefSize(400, 550);
         messages.setEditable(false);
         this.add(messages, 0, 0);
         
@@ -68,7 +69,7 @@ public class Messenger extends GridPane {
         
         // Ajout des noms a la liste
         liste_clients.setItems(connectes);
-        liste_clients.setPrefSize(100, 550);
+        liste_clients.setPrefSize(200, 550);
         this.add(liste_clients, 1, 0);
         
         // Connexion avec client sélectionné dans la ListView
@@ -77,7 +78,21 @@ public class Messenger extends GridPane {
                 // LE SERVEUR VA TRANSMETTRE LA DEMANDE A L'AUTRE CLIENT
                 
         // Attente de la connexion de l'autre client
-        //ecoute.socket();
+        Button contacter = new Button("Contacter");
+        HBox hbContact = new HBox(10);
+        hbContact.setAlignment(Pos.BOTTOM_RIGHT);
+        hbContact.getChildren().add(contacter);
+        this.add(hbContact, 1, 1);
+        
+        contacter.setOnAction(new EventHandler<ActionEvent>(){
+            
+            @Override
+            public void handle(ActionEvent event)
+            {
+                ecoute.socket();
+            }
+        
+    });
         
         // Bouton d'envoi du message
         Button envoyer = new Button("Envoyer");
@@ -92,7 +107,7 @@ public class Messenger extends GridPane {
             public void handle(ActionEvent event)
             {
                 // Envoi du message au client sélectionné +  affichage de la conversation
-                //gp.echangerP2P(saisie_msg.getText()); >> Envoi du message directement au client
+                gpMsgr.echangerP2P(saisie_msg.getText(), client);
                 
                 messages.setText(messages.getText() + saisie_msg.getText() + System.lineSeparator());
                 saisie_msg.clear();
