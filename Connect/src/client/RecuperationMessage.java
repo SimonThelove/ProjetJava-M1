@@ -48,87 +48,19 @@ public class RecuperationMessage extends GridPane {
         
         this.gp = new GestionProtocoleClient(socket);
         
-        titre = new Text("Envoyer un message");
-        titre.setFont(Font.font("Calibri", FontWeight.NORMAL, 16));
-        this.add(titre, 0, 0, 2, 1);
-
         //Creation de la requete a envoyer puis execution de la requete Modification
         gp.requeteRecupMsg(client);
         
-        /*
-        //Creation des differents labels et TextField
-        mail = new Label("Adresse mail destinataire :");
-        this.add(mail, 0, 1);
+        titre = new Text("Messages reçus : " + "");
+        titre.setFont(Font.font("Calibri", FontWeight.NORMAL, 16));
+        this.add(titre, 0, 0, 2, 1);
 
-        saisie_mail = new TextField();
-        this.add(saisie_mail, 1, 1);
-
-        message = new Label("Message a envoyer :");
-        this.add(message, 0, 2);
-
-        saisie_message = new TextArea();
-        this.add(saisie_message, 1, 2);
         
-        //Creation du bouton Valider
-        modifier = new Button("Valider");
-        HBox hbBtn = new HBox(10);
-        hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
-        hbBtn.getChildren().add(modifier);
-        this.add(hbBtn, 1, 5);
-                
-        //Action lors de l'appui sur le bouton Valider
-        modifier.setOnAction(new EventHandler<ActionEvent>()
-            {
-                @Override
-                @Override
-                public void handle(ActionEvent e) {
-                    if(saisie_mail.getText().length() == 0)
-                    {
-                        final Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setTitle("Connect - information");
-                        alert.setHeaderText("Mail manquant !");
-                        alert.setContentText("Veuillez saisir le mail destinataire.");
-                        alert.showAndWait();
-                        mail.setTextFill(Color.RED);
-                        message.setTextFill(Color.BLACK);
-                    }
-                    else if(saisie_message.getText().length() == 0)
-                    {
-                        final Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setTitle("Connect - information");
-                        alert.setHeaderText("Message manquant !");
-                        alert.setContentText("Veuillez saisir votre message.");
-                        alert.showAndWait();
-                        message.setTextFill(Color.RED);
-                        mail.setTextFill(Color.BLACK);
-                    }
-                    else
-                    {
-                        //On recupere le mail destinataire et le message
-                        mailDest = saisie_mail.getText();
-                        messageEnvoyer = saisie_message.getText();
-
-                        //Creation de la requete a envoyer puis execution de la requete Modification
-                        gp.requeteEnvoiMsg(mailDest, messageEnvoyer, client);
-
-                        // POP-UP de message de resultat
-                        final Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.initOwner(fenetre_menu);
-                        alert.setTitle("Connect - information");
-                        alert.setHeaderText("Message");
-                        alert.setContentText(client.getChaine());
-                        alert.showAndWait();
-
-                        // Retour au menu connecte
-                        MenuConnecte menuC = new MenuConnecte();
-                        Scene scene_menuC = new Scene(menuC);
-                        menuC.menuConnecte(fenetre_menu, scene_menuC, client);
-                        fenetre_menu.setScene(scene_menuC);
-                    }
-                }
-            }
-        );
-        */
+        
+        //Affichage des messages reçus
+        
+        
+        
         //Creation du bouton retour
         retour = new Button("Retour");
         HBox hbRetour = new HBox(10);

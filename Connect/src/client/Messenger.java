@@ -77,7 +77,7 @@ public class Messenger extends GridPane {
                 // LE SERVEUR VA TRANSMETTRE LA DEMANDE A L'AUTRE CLIENT
                 
         // Attente de la connexion de l'autre client
-        ecoute.socket();
+        //ecoute.socket();
         
         // Bouton d'envoi du message
         Button envoyer = new Button("Envoyer");

@@ -19,15 +19,21 @@ public class GestionProtocoleClient {
     
     private final ObservableList<Client> clients;
     private final ObservableList<String> clients_co;
+    //private final ObservableList<String> messagerie;
+    
     private SocketClient soc; //recuperation du socket d'echange
     private String message = null;//Variable ou est stockee la requete
     private int nbPersonne = 0;//Nombre de profil que renvoit les requetes de recherche
     private String req[] = null;//Requete de retour du serveur 
+    
+    private String expediteur; //Expediteur du message
+    private String mailRecu;   //Contenu du message reçu
 
     public GestionProtocoleClient(SocketClient socket) {
         this.soc = socket;
         this.clients = FXCollections.observableArrayList();
         this.clients_co = FXCollections.observableArrayList();
+        //this.messagerie = FXCollections.observableArrayList();
     }
 
     public ObservableList<String> getClients_co() {
@@ -279,9 +285,12 @@ System.out.println("PROF - req 1 : " + req[6]);
             }
             else
             {
-                for(int i = 3; i < (req.length-2); i += 7)
+                for(int i = 2; i < (req.length-2); i += 8)
                 {
-                    System.out.println("message envoyé par " + req[i+2] + " message " + req[i+6]);
+                    //expediteur = req[i+3];
+                    //mailRecu = req[i+7];
+                    //messagerie.add(expediteur);
+System.out.println("message envoyé par " + req[i+3] + " - message : " + req[i+7]);
                 }
             }
             break;
