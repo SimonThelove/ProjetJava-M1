@@ -1,0 +1,10 @@
+<#if licenseFirst??>
+${licenseFirst}
+</#if>
+${licensePrefix} Projet JAVA M1 STRI - Promotion 2017
+${licensePrefix} Version 2.0 - Interface graphique JAVA FX
+${licensePrefix} Application cliente du projet Connect!
+${licensePrefix} Simon LAMOURE - Yohann LE GOVIC - Josselyn LOULIER
+<#if licenseLast??>
+${licenseLast}
+</#if>
