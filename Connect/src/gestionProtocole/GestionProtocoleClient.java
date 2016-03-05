@@ -61,7 +61,7 @@ System.err.println("#### Construct GPC pour P2P");
 
     // Methode de conception de requete (utilise depuis Modification.java)
     public void setMessage(Client client) {
-System.err.println("@GPC setMessage");         
+System.err.println("[GPC] setMessage");         
         this.message = client.getMailCo();    
         this.message += "|NOM|" + client.getNom();
         this.message += "|PRENOM|" + client.getPrenom();
@@ -70,24 +70,24 @@ System.err.println("@GPC setMessage");
         this.message += "|ANNEE_DIPLOMATION|" + client.getAnnee();
         this.message += "|COMPETENCES|" + client.getCompetences();
         this.message += " |";
-System.err.println("@setMessage FIN -----");         
+System.out.println("[GPC] setMessage FIN -----");         
     }
     
     //Methode de concatenation de la requete creerCompte
     public void requeteCrea(Client client){
-System.err.println("@GPC requeteCrea");                 
+System.err.println("[GPC] requeteCrea");                 
 	//Creation de la requete
 	message = "CREA|NOM|" + client.getNom() + "|PRENOM|" + client.getPrenom()  + "|MAIL|" + client.getMail() + "|MOTDEPASSE|" + client.getMdp();
         //Envoi du message a SocketClient
 	message = soc.echangeServeur(message);
 	//Appelle a la methode pour creer un affichage au client
 	decoupage(message, client);
-System.err.println("@requeteCrea FIN -----");         
+System.out.println("[GPC] requeteCrea FIN -----");         
     }
 	
     //Methode de concatenation de la requete connexion
     public void requeteConx(String mail, String motDePasse, Client client){
-System.err.println("@GPC requeteConx");         
+System.err.println("[GPC] requeteConx");         
 
 	//Creation de la requete
 	message = "CONX|MAIL|" + mail + "|MOTDEPASSE|" + motDePasse;
@@ -95,24 +95,24 @@ System.err.println("@GPC requeteConx");
 	message = soc.echangeServeur(message);
 	//Appelle a la methode pour creer un affichage au client
 	decoupage(message, client);
-System.err.println("@requeteConx FIN -----");                 
+System.out.println("[GPC] requeteConx FIN -----");                 
     }
 
     //Methode de concatenation de la requete rechercherMotsCles
     public void requeteRechMotsCles(String motCles, Client client){
-System.err.println("@GPC requeteRechMotsCles");                 
+System.err.println("[GPC] requeteRechMotsCles");                 
 	//Creation de la requete
 	message = "RECH|MOTSCLES|" + motCles;
 	//Envoi du message a SocketClient
 	message = soc.echangeServeur(message);
 	//Appelle a la methode pour creer un affichage au client
 	decoupage(message, client);
-System.err.println("@requeteRechMotsCles FIN -----");                 
+System.out.println("[GPC] requeteRechMotsCles FIN -----");                 
     }
 
     //Methode de concatenation de la requete RechercherAvancee
     public void requeteRechNom(Client client){
-System.err.println("@GPC requeteRechNom");         
+System.err.println("[GPC] requeteRechNom");         
         
 	//Creation de la requete
 	message = "RECH|NOM|" + client.getNom() +
@@ -125,27 +125,28 @@ System.err.println("@GPC requeteRechNom");
 	message = soc.echangeServeur(message);
 	//Appelle a la methode pour creer un affichage au client
 	decoupage(message, client);
-System.err.println("@requeteRechNom FIN -----");         
+System.out.println("[GPC] requeteRechNom FIN -----");         
 
     }
 
     //Methode de concatenation de la requete consultation
     public void requeteCons(int index, Client client){
-System.err.println("@GPC requeteCons");         
+System.err.println("[GPC] requeteCons");         
 
-        //Creation de la requete
-	message = "CONS|MAIL|" + clients.get(index).getMail() + "|0|";
+        // Creation de la requete
+        message = "CONS|MAIL|" + clients.get(index).getMail() + "|0|";
+
 	//Envoi du message a SocketClient
 	message = soc.echangeServeur(message);
 	//Appelle a la methode pour creer un affichage au client
 	decoupage(message, client);
-System.err.println("@requeteConx FIN -----");         
+System.out.println("[GPC] requeteConx FIN -----");         
 
     }
 	
     //Methode de concatenation de la requete pour recuperer les information du client qui se connecte
     public void requeteNomConnecte(Client client){
-System.err.println("@GPC requeteNomConnecte");         
+System.err.println("[GPC] requeteNomConnecte");         
 
 	//Creation de la requete
 	message = "CONS|MAIL|" + client.getMail() + "|1|";
@@ -153,13 +154,13 @@ System.err.println("@GPC requeteNomConnecte");
 	message = soc.echangeServeur(message);
 	//Appelle a la methode pour creer un affichage au client
 	decoupage(message, client);
-System.err.println("@requeteNomConnecte FIN -----");         
+System.out.println("[GPC] requeteNomConnecte FIN -----");         
 
     }
     
     //Methode de concatenation de la requete modification
     public void requeteModi(Client client){
-System.err.println("@GPC requeteModi");         
+System.err.println("[GPC] requeteModi");         
 
         String requete;
 	//Creation de la requete
@@ -168,12 +169,12 @@ System.err.println("@GPC requeteModi");
 	requete = soc.echangeServeur(requete);
 	//Appelle a la methode pour creer un affichage au client
 	decoupage(requete, client);        
-System.err.println("@requeteModi FIN -----"); 
+System.out.println("[GPC] requeteModi FIN -----"); 
 	}
     
     //Methode de concatenation de la requete deconnexion
     public void requeteEnvoiMsg(String mailDes, String msg, Client client){
-System.err.println("@GPC requeteEnvoiMsg");         
+System.err.println("[GPC] requeteEnvoiMsg");         
        
 	//Creation de la requete
 	message = "MSSG|ENVOI|MAIL_EXP|" + client.getMail() + "|MAIL_DES|" + mailDes + "|MESSAGE|" + msg;        
@@ -181,12 +182,12 @@ System.err.println("@GPC requeteEnvoiMsg");
 	message = soc.echangeServeur(message);
 	//Appelle a la methode pour creer un affichage au client
 	decoupage(message, client);
-System.err.println("@requeteEnvoiMsg FIN -----"); 
+System.out.println("[GPC] requeteEnvoiMsg FIN -----"); 
     }
     
     //Methode de concatenation de la requete deconnexion
     public void requeteRecupMsg(Client client){
-System.err.println("@GPC requeteRecupMsg");         
+System.err.println("[GPC] requeteRecupMsg");         
         
 	//Creation de la requete
 	message = "MSSG|RECUP|MAIL_DES|" + client.getMail();                
@@ -194,12 +195,12 @@ System.err.println("@GPC requeteRecupMsg");
 	message = soc.echangeServeur(message);
 	//Appelle a la methode pour creer un affichage au client
 	decoupage(message, client);
-System.err.println("@requeteRecupMsg FIN -----");         
+System.out.println("[GPC] requeteRecupMsg FIN -----");         
     }
     
     //Méthode de récupération de la liste des clients connectés
     public void requeteP2P (Client client){
-System.err.println("@GPC requeteP2P");         
+System.err.println("[GPC] requeteP2P");         
     
         //Creation de la requete
         message = "P2PH|";              
@@ -207,12 +208,12 @@ System.err.println("@GPC requeteP2P");
         message = soc.echangeServeur(message);
         //appel a la methode pour creer un affchage client
         decoupage(message, client);       
-System.err.println("@requeteP2P FIN -----");         
+System.out.println("[GPC] requeteP2P FIN -----");         
     }
     
     //Methode de demande de connexion PeerToPeer
     public void echangerP2P (String msg, Client client) {
-System.err.println("@GPC echangerP2P");         
+System.err.println("[GPC] echangerP2P");         
         
         //Creation de la requete
         message = "P2PM|" + msg;
@@ -220,12 +221,12 @@ System.err.println("@GPC echangerP2P");
         message = socMsgr.echangeP2P(message);
         //appel a la methode pour creer un affchage client
         decoupage(message, client);
-System.err.println("@echangerP2P FIN -----"); 
+System.out.println("[GPC] echangerP2P FIN -----"); 
     }
     
     //Methode de concatenation de la requete deconnexion
     public void requeteDeco(Client client){
-System.err.println("@GPC requeteDeco");         
+System.err.println("[GPC] requeteDeco");         
         
 	//Creation de la requete
 	message = "DECO|";
@@ -233,13 +234,13 @@ System.err.println("@GPC requeteDeco");
 	message = soc.echangeServeur(message);
 	//Appelle a la methode pour creer un affichage au client
 	decoupage(message, client);
-System.err.println("@requeteDeco FIN -----");         
+System.out.println("[GPC] requeteDeco FIN -----");         
     }
 	
     //Methode pour creer la reponse a afficher d'une requete
     public void decoupage(String reponse, Client client){
         
-System.err.println("@GPC decoupage");         
+System.err.println("[GPC] decoupage");         
 System.out.println("# ENTREE = " + reponse);
 
         client.setChaine("Aucune information disponible");       
@@ -388,6 +389,6 @@ System.out.println("# DEFAULT - req[1] : " + req[1]);
             client.setChaine("Case Default - Erreur dans votre choix");
             break;
         }
-System.err.println("@decoupage FIN -----");
+System.out.println("[GPC] decoupage FIN -----");
     }
 }

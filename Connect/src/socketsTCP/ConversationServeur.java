@@ -64,7 +64,7 @@ System.out.println("++ Conversation Serveur start : OK");
       
     public void echanger(){
       try {
-System.err.println("@ConversationServeur echanger");
+System.err.println("[CONV_SRV] echanger");
             entree = entreeSocket.readLine();
             if (entree != null){
                 
@@ -116,7 +116,7 @@ System.out.println("++ Fermeture Conversation : " + portClient);
                 }
             }
             else stop = true;
-System.err.println("@echanger FIN -----");            
+System.err.println("[CONV_SRV] echanger FIN -----");            
         } catch (IOException ex) 
         {
             Logger.getLogger(SocketServeur.class.getName()).log(Level.SEVERE, null, ex);

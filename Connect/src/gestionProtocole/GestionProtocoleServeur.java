@@ -36,6 +36,7 @@ public class GestionProtocoleServeur {
         this.temp = new ArrayList<>();
         this.serveur = serveur;
         this.clients_co = clients;
+System.err.println("#### Construct GPS...");
     }
 
     public Serveur getServeur() {
@@ -68,15 +69,18 @@ public class GestionProtocoleServeur {
 	
     public String requete(String entreeSocket) {
         String[] req = entreeSocket.split("[|]");
-
+System.err.println("[GPS] requete");
+System.out.println("# ENTREE = " + entreeSocket);
         switch(req[0])
         {
             //Requete de creation de compte
             case "CREA":
+System.err.println("---- CASE CREA ----");
                 reponse = ("MSG|" + serveur.creerCompte(req[2], req[4], req[6], req[8]));
                 break;
             //Requete de connexion
             case "CONX":
+System.err.println("---- CASE CONX ----");                
                 try {
                     this.setMailConnecte(req[2]);
                     setReponse("MSG|" + serveur.seConnecter(this.getMailConnecte(), req[4]));
@@ -86,9 +90,9 @@ public class GestionProtocoleServeur {
                 }
                 break;
             //Requete de modification d'information client
-            case "MODI": // AJOUTER LE MAIL DU CLIENT CONNECTE (condition WHERE du SQL UPDATE)
+            case "MODI":
+System.err.println("---- CASE MODI ----");
                 try {
-System.out.println("GPS MODI :" + req[(req.length - 1)]);
                     setReponse("MSG|" + serveur.modifierInformations(req,req[2]));
                 } catch (SQLException e) {
                     // TODO Auto-generated catch block
@@ -97,10 +101,9 @@ System.out.println("GPS MODI :" + req[(req.length - 1)]);
                 break;
             //Requete de consultation d'un profil
             case "CONS":
+System.err.println("---- CASE CONS ----");
                 try {
-System.out.println("GPS CONS fonction 1 - req :" + req[2]);
                     temp = serveur.consulter(req[2], req[3]);
-System.out.println("GPS CONS fonction 2 - temp :" + temp);
                 } catch (SQLException e) {
                     // TODO Auto-generated catch block
                     Logger.getLogger(Serveur.class.getName()).log(Level.SEVERE, null, e);
@@ -110,17 +113,15 @@ System.out.println("GPS CONS fonction 2 - temp :" + temp);
                 break;
             //Requete de recherche de personne
             case "RECH":
+System.err.println("---- CASE RECH ----");
                 temp = (serveur.rechercher(req));
-System.out.println("Niveau GPS temp - " + temp);
                 //Si dans la recherche, on ne trouve qu'une personne, alors on affiche le profil de la personne
                 if (temp.get(0).compareTo("1") == 0)
                 {
-System.out.println("Niveau GPS Rech :"+ temp.get(1) + "|" + temp.get(2));
                     requete("CONS|" + temp.get(1) + "|" + temp.get(2) + "|0|");
                 }
                 //Sinon on renvoit une liste de personne
                 else {
-System.out.println("Niveau GPS LIST||");
                     //Transformation de l'arrayList en String
                     String result = String.join("|",temp);
                     //Concatenation de la requete
@@ -128,31 +129,32 @@ System.out.println("Niveau GPS LIST||");
                 }
                 break;
             case "MSSG":
+System.err.println("---- CASE MSSG ----");
                 if (req[1].compareTo("ENVOI") == 0)
                 {
-System.out.println("Niveau GPS MSSG : " + req[3] + " " + req[5]  +" "+ req[7]);
                 reponse = ("MSG|" + serveur.envoiMessage(req[3], req[5], req[7]));
                 }
                 else if (req[1].compareTo("RECUP") == 0)
                 {
                     reponse = ("MSSG|" + serveur.recupererMessage(req[3]));
-                    System.out.println(reponse);
                 }
                 break; 
             case "P2PH":
+System.err.println("---- CASE P2PH ----");
                 setReponse("P2PH|" + String.join("|", clients_co.values()));
                 break;
             //Requete de deconnexion
             case "DECO":
+System.err.println("---- CASE DECO ----");
                 setReponse("MSG|" + serveur.seDeconnecter());
                 break;
             //Fermeture d'un socket de connexion anonyme
             case "QUIT":
+System.err.println("---- CASE QUIT ----");
                 setReponse("QUIT|");
                 break;
         }
-    
-System.out.println("Niveau GPS resultat2 - " + reponse);
+System.out.println("[SRV] requete FIN -----");
         return reponse;
     }	
 }

@@ -51,7 +51,7 @@ public class SGBD extends Thread {
     // Connexion a la BDD
     public void bdd() {
         try {
-System.err.println("<SGBD.Cons> bdd");            
+System.err.println("#### Construct BDD...");            
             con = DriverManager.getConnection("jdbc:mysql://mysql-stri.alwaysdata.net/stri_connect","stri","STRISTRI");
         } catch (SQLException e) {
             // TODO Auto-generated catch block
@@ -74,7 +74,7 @@ System.err.println("<SGBD.Cons> bdd");
     // Connexion a la  BDD pour la V2 (messagerie differee)
     public void bdd2() {
         try {
-System.err.println("<SGBD.Cons> bdd_2");            
+System.err.println("#### Construct BDD_2...");            
             con = DriverManager.getConnection("jdbc:mysql://mysql-stri.alwaysdata.net/stri_connect_msg","stri","STRISTRI");
         } catch (SQLException ex) {
             // TODO Auto-generated catch block
@@ -105,44 +105,46 @@ System.err.println("[SGBD] Setter Resultats");
 
         // Depuis getVisibleInfos
         if (visibilite != null){
-    try {
-System.out.println("Condition de visibilité...");
-        // On parcourt les resultats SQL
-        
-        while (rslt.next()!= false){
+            try {
+System.out.println("Condition de visibilité : not null");
+
+                // On parcourt les resultats SQL
+                while (rslt.next()!= false){
 System.out.println("Resultat suivant...");
-            // Tant qu'il y a des colonnes resultat SQL
-            while (i < rsmd.getColumnCount()){
-                i ++;
-                if(rslt.getString(i) != null){
-                    // On teste le nombre de champs a� affecter a�resultats
-                    if (j < visibilite.length) {
-                        // On verifie la visibilite du champ pour l'affecter
-                        if (rsmd.getColumnLabel(i).equalsIgnoreCase(visibilite[j])) {
-                            retour = rslt.getString(i);
-                            champ = rsmd.getColumnLabel(i);
-                            // On ajoute le nom du champ
-                            resultats.add(champ);
-                            // On ajoute la valeur du champ
-                            resultats.add(retour);
-                            // On incremente j
-                            j ++;
+                    // Tant qu'il y a des colonnes resultat SQL
+                    while (i < rsmd.getColumnCount()){
+                        i ++;
+                        if(rslt.getString(i) != null){
+                            // On teste le nombre de champs a� affecter a�resultats
+                            if (j < visibilite.length) {
+                                // On verifie la visibilite du champ pour l'affecter
+                                if (rsmd.getColumnLabel(i).equalsIgnoreCase(visibilite[j])) {
+                                    retour = rslt.getString(i);
+                                    champ = rsmd.getColumnLabel(i);
+                                    // On ajoute le nom du champ
+                                    resultats.add(champ);
+                                    // On ajoute la valeur du champ
+                                    resultats.add(retour);
+                                    // On incremente j
+                                    j ++;
+                                }
+                            }
                         }
                     }
                 }
+System.out.println("[SGBD] Resultats = " + resultats);
             }
-        }
-System.err.println("[SGBD] Resultats = " + resultats);
-    } catch (SQLException ex) {
-        Logger.getLogger(SGBD.class.getName()).log(Level.SEVERE, null, ex);
-    }
-            
+            catch (SQLException ex)
+            {
+                Logger.getLogger(SGBD.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
         }
         // Depuis getAllInfos
         else {
             // On parcourt les resultats SQL
             try {
-System.out.println("Condition de visibilité...");
+System.out.println("Condition de visibilité : null");
                 while (rslt.next() != false){
 System.out.println("Resultat suivant...");
                     i = 0;//Permet de recuperer les information du prochain profil
@@ -161,7 +163,7 @@ System.out.println("Resultat suivant...");
                 //On recupere le nombre de profil a afficher pour le mettre en tant que premier element de l'arrayListe
                 cpt = rslt.getRow();
                 resultats.add(0, Integer.toString(cpt));
-System.err.println("[SGBD] Resultats = " + resultats);
+System.out.println("[SGBD] Resultats = " + resultats);
             } catch (SQLException e) {
                 // TODO Auto-generated catch block
                 Logger.getLogger(SGBD.class.getName()).log(Level.SEVERE, null, e);
@@ -171,7 +173,7 @@ System.err.println("[SGBD] Resultats = " + resultats);
 
     // Requete de consultaiton de la base de données
     public void setRequeteConsultation(String[] chaine) {
-System.err.println("[SGBD] Setter CONS");
+System.out.println("[SGBD] Setter CONS");
         // On fabrique le debut la requete
         requeteConsultation = " SELECT * FROM INFORMATIONS WHERE (";
         if (chaine[1].compareTo("MOTSCLES") != 0) {
@@ -232,39 +234,39 @@ System.out.println("Consultation par mots clés...");
             requeteConsultation += "competences LIKE '%" + mots[i] + "%');";
 System.out.println("Consultation par champs...");
          }
-System.err.println("[SGBD] REQUETE = " + requeteConsultation);
+System.out.println("[SGBD] REQUETE = " + requeteConsultation);
     }
 
     // Requetes de creation dans la base de donnees
     public void setRequeteCreationUtil (String mail, String mdp) {
 System.err.println("[SGBD] Setter CREA Util");        
             this.requeteCreation  = "INSERT INTO UTILISATEURS (mail, mdp) VALUES ('" + mail + "','" + mdp + "'); ";
-System.err.println("[SGBD] REQUETE = " + requeteCreation);            
+System.out.println("[SGBD] REQUETE = " + requeteCreation);            
     }
 
     public void setRequeteCreationInfos (String nom, String prenom, String mail) {
 System.err.println("[SGBD] Setter CREA Infos");        
             this.requeteCreation = "INSERT INTO INFORMATIONS (mail, nom, prenom) VALUES ('"+ mail +"','" + nom + "','" + prenom + "'); ";
-System.err.println("[SGBD] REQUETE = " + requeteCreation);            
+System.out.println("[SGBD] REQUETE = " + requeteCreation);            
     }
 
     public void setRequeteCreationVisible (String mail) {
 System.err.println("[SGBD] Setter CREA Visibilite");        
             this.requeteCreation = "INSERT INTO VISIBILITE VALUES ('"+ mail +"','mail,nom,prenom','mail,nom,prenom');";
-System.err.println("[SGBD] REQUETE = " + requeteCreation);            
+System.out.println("[SGBD] REQUETE = " + requeteCreation);            
     }
 
     public void setRequeteCreationMessage (String mail, String mailDest, String msg) {
 System.err.println("[SGBD] Setter CREA Messsage");                
             this.requeteCreation = "INSERT INTO DEPOT_MSG (mail_exp, mail_des, message) VALUES ('" + mail + "','" + mailDest + "','" + msg + "'); ";
-System.err.println("[SGBD] REQUETE = " + requeteCreation);            
+System.out.println("[SGBD] REQUETE = " + requeteCreation);            
     }
     
     //Requete recuperation de message client
     public void setRequeteRecupMessage(String mail) {
 System.err.println("[SGBD] Setter MSSG Recup");        
          this.requeteConsultation = "SELECT * FROM DEPOT_MSG WHERE mail_des =  '" + mail + "';";
-System.err.println("[SGBD] REQUETE = " + requeteConsultation);            
+System.out.println("[SGBD] REQUETE = " + requeteConsultation);            
     }
     
     // Requete de modification dans la base de donnees
@@ -426,14 +428,13 @@ System.out.println("Execution requete OK...");
     public ArrayList<String> getVisibleInfos(String adresseMail) {
 System.err.println("[SGBD] Getter VISIBILITE");            
         bdd();
-        // On des variables de gestion de la visibilitee
+        // On a des variables de gestion de la visibilitee
         String temp;
         String[] split;
         
 System.out.println("Construction requete...");
         // On fabrique les informations a transmettre
         String[] req = {"MAIL", adresseMail};
-        System.out.println("SGBD getVisibleInfo - req :" + req[1]);
         setRequeteConsultation(req);
 
         // On l'execute sur la BDD et on recupere les informations sur ces resultats
@@ -480,7 +481,7 @@ System.out.println("Execution requete CONS OK...");
         return resultats;
     }
 
-    // Requete de recherche d'utilisateurs selon des mots clees
+    // Requete de recherche d'utilisateurs selon des mots cles
     public String getMessage(String mail) {
 System.err.println("[SGBD] Getter MSSG");            
         bdd2();
@@ -500,7 +501,6 @@ System.out.println("Execution requete CONS OK...");
             for(i = 0; i < (resultats.size() -2); i += 2)
                 {
                     message += resultats.get(i) + "|" + resultats.get(i+1) + "|";
-                    System.out.println(message);
                 }
             //Ajout du dernier champs
             message += resultats.get(i);

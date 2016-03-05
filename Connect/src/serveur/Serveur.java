@@ -53,7 +53,7 @@ System.err.println("#### Construct Serveur...");
 
     // Methode de creation d'un compte sur le serveur d'annuaire
     public String creerCompte(String nom, String prenom, String adresseMail, String motDePasse) {
-System.err.println("@Serveur creerCompte");
+System.err.println("[SRV] creerCompte");
 System.out.println(">> Recuperation mail ...");
         setTest(sgbd.recupererMail(adresseMail));
         if (isTest()){
@@ -78,10 +78,10 @@ System.out.println(">> Creation visibilite ...");
                 sgbd.setRequeteCreationVisible(adresseMail);
                 setValide(sgbd.executeUpdate("CREA"));
                 if (valide != 0) {
-System.err.println("@creerCompte FIN -----");
+System.out.println("[SRV] creerCompte FIN -----");
                     return "Votre compte a bien ete creer, vous pouvez maintenant vous connecter.";
                 } else {
-System.err.println("@creerCompte FIN -----");
+System.out.println("[SRV] creerCompte FIN -----");
                     return "Erreur creation : votre compte n'a pas ete cree.";
                 }
             }
@@ -90,7 +90,7 @@ System.err.println("@creerCompte FIN -----");
 
     // Methode de connexion au serveur d'annuaire
     public String seConnecter(String adresseMail, String motDePasse) throws SQLException{
-System.err.println("@Serveur seConnecter");
+System.err.println("[SRV] seConnecter");
         // Controle du mail
 System.out.println(">> Controle mail ...");
         setTest(sgbd.recupererMail(adresseMail));
@@ -104,42 +104,42 @@ System.out.println(">> Controle mail ...");
 System.out.println(">> Controle mot de passe ...");
             setTest(sgbd.recupererMotDePasse(motDePasse, adresseMail));
             if (!isTest()) {
-System.err.println("@seConnecter FIN -----");
+System.out.println("[SRV] seConnecter FIN -----");
                 return "Votre mot de passe est incorrect.";
             }
             else {
-System.err.println("@seConnecter FIN -----");
+System.out.println("[SRV] seConnecter FIN -----");
                 return "Vous etes bien connecte.";
             }
         }
     }
 
     public String seDeconnecter() {
-System.err.println("@Serveur seDeconnecter");
+System.err.println("[SRV] seDeconnecter");
 System.out.println(">> Deconnexion client ...");
-System.err.println("@seDeconnecter FIN -----");
+System.out.println("[SRV] seDeconnecter FIN -----");
         return "Vous vous etes bien deconnecte.";
     }
 
     // Methode de modification des informations sur le compte connecter
     public String modifierInformations(String[] chaine, String adresseMail) throws SQLException{
-System.err.println("@Serveur modifierInformations");
+System.err.println("[SRV] modifierInformations");
         // Modification des informations
 System.out.println(">> Modifications compte ...");
         sgbd.setRequeteModification(chaine, adresseMail);
         setValide(sgbd.executeUpdate("MODI"));
         if (valide != 0) {
-System.err.println("@seDeconnecter FIN -----");
+System.out.println("[SRV] seDeconnecter FIN -----");
             return "Vos modifications ont ete prises en compte.";
         } else {	
-System.err.println("@seDeconnecter FIN -----");
+System.out.println("[SRV] seDeconnecter FIN -----");
             return "Erreur modification : vos modifications n'ont pas ete prises en compte.";
         }
     }
 
     // Methode de consultation d'un profil utilisateur
     public ArrayList<String> consulter(String adresseMail, String droitAdmin) throws SQLException {
-System.err.println("@Serveur consulter");
+System.err.println("[SRV] consulter");
 
         // ControleDroits (si la personne est admin ou si la personne se ocnnecte et recupere ses informations)
         if(sgbd.isAdmin(adresseMail) || ("1".equals(droitAdmin))){
@@ -151,28 +151,28 @@ System.err.println("@Serveur consulter");
             // Recuperation des informations visibles du profil
             resultats = (sgbd.getVisibleInfos(adresseMail));
         }
-System.err.println("@consulter FIN -----");
+System.out.println("[SRV] consulter FIN -----");
         return resultats;
     }
 
     // Methode de recherche d'utilisateurs
     public ArrayList<String> rechercher(String[] chaine) {
-System.err.println("@Serveur rechercher");
+System.err.println("[SRV] rechercher");
         // Recherche
         resultats = (sgbd.getUtilisateurs(chaine));
 System.out.println(">> RESULTATS = " + resultats);
-System.err.println("@rechercher FIN -----");
+System.out.println("[SRV] rechercher FIN -----");
         return resultats;
     }
 
     // Methode d'envoi de message
     public String envoiMessage(String mail, String mailDest, String msg) {		
-System.err.println("@Serveur envoiMessage");
+System.err.println("[SRV] envoiMessage");
 System.out.println(">> Controle mail ...");
         setTest(sgbd.recupererMail(mailDest));
         if (!isTest()){
             // Adresse mail non existante = Echec connexion
-System.err.println("@envoiMessage FIN -----");
+System.out.println("[SRV] envoiMessage FIN -----");
             return "Utilisateur inconnu.";
         }
         else
@@ -182,19 +182,19 @@ System.out.println(">> Creation message ...");
             sgbd.setRequeteCreationMessage(mail, mailDest, msg);
             setValide(sgbd.executeUpdateMessage());
             if (valide != 0) {
-System.err.println("@envoiMessage FIN -----");
+System.out.println("[SRV] envoiMessage FIN -----");
                     return "Votre message a bien ete envoye."; }
             else {
-System.err.println("@envoiMessage FIN -----");
+System.out.println("[SRV] envoiMessage FIN -----");
                     return "Erreur d'envoi : votre message n'a pas ete envoye."; }
         }
     }
      public String recupererMessage(String mail) {
-System.err.println("@Serveur recupererMessage");
+System.err.println("[SRV] recupererMessage");
         //Execution de la requete
         reponse = sgbd.getMessage(mail);
 System.out.println(">> REPONSE = " + reponse);
-System.err.println("@recupererMessage FIN -----");
+System.out.println("[SRV] recupererMessage FIN -----");
         return reponse;         
      }
 }

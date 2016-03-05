@@ -37,7 +37,7 @@ public class SocketServeur
     
     public void socket ()
     {
-System.err.println("@SocketServeur socket");
+System.err.println("[SOCK_SRV] socket");
 
         serveur = new Serveur();
         clients_co = new Hashtable();
@@ -81,12 +81,12 @@ System.out.println("## Attente de donnexion sur le port : " + port);
             done = conversation.getDone();
         }
         close();
-System.err.println("@socket FIN -----");
+System.out.println("[SOCK_SRV] socket FIN -----");
     }
     
     public void close(){
         try {
-System.err.println("@SocketServeur close");                        
+System.err.println("[SOCK_SRV] SocketServeur close");                        
             leServeur.accept().close();
 System.out.println("## Fermeture socket ecoute num. " + leServeur.getLocalPort());                        
         } catch (IOException ex) {
