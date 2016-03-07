@@ -31,7 +31,7 @@ import gestionProtocole.GestionProtocoleClient;
 public class MenuConnecte extends GridPane {
     
 
-    public void menuConnecte(Stage fenetre_menuC, Scene rootScene, Client client, GestionProtocoleClient gp, SocketClient socket) {
+    public void menuConnecte(Stage fenetre_menuC, Scene rootScene, Client clientConnecte, GestionProtocoleClient gp, SocketClient socket) {
         
         this.setAlignment(Pos.CENTER);
         this.setHgap(10);
@@ -40,7 +40,7 @@ public class MenuConnecte extends GridPane {
 System.out.println(">>>> Lancement MenuConnecte.java");
         
         //Affichage au client d'un message de bienvenue avec son nom et prenom
-        Text titre = new Text("Bienvenue : " + client.getNomCo() + " " + client.getPrenomCo());
+        Text titre = new Text("Bienvenue : " + clientConnecte.getNom() + " " + clientConnecte.getPrenom());
         titre.setFont(Font.font("Calibri", FontWeight.NORMAL, 16));
         this.add(titre, 0, 0, 2, 1);
                 
@@ -61,7 +61,7 @@ System.out.println(">> Fermeture MenuConnecte.java (Modification)");
                     
                     Modification modifier = new Modification();
                     Scene scene_modifier = new Scene(modifier);
-                    modifier.modifier(fenetre_menuC,scene_modifier, client, socket);
+                    modifier.modifier(fenetre_menuC,scene_modifier, clientConnecte, socket);
                     fenetre_menuC.setScene(scene_modifier);
                 }
             }
@@ -84,7 +84,7 @@ System.out.println(">> Fermeture MenuConnecte.java (Rechercher)");
                     
                     Recherche recherche = new Recherche();
                     Scene scene_recherche = new Scene(recherche);
-                    recherche.rechercher(fenetre_menuC, scene_recherche, client, socket);
+                    recherche.rechercher(fenetre_menuC, scene_recherche, clientConnecte, socket);
                     fenetre_menuC.setScene(scene_recherche);
                 }
             }
@@ -107,7 +107,7 @@ System.out.println(">> Fermeture MenuConnecte.java (Envoi Message)");
                     
                     EnvoiMessage envoiMessage = new EnvoiMessage();
                     Scene scene_envoiMessage = new Scene(envoiMessage);
-                    envoiMessage.envoyerMessage(fenetre_menuC, scene_envoiMessage, client, socket);
+                    envoiMessage.envoyerMessage(fenetre_menuC, scene_envoiMessage, clientConnecte, socket);
                     fenetre_menuC.setScene(scene_envoiMessage);
                 }
             }
@@ -130,7 +130,7 @@ System.out.println(">> Fermeture MenuConnecte.java (Recuperation Message)");
                     
                     RecuperationMessage recuperationMessage = new RecuperationMessage();
                     Scene scene_recuperationMessagee = new Scene(recuperationMessage);
-                    recuperationMessage.recupererMessage(fenetre_menuC, scene_recuperationMessagee, client, socket);
+                    recuperationMessage.recupererMessage(fenetre_menuC, scene_recuperationMessagee, clientConnecte, socket);
                     fenetre_menuC.setScene(scene_recuperationMessagee);
                 }
             }
@@ -151,7 +151,7 @@ System.out.println(">> Fermeture MenuConnecte.java (Recuperation Message)");
                 public void handle(ActionEvent e) {
 System.out.println("Fermeture socket client connecté...");
                     
-                    gp.requeteDeco(client);
+                    gp.requeteDeco(clientConnecte);
                     socket.close();
 System.out.println(">> Fermeture MenuConnecte.java (Deconnexion)");
 
@@ -160,13 +160,13 @@ System.out.println(">> Fermeture MenuConnecte.java (Deconnexion)");
                     alert.initOwner(fenetre_menuC);
                     alert.setTitle("Connect - information");
                     alert.setHeaderText("Message");
-                    alert.setContentText(client.getChaine());
+                    alert.setContentText(clientConnecte.getChaine());
                     alert.showAndWait();
                     
                     //Affichage du menu Anonyme
                     MenuAnonyme menuA = new MenuAnonyme();
                     Scene scene_menuA = new Scene(menuA);
-                    menuA.menuAnonyme(fenetre_menuC, scene_menuA, client, socket);
+                    menuA.menuAnonyme(fenetre_menuC, scene_menuA, clientConnecte, socket);
                     fenetre_menuC.setScene(scene_menuA);
                 }
             }

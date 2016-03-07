@@ -26,8 +26,9 @@ public class GestionProtocoleClient {
     private SocketEcouteMsgr socMsgr; //recuperation du socket P2P
     private String message = null;//Variable ou est stockee la requete
     private int nbPersonne = 0;//Nombre de profil que renvoit les requetes de recherche
-    private String req[] = null;//Requete de retour du serveur 
-    
+    private String req[] = null;//Requete de retour du serveur
+    private Client clientRecherche;
+
     private String expediteur; //Expediteur du message
     private String mailRecu;   //Contenu du message reçu
 
@@ -37,6 +38,7 @@ System.err.println("#### Construct GPC vers Serveur");
         this.clients = FXCollections.observableArrayList();
         this.clients_co = FXCollections.observableArrayList();
         this.messagerie = FXCollections.observableArrayList();
+        this.clientRecherche = new Client();
     }
     
     public GestionProtocoleClient(SocketEcouteMsgr socket) {
@@ -58,11 +60,19 @@ System.err.println("#### Construct GPC pour P2P");
     public String getMessage() {
         return message;
     }
+    
+     public Client getClientRecherche() {
+        return clientRecherche;
+    }
+
+    public void setClientRecherche(Client clientRecherche) {
+        this.clientRecherche = clientRecherche;
+    }
 
     // Methode de conception de requete (utilise depuis Modification.java)
     public void setMessage(Client client) {
 System.err.println("[GPC] setMessage");         
-        this.message = client.getMailCo();    
+        //this.message = client.getMailCo();    
         this.message += "|NOM|" + client.getNom();
         this.message += "|PRENOM|" + client.getPrenom();
         this.message += "|TELEPHONE|" + client.getTel();
@@ -151,7 +161,7 @@ System.err.println("[GPC] requeteNomConnecte");
 	//Creation de la requete
 	message = "CONS|MAIL|" + client.getMail() + "|1|";
 	//Envoi du message a SocketClient
-	message = soc.echangeServeur(message);
+	message = soc.echangeServeur(message);        
 	//Appelle a la methode pour creer un affichage au client
 	decoupage(message, client);
 System.out.println("[GPC] requeteNomConnecte FIN -----");         
@@ -238,12 +248,12 @@ System.out.println("[GPC] requeteDeco FIN -----");
     }
 	
     //Methode pour creer la reponse a afficher d'une requete
-    public void decoupage(String reponse, Client client){
+    public void decoupage(String reponse, Client clientConnecte){
         
 System.err.println("[GPC] decoupage");         
 System.out.println("# ENTREE = " + reponse);
 
-        client.setChaine("Aucune information disponible");       
+        clientConnecte.setChaine("Aucune information disponible");       
         req = reponse.split("[|]");
         
         switch(req[0]){
@@ -251,19 +261,19 @@ System.out.println("# ENTREE = " + reponse);
         case "MSG":
             try {
 System.err.println("---- CASE MSG ----");                
-                client.setChaine(req[1]);
-System.out.println("# MSG - Retour client = " + client.getChaine());
+                clientConnecte.setChaine(req[1]);
+System.out.println("# MSG - Retour client = " + clientConnecte.getChaine());
                 //Si le message est le suivant, alors on met a jours les variables de connexion du client
                 // (le message de bienvenu sera a jours directement sans passer par une reconnexion)
                 if("Vos modifications ont ete prises en compte.".equals(req[1]))
                 {
 System.out.println("#! Modifications Nom/Prenom client");                    
-                    client.setNomCo(client.getNom());
-                    client.setPrenomCo(client.getPrenom());
+                    //client.setNom(client.getNom());
+                    //client.setPrenom(client.getPrenom());
                 }
             } catch (NumberFormatException e) {
                 // TODO Auto-generated catch block
-                client.setChaine("Case MSG - Erreur Format");
+                clientConnecte.setChaine("Case MSG - Erreur Format");
             }
             break;
         //Affiche la liste simplifier des profils
@@ -283,7 +293,7 @@ System.out.println("# Ajout du client dans l'Arraylist CLIENTS");
             }
             catch (NumberFormatException e) {
                 // TODO Auto-generated catch block
-                client.setChaine("Case LIST - Erreur format");
+                clientConnecte.setChaine("Case LIST - Erreur format");
             }
             break;
         //Affiche un profil
@@ -291,7 +301,7 @@ System.out.println("# Ajout du client dans l'Arraylist CLIENTS");
             try {
 System.err.println("---- CASE PROF ----");
 
-            	for(int i = 1; i < (req.length) && !client.getChaine().equals("Erreur GPC"); i += 2)
+            	for(int i = 1; i < (req.length) && !clientConnecte.getChaine().equals("Erreur GPC"); i += 2)
             	{
 System.out.println("#! Recuperation champ " + i);
             		switch (req[i])
@@ -300,40 +310,40 @@ System.out.println("#! Recuperation champ " + i);
                             //On met des variables propres au client qui permettra la gestion des boutons retour menu au menuConnecte
                             case "1" :
                                 i=0;
-                                client.setMailCo(req[3]);
-                                client.setNomCo(req[5]);
-                                client.setPrenomCo(req[7]);
+                                clientRecherche.setMail(req[3]);
+                                clientRecherche.setNom(req[5]);
+                                clientRecherche.setPrenom(req[7]);
                                 break;
                             case "mail" : 
-                                client.setMail(req[i+1]);
+                                clientRecherche.setMail(req[i+1]);
                                 break;
                             case "nom" :
-            			client.setNom(req[i+1]);
+            			clientRecherche.setNom(req[i+1]);
             			break;
             		    case "prenom" :
-            		    	client.setPrenom(req[i+1]);
+            		    	clientRecherche.setPrenom(req[i+1]);
                 		break;
                             case "telephone" :
-                                client.setTel(req[i+1]);
+                                clientRecherche.setTel(req[i+1]);
                                 break;
                             case "diplomes" :
-                                client.setDiplome(req[i+1]);
+                                clientRecherche.setDiplome(req[i+1]);
                                 break;
                             case "annee_diplomation" :
-                                client.setAnnee(req[i+1]);
+                                clientRecherche.setAnnee(req[i+1]);
                 		break;
                             case "competences" :
-                		client.setCompetences(req[i+1]);
+                		clientRecherche.setCompetences(req[i+1]);
                                 break;        
                             default:
-            		        client.setChaine("Case default - Erreur req[" + i + "]");
+            		        clientRecherche.setChaine("Case default - Erreur req[" + i + "]");
                                 break;
             		}
             	}
-                clients.add(client);
+                clients.add(clientRecherche);
             } catch (NumberFormatException e) {
                 // TODO Auto-generated catch block
-                client.setChaine("Case PROF - Erreur format");
+                clientConnecte.setChaine("Case PROF - Erreur format");
             }
             break;
         case "MSSG":
@@ -373,20 +383,20 @@ System.out.println("# P2PC - Destinataire = " + req[2]);
 System.err.println("---- CASE P2PM ----");            
             // Reception message P2P
 System.out.println("# P2PM - Message reçu = " + req[1]);
-            client.setChaine(req[1]);
+            clientConnecte.setChaine(req[1]);
             break;
         case "DECO" :
 System.err.println("---- CASE DECO ----");
 System.out.println("# DECO - Fermeture connexion");
-            client.setMailCo(null);
-            client.setNomCo(null);
-            client.setPrenomCo(null);
-            client.setChaine("Vous êtes bien déconnectés.");
+            clientConnecte.setMail(null);
+            clientConnecte.setNom(null);
+            clientConnecte.setPrenom(null);
+            clientConnecte.setChaine("Vous êtes bien déconnectés.");
             break;
         default :
 System.err.println("---- CASE DEFAULT ----");
 System.out.println("# DEFAULT - req[1] : " + req[1]);
-            client.setChaine("Case Default - Erreur dans votre choix");
+            clientConnecte.setChaine("Case Default - Erreur dans votre choix");
             break;
         }
 System.out.println("[GPC] decoupage FIN -----");

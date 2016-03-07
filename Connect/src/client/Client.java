@@ -13,7 +13,7 @@ package client;
 public class Client {
     
     private String nom, prenom, mail, tel, diplome, annee, competences, mdp;
-    private String mailCo, nomCo, prenomCo; //Ces variable permettent d'identifier la personnes connectee
+    //private String mailCo, nomCo, prenomCo; //Ces variable permettent d'identifier la personnes connectee
     private String chaine;
     
     private Client client;
@@ -108,27 +108,27 @@ public class Client {
          this.chaine = chaine;
     }
     
-    public String getMailCo() {
-        return mailCo;
+    /*public String getMailCo() {
+    return mailCo;
     }
-
+    
     public void setMailCo(String mailCo) {
-        this.mailCo = mailCo;
+    this.mailCo = mailCo;
     }
     
     public String getNomCo() {
-        return nomCo;
+    return nomCo;
     }
-
+    
     public void setNomCo(String nomCo) {
-        this.nomCo = nomCo;
+    this.nomCo = nomCo;
     }
     
     public String getPrenomCo() {
-        return prenomCo;
+    return prenomCo;
     }
-
+    
     public void setPrenomCo(String prenomCo) {
-        this.prenomCo = prenomCo;
-    }
+    this.prenomCo = prenomCo;
+    }*/
 }

@@ -38,7 +38,7 @@ public class AffichageResultats extends GridPane {
     private Label nom, mail, tel, diplome, competences;
     
     //Creation du menu Resultats
-    public void afficherResultats(Stage fenetre_menu, Scene rootScene, Client client, GestionProtocoleClient gp, SocketClient socket) {
+    public void afficherResultats(Stage fenetre_menu, Scene rootScene, Client clientConnecte, GestionProtocoleClient gp, SocketClient socket) {
         
         this.setAlignment(Pos.CENTER);
         this.setHgap(10);
@@ -75,10 +75,10 @@ System.out.println("liste résultats OK...");
                 public void handle(ActionEvent event) {
                     
 System.out.println("Selection d'un profil...");                    
-                    gp.requeteCons(resultats.getSelectionModel().getSelectedIndex(), client);
+                    gp.requeteCons(resultats.getSelectionModel().getSelectedIndex(), clientConnecte);
                     AffichageResultats affichage = new AffichageResultats();
                     Scene scene_affichage = new Scene(affichage);
-                    affichage.afficherProfil(fenetre_menu, scene_affichage, client, gp, socket);
+                    affichage.afficherProfil(fenetre_menu, scene_affichage,clientConnecte, gp, socket);
                     fenetre_menu.setScene(scene_affichage);
                 }
             }
@@ -99,11 +99,11 @@ System.out.println("Selection d'un profil...");
 System.out.println(">> Fermeture AffichageResultats.java (Retour depuis résultats)");
 
                     //Si le client est connecte, on le renvoit au menuConnecte
-                    if(client.getMailCo()!=null)
+                    if(clientConnecte.getMail()!=null)
                     {
                         MenuConnecte menuC = new MenuConnecte();
                         Scene scene_menuC = new Scene(menuC);
-                        menuC.menuConnecte(fenetre_menu, scene_menuC, client, gp, socket);
+                        menuC.menuConnecte(fenetre_menu, scene_menuC, clientConnecte, gp, socket);
                         fenetre_menu.setScene(scene_menuC);
                     }
                     //Sinon on le renvoit au menuAnonyme
@@ -111,7 +111,7 @@ System.out.println(">> Fermeture AffichageResultats.java (Retour depuis résulta
                     {
                         MenuAnonyme menuA = new MenuAnonyme();
                         Scene scene_menuA = new Scene(menuA);
-                        menuA.menuAnonyme(fenetre_menu, scene_menuA, client, socket);
+                        menuA.menuAnonyme(fenetre_menu, scene_menuA, clientConnecte, socket);
                         fenetre_menu.setScene(scene_menuA);
                     }
                 }
@@ -119,7 +119,7 @@ System.out.println(">> Fermeture AffichageResultats.java (Retour depuis résulta
         );
     }
     
-    public void afficherProfil(Stage fenetre_menu, Scene rootScene, Client client, GestionProtocoleClient gp, SocketClient socket)
+    public void afficherProfil(Stage fenetre_menu, Scene rootScene, Client clientConnecte, GestionProtocoleClient gp, SocketClient socket)
     {
   System.out.println("Affichage d'un profil...");      
         
@@ -127,6 +127,8 @@ System.out.println(">> Fermeture AffichageResultats.java (Retour depuis résulta
         this.setHgap(10);
         this.setVgap(10);
         this.setPadding(new Insets(25, 25, 25, 25));
+        
+        Client client = gp.getClientRecherche();
         
         titre = new Text("PROFIL de ");
         titre.setFont(Font.font("Calibri", FontWeight.NORMAL, 16));
@@ -176,11 +178,11 @@ System.out.println(">> Fermeture AffichageResultats.java (Retour depuis résulta
                 {
 System.out.println(">> Fermeture d'AffichageResultats.java (Retour depuis profil)");
                     //Si le client est connecte, on le renvoit au menuConnecte
-                    if(client.getMailCo()!=null)
+                    if(clientConnecte.getMail()!=null)
                     {
                         MenuConnecte menuC = new MenuConnecte();
                         Scene scene_menuC = new Scene(menuC);
-                        menuC.menuConnecte(fenetre_menu, scene_menuC, client, gp, socket);
+                        menuC.menuConnecte(fenetre_menu, scene_menuC, clientConnecte, gp, socket);
                         fenetre_menu.setScene(scene_menuC);
                     }
                     //Sinon on le renvoit au menuAnonyme
@@ -188,7 +190,7 @@ System.out.println(">> Fermeture d'AffichageResultats.java (Retour depuis profil
                     {
                         MenuAnonyme menuA = new MenuAnonyme();
                         Scene scene_menuA = new Scene(menuA);
-                        menuA.menuAnonyme(fenetre_menu, scene_menuA, client, socket);
+                        menuA.menuAnonyme(fenetre_menu, scene_menuA, clientConnecte, socket);
                         fenetre_menu.setScene(scene_menuA);
                     }
                 }

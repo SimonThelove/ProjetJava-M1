@@ -33,6 +33,8 @@ import socketsTCP.SocketClient;
 public class Recherche extends GridPane {
         
     private GestionProtocoleClient gp;
+    private Client clientRecherche = new Client();
+    
     private String motsCherches;
     private Text titre;
     private Hyperlink rechercheAvancee;
@@ -40,7 +42,7 @@ public class Recherche extends GridPane {
     private TextField saisie_nom, saisie_prenom, saisie_mail, saisie_diplome, saisie_annee, saisie_competences, saisie_motsCles;
     private Button rechercher, retour, rechercherPlus;
 
-    public void rechercher(Stage fenetre_menu, Scene rootScene, Client client, SocketClient socket) {
+    public void rechercher(Stage fenetre_menu, Scene rootScene, Client clientConnecte, SocketClient socket) {
         
         this.setAlignment(Pos.CENTER);
         this.setHgap(10);
@@ -75,7 +77,7 @@ System.out.println("Recherche avancée...");
                     
                     Recherche recherche = new Recherche();
                     Scene scene_recherche = new Scene(recherche);
-                    recherche.rechercheAvancee(fenetre_menu, scene_recherche, client, socket);
+                    recherche.rechercheAvancee(fenetre_menu, scene_recherche, clientConnecte, socket);
                     fenetre_menu.setScene(scene_recherche);
                 }
             }
@@ -116,14 +118,14 @@ System.out.println("Récupération saisie...");
 System.out.println("Envoi requête..."); 
                         
                         //Appel a la fonction de rechercheMotsCles
-                        gp.requeteRechMotsCles(motsCherches, client);
+                        gp.requeteRechMotsCles(motsCherches, clientConnecte);
 
 System.out.println(">> Fermeture Recherche.java (Exec OK)"); 
                         
                         //On affiche le(s) resultat(s) de la recherche
                         AffichageResultats affichage = new AffichageResultats();
                         Scene scene_affichage = new Scene(affichage);
-                        affichage.afficherResultats(fenetre_menu, scene_affichage, client, gp, socket);
+                        affichage.afficherResultats(fenetre_menu, scene_affichage, clientConnecte, gp, socket);
                         fenetre_menu.setScene(scene_affichage);
                     }
                 }
@@ -145,11 +147,11 @@ System.out.println(">> Fermeture Recherche.java (Exec OK)");
 System.out.println(">> Fermeture Recherche.java (Retour)"); 
                     
                     //Si le client est connecte, on le renvoit au menuConnecte
-                    if(client.getMailCo()!=null)
+                    if(clientConnecte.getMail()!=null)
                     {
                         MenuConnecte menuC = new MenuConnecte();
                         Scene scene_menuC = new Scene(menuC);
-                        menuC.menuConnecte(fenetre_menu, scene_menuC, client, gp, socket);
+                        menuC.menuConnecte(fenetre_menu, scene_menuC, clientConnecte, gp, socket);
                         fenetre_menu.setScene(scene_menuC);
                     }
                     //Sinon on le renvoit au menuAnonyme
@@ -157,7 +159,7 @@ System.out.println(">> Fermeture Recherche.java (Retour)");
                     {
                         MenuAnonyme menuA = new MenuAnonyme();
                         Scene scene_menuA = new Scene(menuA);
-                        menuA.menuAnonyme(fenetre_menu, scene_menuA, client, socket);
+                        menuA.menuAnonyme(fenetre_menu, scene_menuA, clientConnecte, socket);
                         fenetre_menu.setScene(scene_menuA);
                     }
                 }
@@ -165,7 +167,7 @@ System.out.println(">> Fermeture Recherche.java (Retour)");
         );
     }
     
-    public void rechercheAvancee (Stage fenetre_menu, Scene rootScene, Client client, SocketClient socket) {
+    public void rechercheAvancee (Stage fenetre_menu, Scene rootScene, Client clientConnecte, SocketClient socket) {
         
         this.setAlignment(Pos.CENTER);
         this.setHgap(10);
@@ -252,24 +254,24 @@ System.out.println("Verification saisie...");
 System.out.println("Recuperation saisie..."); 
                         
                         //On recupere les informations
-                        client.setNom(saisie_nom.getText());
-                        client.setPrenom(saisie_prenom.getText());
-                        client.setTel(saisie_mail.getText());
-                        client.setDiplome(saisie_diplome.getText());
-                        client.setAnnee(saisie_annee.getText());
-                        client.setCompetences(saisie_competences.getText());
+                        clientRecherche.setNom(saisie_nom.getText());
+                        clientRecherche.setPrenom(saisie_prenom.getText());
+                        clientRecherche.setTel(saisie_mail.getText());
+                        clientRecherche.setDiplome(saisie_diplome.getText());
+                        clientRecherche.setAnnee(saisie_annee.getText());
+                        clientRecherche.setCompetences(saisie_competences.getText());
 
 System.out.println("Envoi requête..."); 
                         
                         //Execution de la requete rechNom
-                        gp.requeteRechNom(client);
+                        gp.requeteRechNom(clientRecherche);
                         
 System.out.println(">> Fermeture Recherche.java (Exec OK)"); 
 
                         //Affichage des resultats de la requete
                         AffichageResultats affichage = new AffichageResultats();
                         Scene scene_affichage = new Scene(affichage);
-                        affichage.afficherResultats(fenetre_menu, scene_affichage, client, gp, socket);
+                        affichage.afficherResultats(fenetre_menu, scene_affichage, clientConnecte, gp, socket);
                         fenetre_menu.setScene(scene_affichage);
                     }
                 }
@@ -291,11 +293,11 @@ System.out.println(">> Fermeture Recherche.java (Exec OK)");
 System.out.println(">> Fermeture Recherche.java (Retour)"); 
                    
                     //Si le client est connecte, on le renvoit au menuConnecte
-                    if(client.getMailCo()!=null)
+                    if(clientConnecte.getMail()!=null)
                     {
                         MenuConnecte menuC = new MenuConnecte();
                         Scene scene_menuC = new Scene(menuC);
-                        menuC.menuConnecte(fenetre_menu, scene_menuC, client, gp, socket);
+                        menuC.menuConnecte(fenetre_menu, scene_menuC, clientConnecte, gp, socket);
                         fenetre_menu.setScene(scene_menuC);
                     }
                     //Sinon on le renvoit au menuAnonyme
@@ -303,7 +305,7 @@ System.out.println(">> Fermeture Recherche.java (Retour)");
                     {
                         MenuAnonyme menuA = new MenuAnonyme();
                         Scene scene_menuA = new Scene(menuA);
-                        menuA.menuAnonyme(fenetre_menu, scene_menuA, client, socket);
+                        menuA.menuAnonyme(fenetre_menu, scene_menuA, clientConnecte, socket);
                         fenetre_menu.setScene(scene_menuA);
                     }
                 }

@@ -140,7 +140,7 @@ System.out.println(">> Fermeture de Connexion.java (Connexion OK)");
                             //Creation du menu connecter
                             MenuConnecte menuC = new MenuConnecte();
                             Scene scene_menuC = new Scene(menuC);
-                            menuC.menuConnecte(fenetre_menu, scene_menuC, client, gp, soc);
+                            menuC.menuConnecte(fenetre_menu, scene_menuC, gp.getClients().get(0), gp, soc);
                             fenetre_menu.setScene(scene_menuC);
                         }
                         //Sinon on le renvoit au menu principal anonyme
