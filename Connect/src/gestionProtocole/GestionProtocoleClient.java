@@ -130,7 +130,7 @@ System.err.println("[GPC] requeteRechNom");
                 "|MAIL|" + client.getMail() +
                 "|DIPLOMES|" + client.getDiplome() +
                 "|ANNEE_DIPLOMATION|" + client.getAnnee() +
-                "|COMPETENCES|" + client.getCompetences();       
+                "|COMPETENCES|" + client.getCompetences() + " |";       
 	//Envoi du message a SocketClient
 	message = soc.echangeServeur(message);
 	//Appelle a la methode pour creer un affichage au client

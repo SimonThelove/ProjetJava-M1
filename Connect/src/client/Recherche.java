@@ -33,14 +33,19 @@ import socketsTCP.SocketClient;
 public class Recherche extends GridPane {
         
     private GestionProtocoleClient gp;
-    private Client clientRecherche = new Client();
+    private Client clientRecherche;
     
     private String motsCherches;
     private Text titre;
     private Hyperlink rechercheAvancee;
-    private Label nom, prenom, mail, diplome, annee, competences, motsCles;
-    private TextField saisie_nom, saisie_prenom, saisie_mail, saisie_diplome, saisie_annee, saisie_competences, saisie_motsCles;
+    private Label nom, prenom, mail, tel, diplome, annee, competences, motsCles;
+    private TextField saisie_nom, saisie_prenom, saisie_mail, saisie_tel, saisie_diplome, saisie_annee, saisie_competences, saisie_motsCles;
     private Button rechercher, retour, rechercherPlus;
+
+    public Recherche() {
+        super();
+        this.clientRecherche = new Client();
+    }
 
     public void rechercher(Stage fenetre_menu, Scene rootScene, Client clientConnecte, SocketClient socket) {
         
@@ -174,6 +179,8 @@ System.out.println(">> Fermeture Recherche.java (Retour)");
         this.setVgap(10);
         this.setPadding(new Insets(25, 25, 25, 25));
         
+        this.gp = new GestionProtocoleClient(socket);
+        
 System.out.println("Affichage champs de recherche..."); 
         
         titre = new Text("Recherche Avancée");
@@ -199,23 +206,29 @@ System.out.println("Affichage champs de recherche...");
         saisie_mail = new TextField();
         this.add(saisie_mail, 1, 3);
         
+        tel = new Label("Téléphone :");
+        this.add(tel, 0, 4);
+
+        saisie_tel = new TextField();
+        this.add(saisie_tel, 1, 4);
+        
         diplome = new Label("Diplôme :");
-        this.add(diplome, 0, 4);
+        this.add(diplome, 0, 5);
 
         saisie_diplome = new TextField();
-        this.add(saisie_diplome, 1, 4);
+        this.add(saisie_diplome, 1, 5);
         
         annee = new Label("Année :");
-        this.add(annee, 0, 5);
+        this.add(annee, 0, 6);
 
         saisie_annee = new TextField();
-        this.add(saisie_annee, 1, 5);
+        this.add(saisie_annee, 1, 6);
         
         competences = new Label("Compétences :");
-        this.add(competences, 0, 6);
+        this.add(competences, 0, 7);
 
         saisie_competences = new TextField();
-        this.add(saisie_competences, 1, 6);
+        this.add(saisie_competences, 1, 7);
         
         //Creation du bouton rechercher
         rechercherPlus = new Button("Rechercher");
@@ -256,7 +269,8 @@ System.out.println("Recuperation saisie...");
                         //On recupere les informations
                         clientRecherche.setNom(saisie_nom.getText());
                         clientRecherche.setPrenom(saisie_prenom.getText());
-                        clientRecherche.setTel(saisie_mail.getText());
+                        clientRecherche.setMail(saisie_mail.getText());
+                        clientRecherche.setTel(motsCherches);
                         clientRecherche.setDiplome(saisie_diplome.getText());
                         clientRecherche.setAnnee(saisie_annee.getText());
                         clientRecherche.setCompetences(saisie_competences.getText());

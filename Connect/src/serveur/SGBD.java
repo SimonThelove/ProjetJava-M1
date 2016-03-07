@@ -183,13 +183,13 @@ System.out.println("[SGBD] Setter CONS");
             if("RECH".equals(chaine[0]))
             {
                 for (i = 1; i < (chaine.length - 2); i+= 2) {
-                    requeteConsultation += chaine[i] + " = '" + chaine[i+1] + "' AND ";
+                    requeteConsultation += chaine[i] + " = '" + chaine[i+1] + "' OR ";
                 }
             }
             else //Sinon on débute avec i=0 (utiliser pour recuperer les informations utilisateur lors de leur connexion
             {
                 for (i = 0; i < (chaine.length - 2); i+= 2) {
-                        requeteConsultation += chaine[i] + " = '" + chaine[i+1] + "' AND ";
+                        requeteConsultation += chaine[i] + " = '" + chaine[i+1] + "' OR ";
                 }
             }
             // On finit la requete avec l'ajout du dernier champ
