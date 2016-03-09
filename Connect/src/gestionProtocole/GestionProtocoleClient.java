@@ -369,6 +369,8 @@ System.out.println("# MSSG - Expéditeur : " + req[i+3] + " - message : " + req[
 System.err.println("---- CASE P2PH ----");            
             // Retour de la hashtable depuis le serveur
 System.out.println("# P2PH - Clients connectés = " + req[1]);
+System.out.println("# P2PH - Vidage de la table clients_co");            
+            clients_co.clear();
             for (int i = 1; i < req.length; i++){
                 clients_co.add(req[i]);
             }

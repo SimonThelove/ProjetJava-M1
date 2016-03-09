@@ -55,7 +55,7 @@ System.out.println(">>>> Lancement Messenger.java");
         TextArea messages = new TextArea();
         messages.setPrefSize(400, 550);
         messages.setEditable(false);
-        this.add(messages, 0, 0);
+        this.add(messages, 0, 0, 2, 1);
         
         // Zone de saisie du message
         TextField saisie_msg = new TextField();
@@ -74,7 +74,7 @@ System.out.println("Creation liste des clients connectés...");
         // Ajout des noms a la liste
         liste_clients.setItems(connectes);
         liste_clients.setPrefSize(200, 550);
-        this.add(liste_clients, 1, 0, 2, 1);
+        this.add(liste_clients, 3, 0, 3, 1);
 
 System.out.println("Creation liste OK...");
         
@@ -84,11 +84,33 @@ System.out.println("Creation liste OK...");
                 // LE SERVEUR VA TRANSMETTRE LA DEMANDE A L'AUTRE CLIENT
                 
         // Attente de la connexion de l'autre client
+        Button actualiser = new Button("Actualiser");
+        HBox hbActualise = new HBox(10);
+        hbActualise.setAlignment(Pos.BOTTOM_RIGHT);
+        hbActualise.getChildren().add(actualiser);
+        this.add(hbActualise, 1, 1);
+        
+        actualiser.setOnAction(new EventHandler<ActionEvent>(){
+            
+            @Override
+            public void handle(ActionEvent event)
+            {
+System.out.println("Actualisation de la liste des clients connectés...");
+                
+                gp.requeteP2P(client);
+                connectes = null;
+                connectes = gp.getClients_co();
+
+            }
+        
+    });
+                
+        // Attente de la connexion de l'autre client
         Button contacter = new Button("Contacter");
         HBox hbContact = new HBox(10);
         hbContact.setAlignment(Pos.BOTTOM_RIGHT);
         hbContact.getChildren().add(contacter);
-        this.add(hbContact, 1, 1);
+        this.add(hbContact, 2, 1);
         
         contacter.setOnAction(new EventHandler<ActionEvent>(){
             
@@ -107,7 +129,7 @@ System.out.println("Ouverture socket d'ecoute P2P...");
         HBox hbEnvoi = new HBox(10);
         hbEnvoi.setAlignment(Pos.BOTTOM_RIGHT);
         hbEnvoi.getChildren().add(envoyer);
-        this.add(hbEnvoi, 2, 1);
+        this.add(hbEnvoi, 3, 1);
         
         envoyer.setOnAction(new EventHandler<ActionEvent>(){
             
@@ -129,8 +151,37 @@ System.out.println("Vidage de la zone de saisie...");
     });
         
         // Bouton de retour au menu précédent
-        // DEVELOPPEMENT EN COURS ...
-System.out.println(">> Fermeture de Messenger.java (Retour)");
-
+        Button retour = new Button("Retour");
+        HBox hbRetour = new HBox(10);
+        hbRetour.setAlignment(Pos.BOTTOM_RIGHT);
+        hbRetour.getChildren().add(retour);
+        this.add(hbRetour, 4, 1);
+        
+        //Action lors de l'appui sur le bouton retour
+        retour.setOnAction(new EventHandler<ActionEvent>()
+            {
+                @Override
+                public void handle (ActionEvent e) {
+System.out.println(">> Fermeture Messenger.java (Retour)"); 
+                    
+                    //Si le client est connecte, on le renvoit au menuConnecte
+                    if(client.getMail()!=null)
+                    {
+                        MenuConnecte menuC = new MenuConnecte();
+                        Scene scene_menuC = new Scene(menuC);
+                        menuC.menuConnecte(fenetre_menu, scene_menuC, client, gp, socket);
+                        fenetre_menu.setScene(scene_menuC);
+                    }
+                    //Sinon on le renvoit au menuAnonyme
+                    else
+                    {
+                        MenuAnonyme menuA = new MenuAnonyme();
+                        Scene scene_menuA = new Scene(menuA);
+                        menuA.menuAnonyme(fenetre_menu, scene_menuA, client, socket);
+                        fenetre_menu.setScene(scene_menuA);
+                    }
+                }
+            }
+        );
     }
 }
