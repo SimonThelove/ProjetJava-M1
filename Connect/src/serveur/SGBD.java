@@ -252,7 +252,7 @@ System.out.println("[SGBD] REQUETE = " + requeteCreation);
 
     public void setRequeteCreationVisible (String mail) {
 System.err.println("[SGBD] Setter CREA Visibilite");        
-            this.requeteCreation = "INSERT INTO VISIBILITE VALUES ('"+ mail +"','mail,nom,prenom','mail,nom,prenom');";
+            this.requeteCreation = "INSERT INTO VISIBILITE VALUES ('"+ mail +"','mail,nom,prenom','mail,nom,prenom,telephone,diplomes,annee_diplomation,competences');";
 System.out.println("[SGBD] REQUETE = " + requeteCreation);            
     }
 
