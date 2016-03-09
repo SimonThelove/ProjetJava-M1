@@ -68,7 +68,7 @@ System.err.println("## PORT SERVEUR = " + port + " <!> DIFFERENT DU PORT PAR DEF
         }
         while (!done)
         {
-System.out.println("## Attente de donnexion sur le port : " + port);
+System.out.println("## Attente de connexion sur le port : " + port);
             try
             {                                
                 conversation = new ConversationServeur(leServeur.accept(), gp, clients_co);

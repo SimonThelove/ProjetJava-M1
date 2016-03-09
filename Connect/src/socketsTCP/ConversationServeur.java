@@ -25,6 +25,7 @@ public class ConversationServeur extends Thread {
     
     private PrintStream     sortieSocket;
     private BufferedReader  entreeSocket;
+    private Socket          socket;
     
     private GestionProtocoleServeur gp;
     private Hashtable clients_co;
@@ -34,13 +35,14 @@ public class ConversationServeur extends Thread {
     private String          entree;
     private String          sortie;
     private String          mailCo;
-    private String          portClient;
+    private Integer          portClient;
     
     // Constructeur pour les echanges client / serveur
     public ConversationServeur(Socket soc, GestionProtocoleServeur gp, Hashtable clients_co) {
 System.err.println("#### Construct ConversationServeur..."); 
         this.gp = gp;
         this.clients_co = clients_co;
+        this.socket = soc;
         
         try 
         {
@@ -66,19 +68,13 @@ System.out.println("++ Conversation Serveur start : OK");
       try {
 System.err.println("[CONV_SRV] echanger");
             entree = entreeSocket.readLine();
+            
             if (entree != null){
-                
-                // Si le contenu du message est EXACTEMENT une suite de 5 chiffres
-                // alors il s'agit du numéro de port associé au client
-                if (entree.matches("[0-9]{5}"))
-                {
-System.out.println("++ ENTREE - Port Cli > Srv = " + entree);
-                    portClient = entree;
+                    portClient = socket.getPort();
+System.out.println("++ ENTREE - Port Cli > Srv = " + portClient);
                     clients_co.put(portClient, "anon_" + portClient);                    
 System.out.println("++ Creation client connecte");
 
-                }
-                else {
                     
 System.out.println("++ ENTREE = " + entree);
 
@@ -113,7 +109,6 @@ System.out.println("++! Modification Hashtable clients connectés");
                         done = true;
 System.out.println("++ Fermeture Conversation : " + portClient);
                     }
-                }
             }
             else stop = true;
 System.err.println("[CONV_SRV] echanger FIN -----");            

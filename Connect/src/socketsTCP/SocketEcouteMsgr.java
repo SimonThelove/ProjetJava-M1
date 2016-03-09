@@ -61,7 +61,7 @@ System.err.println("## PORT ECOUTE P2P = " + port + " <!> DIFFERENT DU PORT PAR 
         }
         while (!done)
         {
-System.out.println("## Attente de donnexion sur le port : " + port);
+System.out.println("## Attente de connexion sur le port : " + port);
             try
             {                                
                 conversation = new ConversationP2P(socketEcoute.accept());
