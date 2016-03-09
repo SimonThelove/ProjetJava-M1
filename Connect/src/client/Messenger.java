@@ -77,13 +77,8 @@ System.out.println("Creation liste des clients connectés...");
         this.add(liste_clients, 3, 0, 3, 1);
 
 System.out.println("Creation liste OK...");
-        
-        // Connexion avec client sélectionné dans la ListView
-        //gp.connecterP2P(portEcouteP2P);
-                // >> Demande au serveur une connexion avec le client sélectionné
-                // LE SERVEUR VA TRANSMETTRE LA DEMANDE A L'AUTRE CLIENT
-                
-        // Attente de la connexion de l'autre client
+                        
+        // Actualisation de la liste des clients connectés
         Button actualiser = new Button("Actualiser");
         HBox hbActualise = new HBox(10);
         hbActualise.setAlignment(Pos.BOTTOM_RIGHT);
@@ -118,10 +113,10 @@ System.out.println("Actualisation de la liste des clients connectés...");
             public void handle(ActionEvent event)
             {
 System.out.println("Ouverture socket d'ecoute P2P...");
-                
                 ecoute.socket();
-            }
-        
+System.out.println("Affichage de la conversation P2P reçue...");                 
+                messages.setText(messages.getText() + gpMsgr.getMessage() + System.lineSeparator());
+            } 
     });
         
         // Bouton d'envoi du message
@@ -142,10 +137,12 @@ System.out.println("Initialisation de la conversation P2P...");
                 ecoute.initEnvoiP2P();
 System.out.println("Envoi du message P2P...");                 
                 gpMsgr.echangerP2P(saisie_msg.getText(), client);
-System.out.println("Affichage de la conversation P2P reçue...");                 
+System.out.println("Affichage de la conversation P2P...");
                 messages.setText(messages.getText() + client.getChaine() + System.lineSeparator());
 System.out.println("Vidage de la zone de saisie...");                 
                 saisie_msg.clear();
+System.out.println("Attente d'une réponse...");
+                ecoute.socket();
             }
         
     });

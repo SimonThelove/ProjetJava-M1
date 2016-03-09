@@ -234,6 +234,14 @@ System.err.println("[GPC] echangerP2P");
 System.out.println("[GPC] echangerP2P FIN -----"); 
     }
     
+    // Methode de gestion des messages P2P reçus
+    public String receptionP2P(String entree) {
+System.err.println("[GPC] receptionP2P");         
+        message = entree.substring(5);
+System.out.println("[GPC] receptionP2P FIN -----");
+        return "P2PC|"; // Fin de la conversation
+    }
+    
     //Methode de concatenation de la requete deconnexion
     public void requeteDeco(Client client){
 System.err.println("[GPC] requeteDeco");         
@@ -378,8 +386,8 @@ System.out.println("# Clients ajoutés à la liste");
             break;
         case "P2PC" :
 System.err.println("---- CASE P2PC ----");            
-            // Reception demande de connexion (req[1]= portEcoute // req[2]= nomDest)
-System.out.println("# P2PC - Destinataire = " + req[2]);
+            socMsgr.close(); // Fermeture du socket P2P
+System.out.println("# P2PC - Fermeture de la conversation");
             break;
         case "P2PM" :
 System.err.println("---- CASE P2PM ----");            

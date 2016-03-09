@@ -25,17 +25,17 @@ public class ConversationP2P extends Thread{
     
     private GestionProtocoleClient gp; // Adapter au P2P
     
-    private Boolean         stop;
     private Boolean         done;
     private String          entree;
     private String          sortie;
     
     // Constructeur pour les echanges messenger (P2P)
-    public ConversationP2P(Socket soc){
+    public ConversationP2P(Socket soc, GestionProtocoleClient gpMsgr){
                 
         try 
         {
-System.err.println("#### Construct ConversationP2P... ");            
+System.err.println("#### Construct ConversationP2P... "); 
+            this.gp = gpMsgr;
             sortieSocket = new PrintStream(soc.getOutputStream());
             entreeSocket = new BufferedReader(new InputStreamReader(soc.getInputStream()));
         }
@@ -44,7 +44,6 @@ System.err.println("#### Construct ConversationP2P... ");
             Logger.getLogger(ConversationP2P.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        stop = false;
         done = false;
         
 System.out.println("++ Conversation P2P start : OK");
@@ -63,25 +62,22 @@ System.err.println("@ConversationP2P echanger");
             if (entree != null)
             {                
 System.out.println("## ENTREE = " + entree);
-                    sortie = entree.substring(5);
-System.out.println("## Recuperation message envoyé = " + entree.substring(5));                    
+                    sortie = gp.receptionP2P(entree);
                     sortieSocket.println(sortie);
 System.out.println("## SORTIE = " + sortie);
             }
-            else stop = true;
+            else done = true;
 System.err.println("@echanger FIN -----");            
         }
         catch (IOException ex) 
         {
             Logger.getLogger(SocketEcouteMsgr.class.getName()).log(Level.SEVERE, null, ex);
-            stop = true;
+            done = true;
         }
     }
     
     @Override
     public void run() {
-        while(!stop){
-            echanger();
-        }
+        echanger();
     }
 }

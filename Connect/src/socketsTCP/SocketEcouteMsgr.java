@@ -6,6 +6,7 @@
  */
 package socketsTCP;
 
+import gestionProtocole.GestionProtocoleClient;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -28,6 +29,8 @@ public class SocketEcouteMsgr {
     private ConversationP2P conversation;
     private ServerSocket socketEcoute; // Variable socket d'ecoute
     private Socket leSocket; // Socket d'envoi de messages P2P
+    
+    private GestionProtocoleClient gpMsgr = new GestionProtocoleClient(this);
     
     private PrintStream fluxSortieSocket;
     private BufferedReader fluxEntreeSocket;
@@ -64,7 +67,7 @@ System.err.println("## PORT ECOUTE P2P = " + port + " <!> DIFFERENT DU PORT PAR 
 System.out.println("## Attente de connexion sur le port : " + port);
             try
             {                                
-                conversation = new ConversationP2P(socketEcoute.accept());
+                conversation = new ConversationP2P(socketEcoute.accept(), gpMsgr);
                 conversation.start();
             }
             catch (IOException ex)
