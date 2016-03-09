@@ -72,7 +72,7 @@ System.err.println("#### Construct GPC pour P2P");
     // Methode de conception de requete (utilise depuis Modification.java)
     public void setMessage(Client client) {
 System.err.println("[GPC] setMessage");         
-        //this.message = client.getMailCo();    
+        this.message =  "MAIL|" + client.getMail();    
         this.message += "|NOM|" + client.getNom();
         this.message += "|PRENOM|" + client.getPrenom();
         this.message += "|TELEPHONE|" + client.getTel();
@@ -174,7 +174,7 @@ System.err.println("[GPC] requeteModi");
 
         String requete;
 	//Creation de la requete
-	requete = "MODI|MAIL|" + message;        
+	requete = "MODI|" + message;        
 	//Envoi du message a SocketClient
 	requete = soc.echangeServeur(requete);
 	//Appelle a la methode pour creer un affichage au client
