@@ -93,6 +93,29 @@ System.err.println("#### Construct BDD_2...");
             Logger.getLogger(SGBD.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    // Connexion a la  BDD pour la V2 (messagerie differee)
+    public void bdd3() {
+        try {
+System.err.println("#### Construct BDD_3...");            
+            con = DriverManager.getConnection("jdbc:mysql://mysql-stri.alwaysdata.net/stri_connect_like","stri","STRISTRI");
+        } catch (SQLException ex) {
+            // TODO Auto-generated catch block
+            Logger.getLogger(SGBD.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            st = con.createStatement();
+        } catch (SQLException ex) {
+            // TODO Auto-generated catch block
+            Logger.getLogger(SGBD.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            visibilite = con.createStatement();
+        } catch (SQLException ex) {
+            // TODO Auto-generated catch block
+            Logger.getLogger(SGBD.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     public void setResultats(ResultSet rslt, ResultSetMetaData rsmd, String[] visibilite) {
 System.err.println("[SGBD] Setter Resultats");
@@ -259,6 +282,12 @@ System.out.println("[SGBD] REQUETE = " + requeteCreation);
     public void setRequeteCreationMessage (String mail, String mailDest, String msg) {
 System.err.println("[SGBD] Setter CREA Messsage");                
             this.requeteCreation = "INSERT INTO DEPOT_MSG (mail_exp, mail_des, message) VALUES ('" + mail + "','" + mailDest + "','" + msg + "'); ";
+System.out.println("[SGBD] REQUETE = " + requeteCreation);            
+    }
+    
+        public void setRequeteCreationLike (String mail) {
+System.err.println("[SGBD] Setter CREA CPT_LIKE");        
+            this.requeteCreation = "INSERT INTO CPT_LIKE VALUES ('"+ mail +"','0');";
 System.out.println("[SGBD] REQUETE = " + requeteCreation);            
     }
     
@@ -556,6 +585,20 @@ System.err.println("[SGBD] Exec UPDATE MSSG");
         bdd2();
         try {
 System.out.println("Update Message...");                
+            i = st.executeUpdate(requeteCreation);
+            con.close();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            Logger.getLogger(SGBD.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return i;
+    }
+    
+    public synchronized int executeLike() {
+System.err.println("[SGBD] Exec UPDATE MSSG");            
+        bdd3();
+        try {
+System.out.println("Update Crea Like ...");                
             i = st.executeUpdate(requeteCreation);
             con.close();
         } catch (SQLException e) {

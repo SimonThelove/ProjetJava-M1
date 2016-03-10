@@ -77,6 +77,9 @@ System.out.println(">> Creation informations ...");
 System.out.println(">> Creation visibilite ...");
                 sgbd.setRequeteCreationVisible(adresseMail);
                 setValide(sgbd.executeUpdate("CREA"));
+System.out.println(">> Creation CPT_LIKE ...");
+                sgbd.setRequeteCreationLike(adresseMail);
+                setValide(sgbd.executeLike());
                 if (valide != 0) {
 System.out.println("[SRV] creerCompte FIN -----");
                     return "Votre compte a bien ete creer, vous pouvez maintenant vous connecter.";
