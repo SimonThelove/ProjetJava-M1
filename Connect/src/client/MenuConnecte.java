@@ -23,6 +23,7 @@ import javafx.scene.control.Alert;
 
 import socketsTCP.SocketClient;
 import gestionProtocole.GestionProtocoleClient;
+import socketsTCP.SocketEcouteMsgr;
 
 /**
  *
@@ -43,6 +44,35 @@ System.out.println(">>>> Lancement MenuConnecte.java");
         Text titre = new Text("Bienvenue : " + clientConnecte.getNom() + " " + clientConnecte.getPrenom());
         titre.setFont(Font.font("Calibri", FontWeight.NORMAL, 16));
         this.add(titre, 0, 0, 2, 1);
+        
+        //Creation du bouton Modification
+        Button messenger = new Button("Messenger");
+        HBox hbMsgr = new HBox(10);
+        hbMsgr.setAlignment(Pos.BOTTOM_RIGHT);
+        hbMsgr.getChildren().add(messenger);
+        this.add(hbMsgr, 0, 2);
+        
+        //Action lors de l'appui sur le bouton Messenger
+        messenger.setOnAction(new EventHandler<ActionEvent>()
+            {
+                @Override
+                //Affichge du menu Messenger
+                public void handle(ActionEvent e) {
+System.out.println(">> Fermeture MenuConnecte.java (Messenger)");
+                    
+                    // Creation d'un socket d'ecoute pour connexion P2P
+                    SocketEcouteMsgr ecoute = new SocketEcouteMsgr();
+                    
+                    // Ouverture de la scene messenger
+                    Messenger discuter = new Messenger();
+                    Scene scene_discuter = new Scene(discuter);
+                    discuter.dialoguer(fenetre_menuC, scene_discuter, clientConnecte, socket, ecoute);
+                    fenetre_menuC.setScene(scene_discuter);
+                    
+                   
+                }
+            }
+        );
                 
         //Creation du bouton Modification
         Button modifier = new Button("Modifier");
@@ -151,8 +181,9 @@ System.out.println(">> Fermeture MenuConnecte.java (Recuperation Message)");
                 public void handle(ActionEvent e) {
 System.out.println("Fermeture socket client connecté...");
                     
+                    // Déconnexion du serveur = fin conversation
                     gp.requeteDeco(clientConnecte);
-                    socket.close();
+                    
 System.out.println(">> Fermeture MenuConnecte.java (Deconnexion)");
 
                     // POP-UP du message resultat de deconnexion

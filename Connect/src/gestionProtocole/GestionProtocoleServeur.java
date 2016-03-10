@@ -23,7 +23,7 @@ public class GestionProtocoleServeur {
     private final Hashtable clients_co;
     
     private String reponse;
-    private String mailConnecte;
+    private String mailConnecte = null;
     private String type;
     private ArrayList<String> temp;
 
@@ -103,7 +103,7 @@ System.err.println("---- CASE MODI ----");
             case "CONS":
 System.err.println("---- CASE CONS ----");
                 try {
-                    temp = serveur.consulter(req[2], req[3]);
+                    temp = serveur.consulter(req[2], req[3], mailConnecte);
                 } catch (SQLException e) {
                     // TODO Auto-generated catch block
                     Logger.getLogger(Serveur.class.getName()).log(Level.SEVERE, null, e);
@@ -141,12 +141,14 @@ System.err.println("---- CASE MSSG ----");
                 break; 
             case "P2PH":
 System.err.println("---- CASE P2PH ----");
+                // UPDATE EN COURS ...
                 setReponse("P2PH|" + String.join("|", clients_co.values()));
                 break;
             //Requete de deconnexion
             case "DECO":
 System.err.println("---- CASE DECO ----");
-                setReponse("MSG|" + serveur.seDeconnecter());
+                this.setMailConnecte(null);
+                setReponse("DECO|" + serveur.seDeconnecter());
                 break;
             //Fermeture d'un socket de connexion anonyme
             case "QUIT":

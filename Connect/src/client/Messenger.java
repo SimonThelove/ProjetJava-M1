@@ -55,10 +55,11 @@ System.out.println(">>>> Lancement Messenger.java");
         TextArea messages = new TextArea();
         messages.setPrefSize(400, 550);
         messages.setEditable(false);
-        this.add(messages, 0, 0);
+        this.add(messages, 0, 0, 2, 1);
         
         // Zone de saisie du message
         TextField saisie_msg = new TextField();
+        saisie_msg.setPrefWidth(250);
         this.add(saisie_msg, 0, 1);
         
 System.out.println("Creation liste des clients connectés...");
@@ -74,21 +75,38 @@ System.out.println("Creation liste des clients connectés...");
         // Ajout des noms a la liste
         liste_clients.setItems(connectes);
         liste_clients.setPrefSize(200, 550);
-        this.add(liste_clients, 1, 0, 2, 1);
+        this.add(liste_clients, 2, 0, 3, 1);
 
 System.out.println("Creation liste OK...");
+                        
+        // Actualisation de la liste des clients connectés
+        Button actualiser = new Button("Actualiser");
+        HBox hbActualise = new HBox(10);
+        hbActualise.setAlignment(Pos.BOTTOM_RIGHT);
+        hbActualise.getChildren().add(actualiser);
+        this.add(hbActualise, 3, 1);
         
-        // Connexion avec client sélectionné dans la ListView
-        //gp.connecterP2P(portEcouteP2P);
-                // >> Demande au serveur une connexion avec le client sélectionné
-                // LE SERVEUR VA TRANSMETTRE LA DEMANDE A L'AUTRE CLIENT
+        actualiser.setOnAction(new EventHandler<ActionEvent>(){
+            
+            @Override
+            public void handle(ActionEvent event)
+            {
+System.out.println("Actualisation de la liste des clients connectés...");
+                
+                gp.requeteP2P(client);
+                connectes = null;
+                connectes = gp.getClients_co();
+
+            }
+        
+    });
                 
         // Attente de la connexion de l'autre client
         Button contacter = new Button("Contacter");
         HBox hbContact = new HBox(10);
         hbContact.setAlignment(Pos.BOTTOM_RIGHT);
         hbContact.getChildren().add(contacter);
-        this.add(hbContact, 1, 1);
+        this.add(hbContact, 2, 1);
         
         contacter.setOnAction(new EventHandler<ActionEvent>(){
             
@@ -96,10 +114,10 @@ System.out.println("Creation liste OK...");
             public void handle(ActionEvent event)
             {
 System.out.println("Ouverture socket d'ecoute P2P...");
-                
-                ecoute.socket();
-            }
-        
+                ecoute.socket(messages);
+                // Mise à jour de l'affichage
+                messages.setText(gpMsgr.getConversation().getText());
+            } 
     });
         
         // Bouton d'envoi du message
@@ -107,7 +125,7 @@ System.out.println("Ouverture socket d'ecoute P2P...");
         HBox hbEnvoi = new HBox(10);
         hbEnvoi.setAlignment(Pos.BOTTOM_RIGHT);
         hbEnvoi.getChildren().add(envoyer);
-        this.add(hbEnvoi, 2, 1);
+        this.add(hbEnvoi, 1, 1);
         
         envoyer.setOnAction(new EventHandler<ActionEvent>(){
             
@@ -119,18 +137,53 @@ System.out.println("Ouverture socket d'ecoute P2P...");
 System.out.println("Initialisation de la conversation P2P...");                
                 ecoute.initEnvoiP2P();
 System.out.println("Envoi du message P2P...");                 
-                gpMsgr.echangerP2P(saisie_msg.getText(), client);
-System.out.println("Affichage de la conversation P2P reçue...");                 
-                messages.setText(messages.getText() + client.getChaine() + System.lineSeparator());
+                gpMsgr.echangerP2P(saisie_msg.getText());
+System.out.println("Affichage de la conversation P2P...");
+                messages.setText(messages.getText() + " >> " + saisie_msg.getText() + System.lineSeparator());
 System.out.println("Vidage de la zone de saisie...");                 
                 saisie_msg.clear();
+                if (client.getChaine().equalsIgnoreCase("P2PN|ok")) {
+System.out.println("Attente d'une réponse...");
+                    ecoute.socket(messages);
+                }
             }
         
     });
         
         // Bouton de retour au menu précédent
-        // DEVELOPPEMENT EN COURS ...
-System.out.println(">> Fermeture de Messenger.java (Retour)");
+        Button retour = new Button("Retour");
+        HBox hbRetour = new HBox(10);
+        hbRetour.setAlignment(Pos.BOTTOM_RIGHT);
+        hbRetour.getChildren().add(retour);
+        this.add(hbRetour, 4, 1);
+        
+        //Action lors de l'appui sur le bouton retour
+        retour.setOnAction(new EventHandler<ActionEvent>()
+            {
+                @Override
+                public void handle (ActionEvent e) {
+System.out.println(">> Fermeture Messenger.java (Retour)"); 
 
+                    //NOTIFIER L'AUTRE CLIENT QUE L'ON QUITTE LA CONVERSATION ??
+                    
+                    //Si le client est connecte, on le renvoit au menuConnecte
+                    if(client.getMail()!=null)
+                    {
+                        MenuConnecte menuC = new MenuConnecte();
+                        Scene scene_menuC = new Scene(menuC);
+                        menuC.menuConnecte(fenetre_menu, scene_menuC, client, gp, socket);
+                        fenetre_menu.setScene(scene_menuC);
+                    }
+                    //Sinon on le renvoit au menuAnonyme
+                    else
+                    {
+                        MenuAnonyme menuA = new MenuAnonyme();
+                        Scene scene_menuA = new Scene(menuA);
+                        menuA.menuAnonyme(fenetre_menu, scene_menuA, client, socket);
+                        fenetre_menu.setScene(scene_menuA);
+                    }
+                }
+            }
+        );
     }
 }

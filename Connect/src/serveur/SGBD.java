@@ -252,7 +252,7 @@ System.out.println("[SGBD] REQUETE = " + requeteCreation);
 
     public void setRequeteCreationVisible (String mail) {
 System.err.println("[SGBD] Setter CREA Visibilite");        
-            this.requeteCreation = "INSERT INTO VISIBILITE VALUES ('"+ mail +"','mail,nom,prenom','mail,nom,prenom');";
+            this.requeteCreation = "INSERT INTO VISIBILITE VALUES ('"+ mail +"','mail,nom,prenom','mail,nom,prenom,telephone,diplomes,annee_diplomation,competences');";
 System.out.println("[SGBD] REQUETE = " + requeteCreation);            
     }
 
@@ -425,12 +425,13 @@ System.out.println("Execution requete OK...");
     }
 
     // Recuperation des informations d'un profil utilisateur (selon visibilitee)
-    public ArrayList<String> getVisibleInfos(String adresseMail) {
+    public ArrayList<String> getVisibleInfos(String adresseMail, String mailConnecte) {
 System.err.println("[SGBD] Getter VISIBILITE");            
         bdd();
         // On a des variables de gestion de la visibilitee
         String temp;
         String[] split;
+        ResultSet visible;
         
 System.out.println("Construction requete...");
         // On fabrique les informations a transmettre
@@ -442,16 +443,27 @@ System.out.println("Construction requete...");
             rslt = st.executeQuery(requeteConsultation);
             rsmd = rslt.getMetaData();
 System.out.println("Execution requete CONS OK...");
-            // Gestion de la visibilitee
-            ResultSet visible = visibilite.executeQuery("SELECT infos_visibles_anonymes FROM VISIBILITE WHERE mail = '" + adresseMail + "';");
-            visible.next();
+            // Gestion de la visibilite
+            if (mailConnecte == null) { // Affiche les infos visibles pour les anonymes
+                visible = visibilite.executeQuery("SELECT infos_visibles_anonymes FROM VISIBILITE WHERE mail = '" + adresseMail + "';");
+                visible.next();
 System.out.println("Execution requete VISIB OK...");
-            temp = visible.getString("infos_visibles_anonymes");
-            split = temp.split(",");
+                temp = visible.getString("infos_visibles_anonymes");
+                split = temp.split(",");
 System.out.println("Execution OK...");
-            // On standardise les resultats
-            setResultats(rslt,rsmd,split);
-            con.close();
+                // On standardise les resultats
+                setResultats(rslt,rsmd,split);
+                con.close();
+            } else {    // Affiche les infos visibles pour les utilisateurs identifiés
+                visible = visibilite.executeQuery("SELECT infos_visibles_utilisateurs FROM VISIBILITE WHERE mail = '" + adresseMail + "';");
+                visible.next();
+System.out.println("Execution requete VISIB OK...");
+                temp = visible.getString("infos_visibles_utilisateurs");
+                split = temp.split(",");
+System.out.println("Execution OK...");
+                // On standardise les resultats
+                setResultats(rslt,rsmd,split);
+                con.close();            }
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             Logger.getLogger(SGBD.class.getName()).log(Level.SEVERE, null, e);

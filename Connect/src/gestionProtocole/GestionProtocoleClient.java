@@ -10,6 +10,7 @@ import socketsTCP.SocketClient;
 import client.Client;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.TextArea;
 import socketsTCP.SocketEcouteMsgr;
 
 /**
@@ -28,6 +29,8 @@ public class GestionProtocoleClient {
     private int nbPersonne = 0;//Nombre de profil que renvoit les requetes de recherche
     private String req[] = null;//Requete de retour du serveur
     private Client clientRecherche;
+    private Client clientContacte;
+    private TextArea conversation;
 
     private String expediteur; //Expediteur du message
     private String mailRecu;   //Contenu du message reçu
@@ -47,6 +50,7 @@ System.err.println("#### Construct GPC pour P2P");
         this.clients = FXCollections.observableArrayList();
         this.clients_co = FXCollections.observableArrayList();
         this.messagerie = FXCollections.observableArrayList();
+        this.clientContacte = new Client();
     }
 
     public ObservableList<String> getClients_co() {
@@ -55,6 +59,10 @@ System.err.println("#### Construct GPC pour P2P");
     
     public ObservableList<Client> getClients() {
         return clients;
+    }
+    
+    public TextArea getConversation() {
+        return conversation;
     }
         
     public String getMessage() {
@@ -72,7 +80,7 @@ System.err.println("#### Construct GPC pour P2P");
     // Methode de conception de requete (utilise depuis Modification.java)
     public void setMessage(Client client) {
 System.err.println("[GPC] setMessage");         
-        //this.message = client.getMailCo();    
+        this.message =  "MAIL|" + client.getMail();    
         this.message += "|NOM|" + client.getNom();
         this.message += "|PRENOM|" + client.getPrenom();
         this.message += "|TELEPHONE|" + client.getTel();
@@ -174,7 +182,7 @@ System.err.println("[GPC] requeteModi");
 
         String requete;
 	//Creation de la requete
-	requete = "MODI|MAIL|" + message;        
+	requete = "MODI|" + message;        
 	//Envoi du message a SocketClient
 	requete = soc.echangeServeur(requete);
 	//Appelle a la methode pour creer un affichage au client
@@ -213,7 +221,10 @@ System.out.println("[GPC] requeteRecupMsg FIN -----");
 System.err.println("[GPC] requeteP2P");         
     
         //Creation de la requete
-        message = "P2PH|";              
+        if (client.getMail() != null)
+            message = "P2PH|" + client.getPrenom() + " " + client.getNom();
+        else
+            message = "P2PH|null";
         //Envoi du message a SocketClient
         message = soc.echangeServeur(message);
         //appel a la methode pour creer un affchage client
@@ -222,16 +233,29 @@ System.out.println("[GPC] requeteP2P FIN -----");
     }
     
     //Methode de demande de connexion PeerToPeer
-    public void echangerP2P (String msg, Client client) {
+    public void echangerP2P (String msg) {
 System.err.println("[GPC] echangerP2P");         
         
         //Creation de la requete
-        message = "P2PM|" + msg;
+        if (msg.substring(0, 4).equalsIgnoreCase("P2PC")) {
+            message = msg;
+        } else
+            message = "P2PM|" + msg;
         //Envoi du message a SocketClient
         message = socMsgr.echangeP2P(message);
         //appel a la methode pour creer un affchage client
-        decoupage(message, client);
+        decoupage(message, clientContacte);
 System.out.println("[GPC] echangerP2P FIN -----"); 
+    }
+    
+    // Methode de gestion des messages P2P reçus
+    public void receptionP2P(String entree, TextArea msgs) {
+System.err.println("[GPC] receptionP2P");
+        // Récupération de l'affichage
+        this.conversation = msgs;
+        // traitement du message reçu
+        decoupage (entree, clientContacte);
+System.out.println("[GPC] receptionP2P FIN -----");
     }
     
     //Methode de concatenation de la requete deconnexion
@@ -369,28 +393,45 @@ System.out.println("# MSSG - Expéditeur : " + req[i+3] + " - message : " + req[
 System.err.println("---- CASE P2PH ----");            
             // Retour de la hashtable depuis le serveur
 System.out.println("# P2PH - Clients connectés = " + req[1]);
+System.out.println("# P2PH - Vidage de la table clients_co");            
+            clients_co.clear();
             for (int i = 1; i < req.length; i++){
                 clients_co.add(req[i]);
             }
 System.out.println("# Clients ajoutés à la liste");            
             break;
         case "P2PC" :
-System.err.println("---- CASE P2PC ----");            
-            // Reception demande de connexion (req[1]= portEcoute // req[2]= nomDest)
-System.out.println("# P2PC - Destinataire = " + req[2]);
+System.err.println("---- CASE P2PC ----");
+            // Fermeture de la conversation
+            clientConnecte.setChaine("----- Connexion fermée -----");
+            conversation.setText(conversation.getText() + clientConnecte.getChaine() + System.lineSeparator());
+System.out.println("# P2PC - Fermeture de la conversation");
             break;
         case "P2PM" :
 System.err.println("---- CASE P2PM ----");            
             // Reception message P2P
 System.out.println("# P2PM - Message reçu = " + req[1]);
             clientConnecte.setChaine(req[1]);
+            conversation.setText(conversation.getText() + clientConnecte.getChaine() + System.lineSeparator());
+            break;
+        case "P2PN" :
+System.err.println("---- CASE P2PN ----");
+            // Notification de réception
+            clientConnecte.setChaine(message);
+System.out.println("# P2PN - Message reçu");
             break;
         case "DECO" :
 System.err.println("---- CASE DECO ----");
 System.out.println("# DECO - Fermeture connexion");
+            // Reset des informations du client connecté
             clientConnecte.setMail(null);
             clientConnecte.setNom(null);
             clientConnecte.setPrenom(null);
+            clientConnecte.setAnnee(null);
+            clientConnecte.setCompetences(null);
+            clientConnecte.setDiplome(null);
+            clientConnecte.setMdp(null);
+            clientConnecte.setTel(null);
             clientConnecte.setChaine("Vous êtes bien déconnectés.");
             break;
         default :

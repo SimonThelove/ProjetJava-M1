@@ -98,7 +98,7 @@ System.out.println("++ SORTIE = " + sortie);
                         mailCo = entree.substring(10, entree.indexOf("|", 10)); // récupération temporaire de l'adresse mail du client
 System.out.println("++! Recuperation mail utilisateur connecté");
                         try {
-                            clients_co.replace(portClient, gp.getServeur().consulter(mailCo, "1").get(6) + " " + gp.getServeur().consulter(mailCo, "1").get(4));
+                            clients_co.replace(portClient, gp.getServeur().consulter(mailCo, "1", null).get(6) + " " + gp.getServeur().consulter(mailCo, "1", null).get(4));
 System.out.println("++! Modification Hashtable clients connectés");
                         } catch (SQLException ex) {
                             Logger.getLogger(Conversation.class.getName()).log(Level.SEVERE, null, ex);

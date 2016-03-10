@@ -138,7 +138,7 @@ System.out.println("[SRV] seDeconnecter FIN -----");
     }
 
     // Methode de consultation d'un profil utilisateur
-    public ArrayList<String> consulter(String adresseMail, String droitAdmin) throws SQLException {
+    public ArrayList<String> consulter(String adresseMail, String droitAdmin, String mailConnecte) throws SQLException {
 System.err.println("[SRV] consulter");
 
         // ControleDroits (si la personne est admin ou si la personne se ocnnecte et recupere ses informations)
@@ -149,7 +149,7 @@ System.err.println("[SRV] consulter");
         //Sinon on applique la visibilite
         else {
             // Recuperation des informations visibles du profil
-            resultats = (sgbd.getVisibleInfos(adresseMail));
+            resultats = (sgbd.getVisibleInfos(adresseMail, mailConnecte));
         }
 System.out.println("[SRV] consulter FIN -----");
         return resultats;

@@ -6,6 +6,7 @@
  */
 package socketsTCP;
 
+import gestionProtocole.GestionProtocoleClient;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -14,6 +15,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.control.TextArea;
 
 /**
  *
@@ -29,11 +31,15 @@ public class SocketEcouteMsgr {
     private ServerSocket socketEcoute; // Variable socket d'ecoute
     private Socket leSocket; // Socket d'envoi de messages P2P
     
+    private GestionProtocoleClient gpMsgr = new GestionProtocoleClient(this);
+    
     private PrintStream fluxSortieSocket;
     private BufferedReader fluxEntreeSocket;
     private String retour = null;
 
-    public void socket ()
+// FONCTIONS DE RECEPTION    
+    
+    public void socket (TextArea messages)
     {
         socketEcoute = null;
         try
@@ -61,10 +67,10 @@ System.err.println("## PORT ECOUTE P2P = " + port + " <!> DIFFERENT DU PORT PAR 
         }
         while (!done)
         {
-System.out.println("## Attente de donnexion sur le port : " + port);
+System.out.println("## Attente de connexion sur le port : " + port);
             try
             {                                
-                conversation = new ConversationP2P(socketEcoute.accept());
+                conversation = new ConversationP2P(socketEcoute.accept(), gpMsgr, messages);
                 conversation.start();
             }
             catch (IOException ex)
@@ -74,8 +80,21 @@ System.out.println("## Attente de donnexion sur le port : " + port);
             done = conversation.getDone();
         }
         close();
+        
 System.err.println("@socket FIN -----");
     }
+    
+    public void close(){
+        try {
+System.err.println("@SocketEcouteMsgr close");                        
+            socketEcoute.accept().close();
+System.out.println("## Fermeture socket ecoute num. " + socketEcoute.getLocalPort());                        
+        } catch (IOException ex) {
+            Logger.getLogger(SocketEcouteMsgr.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+// FONCTIONS D'EMISSION    
     
     public void initEnvoiP2P () {
         try {
@@ -105,15 +124,4 @@ System.out.println("## SORTIE = " + retour);
         }
         return retour;
       }
-    
-    public void close(){
-        try {
-System.err.println("@SocketEcouteMsgr close");                        
-            socketEcoute.accept().close();
-System.out.println("## Fermeture socket ecoute num. " + socketEcoute.getLocalPort());                        
-        } catch (IOException ex) {
-            Logger.getLogger(SocketEcouteMsgr.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
 }

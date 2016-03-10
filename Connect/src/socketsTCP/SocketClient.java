@@ -25,8 +25,7 @@ System.out.println("## PORT CLIENT = " + portClient);
                 this.fluxSortieSocket = new PrintStream(leSocket.getOutputStream());
                 this.fluxEntreeSocket = new BufferedReader(new InputStreamReader(leSocket.getInputStream()));
                 
-                // Envoi du port client a serveur
-                fluxSortieSocket.println(portClient);
+                
 System.out.println("## Creation socket serveur : OK");                
             } catch (IOException ex) {
                 Logger.getLogger(SocketClient.class.getName()).log(Level.SEVERE, null, ex);
