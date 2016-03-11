@@ -93,29 +93,6 @@ System.err.println("#### Construct BDD_2...");
             Logger.getLogger(SGBD.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    // Connexion a la  BDD pour la V2 (messagerie differee)
-    public void bdd3() {
-        try {
-System.err.println("#### Construct BDD_3...");            
-            con = DriverManager.getConnection("jdbc:mysql://mysql-stri.alwaysdata.net/stri_connect_like","stri","STRISTRI");
-        } catch (SQLException ex) {
-            // TODO Auto-generated catch block
-            Logger.getLogger(SGBD.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            st = con.createStatement();
-        } catch (SQLException ex) {
-            // TODO Auto-generated catch block
-            Logger.getLogger(SGBD.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            visibilite = con.createStatement();
-        } catch (SQLException ex) {
-            // TODO Auto-generated catch block
-            Logger.getLogger(SGBD.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
 
     public void setResultats(ResultSet rslt, ResultSetMetaData rsmd, String[] visibilite) {
 System.err.println("[SGBD] Setter Resultats");
@@ -281,13 +258,7 @@ System.out.println("[SGBD] REQUETE = " + requeteCreation);
 
     public void setRequeteCreationMessage (String mail, String mailDest, String msg) {
 System.err.println("[SGBD] Setter CREA Messsage");                
-            this.requeteCreation = "INSERT INTO DEPOT_MSG (mail_exp, mail_des, message) VALUES ('" + mail + "','" + mailDest + "','" + msg + "'); ";
-System.out.println("[SGBD] REQUETE = " + requeteCreation);            
-    }
-    
-        public void setRequeteCreationLike (String mail) {
-System.err.println("[SGBD] Setter CREA CPT_LIKE");        
-            this.requeteCreation = "INSERT INTO CPT_LIKE VALUES ('"+ mail +"','0');";
+            this.requeteCreation = "INSERT INTO DEPOT_MSG (mail_exp, mail_des, message, lu) VALUES ('" + mail + "','" + mailDest + "','" + msg + "','0'); ";
 System.out.println("[SGBD] REQUETE = " + requeteCreation);            
     }
     
@@ -296,6 +267,13 @@ System.out.println("[SGBD] REQUETE = " + requeteCreation);
 System.err.println("[SGBD] Setter MSSG Recup");        
          this.requeteConsultation = "SELECT * FROM DEPOT_MSG WHERE mail_des =  '" + mail + "';";
 System.out.println("[SGBD] REQUETE = " + requeteConsultation);            
+    }
+    
+    //Requete de mise a jour de l'etat de lecture
+    public void setLu(String id_mail){
+System.err.println("[SGBD] Setter MSSG Recup");        
+        this.requeteModification = "UPDATE DEPOT_MSG SET lu = '1' WHERE id_mail =  '" + id_mail + "';";
+System.out.println("[SGBD] REQUETE = " + requeteModification);
     }
     
     // Requete de modification dans la base de donnees
@@ -552,6 +530,24 @@ System.out.println("Execution requete CONS OK...");
         return message;
     }
     
+    public synchronized String getLu(String id_mail){
+        
+        String message = "Message non lu";
+        try {
+System.err.println("[SGBD] Getter Lecture MSSG");
+            bdd2();
+System.out.println("Construction requete...");
+            // On fabrique la requete
+            setLu(id_mail);
+            // On l'execute sur la BDD et on recupere les informations sur ces resultats
+            i = st.executeUpdate(requeteModification);
+            message = "Message lu";
+        } catch (SQLException ex) {
+            Logger.getLogger(SGBD.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return message;
+    }
+    
     // Mise à jour de la BDD = Action d'ecriture donc besoin de gestion des acces concurrents
     // Creation ou Modification (Synchronized)
     public synchronized int executeUpdate(String type) {
@@ -585,20 +581,6 @@ System.err.println("[SGBD] Exec UPDATE MSSG");
         bdd2();
         try {
 System.out.println("Update Message...");                
-            i = st.executeUpdate(requeteCreation);
-            con.close();
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            Logger.getLogger(SGBD.class.getName()).log(Level.SEVERE, null, e);
-        }
-        return i;
-    }
-    
-    public synchronized int executeLike() {
-System.err.println("[SGBD] Exec UPDATE MSSG");            
-        bdd3();
-        try {
-System.out.println("Update Crea Like ...");                
             i = st.executeUpdate(requeteCreation);
             con.close();
         } catch (SQLException e) {

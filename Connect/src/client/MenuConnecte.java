@@ -23,6 +23,7 @@ import javafx.scene.control.Alert;
 
 import socketsTCP.SocketClient;
 import gestionProtocole.GestionProtocoleClient;
+import javafx.scene.paint.Color;
 import socketsTCP.SocketEcouteMsgr;
 
 /**
@@ -43,7 +44,7 @@ System.out.println(">>>> Lancement MenuConnecte.java");
         //Affichage au client d'un message de bienvenue avec son nom et prenom
         Text titre = new Text("Bienvenue : " + clientConnecte.getNom() + " " + clientConnecte.getPrenom());
         titre.setFont(Font.font("Calibri", FontWeight.NORMAL, 16));
-        this.add(titre, 0, 0, 2, 1);
+        this.add(titre, 0, 0, 3, 1);
         
         //Creation du bouton Modification
         Button messenger = new Button("Messenger");
@@ -137,19 +138,34 @@ System.out.println(">> Fermeture MenuConnecte.java (Envoi Message)");
                     
                     EnvoiMessage envoiMessage = new EnvoiMessage();
                     Scene scene_envoiMessage = new Scene(envoiMessage);
-                    envoiMessage.envoyerMessage(fenetre_menuC, scene_envoiMessage, clientConnecte, socket);
+                    envoiMessage.envoyerMessage(fenetre_menuC, scene_envoiMessage, clientConnecte, socket, null);
                     fenetre_menuC.setScene(scene_envoiMessage);
                 }
             }
         );
         
         //Creation du bouton Mes messages
-        Button recupererMessage = new Button("Mes messages");
+        Button recupererMessage = new Button();
+        
+        //Verification de la boite de reception
+System.out.println("Creation de la requete MSSG..."); 
+        gp.requeteRecupMsg(clientConnecte);
+System.out.println("Messages récupérés..."); 
+
+        //Affichage relatif aux messages reçus
+        if (gp.getMessagesNonLus() == 0) {
+System.out.println("Pas de nouveau message...");
+            recupererMessage.setText("Mes messages");
+        } else {
+System.out.println("Messages non lus...");
+            recupererMessage.setText(gp.getMessagesNonLus() + " messages");
+            recupererMessage.setTextFill(Color.RED);
+        }
         HBox hbrecupererMessage = new HBox(10);
         hbrecupererMessage.setAlignment(Pos.BOTTOM_RIGHT);
         hbrecupererMessage.getChildren().add(recupererMessage);
         this.add(hbrecupererMessage, 4, 2);
-        
+                
         //Action lors de l'appui sur le bouton Mes messages
         recupererMessage.setOnAction(new EventHandler<ActionEvent>()
             {
@@ -160,7 +176,7 @@ System.out.println(">> Fermeture MenuConnecte.java (Recuperation Message)");
                     
                     RecuperationMessage recuperationMessage = new RecuperationMessage();
                     Scene scene_recuperationMessagee = new Scene(recuperationMessage);
-                    recuperationMessage.recupererMessage(fenetre_menuC, scene_recuperationMessagee, clientConnecte, socket);
+                    recuperationMessage.recupererMessage(fenetre_menuC, scene_recuperationMessagee, gp, clientConnecte, socket);
                     fenetre_menuC.setScene(scene_recuperationMessagee);
                 }
             }

@@ -40,7 +40,7 @@ public class EnvoiMessage extends GridPane {
     private String mailDest, messageEnvoyer;
     private Button modifier, retour;
     
-    public void envoyerMessage (Stage fenetre_menu, Scene rootScene, Client client, SocketClient socket) {
+    public void envoyerMessage (Stage fenetre_menu, Scene rootScene, Client client, SocketClient socket, String mailDestinataire) {
         
         this.setAlignment(Pos.CENTER);
         this.setHgap(10);
@@ -60,6 +60,9 @@ System.out.println(">>>> Lancement EnvoiMessage.java");
         this.add(mail, 0, 1);
 
         saisie_mail = new TextField();
+        //Dans le cas d'une réponse, on pré-rempllit le mail
+        if(!mailDestinataire.isEmpty())
+            saisie_mail.setText(mailDestinataire);
         this.add(saisie_mail, 1, 1);
 
         message = new Label("Message a envoyer :");

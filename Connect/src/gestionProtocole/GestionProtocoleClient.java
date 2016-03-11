@@ -21,7 +21,7 @@ public class GestionProtocoleClient {
     
     private final ObservableList<Client> clients;
     private final ObservableList<String> clients_co;
-    private final ObservableList<String> messagerie;
+    private final ObservableList<String> messagerie, messages;
     
     private SocketClient soc; //recuperation du socket d'echange
     private SocketEcouteMsgr socMsgr; //recuperation du socket P2P
@@ -32,8 +32,11 @@ public class GestionProtocoleClient {
     private Client clientContacte;
     private TextArea conversation;
 
-    private String expediteur; //Expediteur du message
-    private String mailRecu;   //Contenu du message reçu
+    private String expediteur;  //Expediteur du message
+    private String mailRecu;    //Contenu du message reçu
+    private String id_mail;     //Identifiant du message reçu
+    private int messagesNonLus; //Nombre de messages non lus
+    private int nbMessages;     //Nombre de messages au total
 
     public GestionProtocoleClient(SocketClient socket) {
 System.err.println("#### Construct GPC vers Serveur");         
@@ -41,6 +44,7 @@ System.err.println("#### Construct GPC vers Serveur");
         this.clients = FXCollections.observableArrayList();
         this.clients_co = FXCollections.observableArrayList();
         this.messagerie = FXCollections.observableArrayList();
+        this.messages = FXCollections.observableArrayList();
         this.clientRecherche = new Client();
     }
     
@@ -50,6 +54,7 @@ System.err.println("#### Construct GPC pour P2P");
         this.clients = FXCollections.observableArrayList();
         this.clients_co = FXCollections.observableArrayList();
         this.messagerie = FXCollections.observableArrayList();
+        this.messages = FXCollections.observableArrayList();
         this.clientContacte = new Client();
     }
 
@@ -61,12 +66,32 @@ System.err.println("#### Construct GPC pour P2P");
         return clients;
     }
     
+    public ObservableList<String> getMessagerie(){
+        return messagerie;
+    }
+        
+    public ObservableList<String> getMessages(){
+        return messages;
+    }
+    
     public TextArea getConversation() {
         return conversation;
     }
         
     public String getMessage() {
         return message;
+    }
+    
+    public int getMessagesNonLus(){
+        return messagesNonLus;
+    }
+    
+    public int getNbMessages(){
+        return nbMessages;
+    }
+    
+    public String getIdMail() {
+        return id_mail;
     }
     
      public Client getClientRecherche() {
@@ -198,12 +223,12 @@ System.err.println("[GPC] requeteEnvoiMsg");
 	message = "MSSG|ENVOI|MAIL_EXP|" + client.getMail() + "|MAIL_DES|" + mailDes + "|MESSAGE|" + msg;        
 	//Envoi du message a SocketClient
 	message = soc.echangeServeur(message);
-	//Appelle a la methode pour creer un affichage au client
+	//Appel a la methode pour creer un affichage au client
 	decoupage(message, client);
 System.out.println("[GPC] requeteEnvoiMsg FIN -----"); 
     }
     
-    //Methode de concatenation de la requete deconnexion
+    //Methode de concatenation de la requete de recuperation d'un message
     public void requeteRecupMsg(Client client){
 System.err.println("[GPC] requeteRecupMsg");         
         
@@ -211,8 +236,20 @@ System.err.println("[GPC] requeteRecupMsg");
 	message = "MSSG|RECUP|MAIL_DES|" + client.getMail();                
 	//Envoi du message a SocketClient
 	message = soc.echangeServeur(message);
-	//Appelle a la methode pour creer un affichage au client
+	//Appel a la methode pour creer un affichage au client
 	decoupage(message, client);
+System.out.println("[GPC] requeteRecupMsg FIN -----");         
+    }
+    
+    //Méthode d'annonce de lecture d'un message
+    public void lectureMessage(String index, Client client){
+System.err.println("[GPC] requeteRecupMsg"); 
+        //Creation de la requete
+        message = "MSSG|LECT|ID_MAIL|" + index;
+        //Envoi du message a SocketClient
+        message = soc.echangeServeur(message);
+        //Decoupage de la reponse pour un affichage client
+        decoupage(message, client);
 System.out.println("[GPC] requeteRecupMsg FIN -----");         
     }
     
@@ -300,6 +337,7 @@ System.out.println("#! Modifications Nom/Prenom client");
                 clientConnecte.setChaine("Case MSG - Erreur Format");
             }
             break;
+            
         //Affiche la liste simplifier des profils
         case "LIST":
            try {
@@ -320,6 +358,7 @@ System.out.println("# Ajout du client dans l'Arraylist CLIENTS");
                 clientConnecte.setChaine("Case LIST - Erreur format");
             }
             break;
+            
         //Affiche un profil
         case "PROF":
             try {
@@ -370,25 +409,35 @@ System.out.println("#! Recuperation champ " + i);
                 clientConnecte.setChaine("Case PROF - Erreur format");
             }
             break;
+            
         case "MSSG":
 System.err.println("---- CASE MSSG ----");            
             if(Integer.toString(0).matches(req[1]))
             {
 System.out.println("#! MSSG - Aucun message");                
-                //Mettre un message pas de resultat
             }
             else
             {
-System.out.println("# MSSG - Nombre de messages = " + req[1]);                
-                for(int i = 2; i < (req.length-2); i += 8)
+System.out.println("# MSSG - Nombre de messages = " + req[1]);
+                messagerie.clear();     // On vide la liste avant de la remplir
+                nbMessages = 0;         // On initialise a zero le nombre de messages
+                messagesNonLus = 0;     // On initialise a zero les messages non lus
+                for(int i = 2; i < (req.length-2); i += 10)
                 {
+                    nbMessages ++;
+                    id_mail = req[i+1];
                     expediteur = req[i+3];
                     mailRecu = req[i+7];
-                    messagerie.add(expediteur + "|" + mailRecu);
-System.out.println("# MSSG - Expéditeur : " + req[i+3] + " - message : " + req[i+7]);
+                    if(req[i+9].equalsIgnoreCase("0"))
+                        messagesNonLus ++;
+                    messagerie.add(expediteur + " - mail n° " + id_mail);
+                    messages.add(expediteur + "|" + mailRecu);
+System.out.println("# MSSG - Expéditeur : " + req[i+3] + " - message n° " + nbMessages + " : " + req[i+7]);
                 }
             }
+            clientConnecte.setChaine(Integer.toString(nbMessages));
             break;
+            
         case "P2PH" :
 System.err.println("---- CASE P2PH ----");            
             // Retour de la hashtable depuis le serveur
@@ -400,6 +449,7 @@ System.out.println("# P2PH - Vidage de la table clients_co");
             }
 System.out.println("# Clients ajoutés à la liste");            
             break;
+            
         case "P2PC" :
 System.err.println("---- CASE P2PC ----");
             // Fermeture de la conversation
@@ -407,6 +457,7 @@ System.err.println("---- CASE P2PC ----");
             conversation.setText(conversation.getText() + clientConnecte.getChaine() + System.lineSeparator());
 System.out.println("# P2PC - Fermeture de la conversation");
             break;
+            
         case "P2PM" :
 System.err.println("---- CASE P2PM ----");            
             // Reception message P2P
@@ -420,6 +471,7 @@ System.err.println("---- CASE P2PN ----");
             clientConnecte.setChaine(message);
 System.out.println("# P2PN - Message reçu");
             break;
+            
         case "DECO" :
 System.err.println("---- CASE DECO ----");
 System.out.println("# DECO - Fermeture connexion");
@@ -434,6 +486,7 @@ System.out.println("# DECO - Fermeture connexion");
             clientConnecte.setTel(null);
             clientConnecte.setChaine("Vous êtes bien déconnectés.");
             break;
+            
         default :
 System.err.println("---- CASE DEFAULT ----");
 System.out.println("# DEFAULT - req[1] : " + req[1]);

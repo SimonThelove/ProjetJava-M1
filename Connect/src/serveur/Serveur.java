@@ -77,9 +77,6 @@ System.out.println(">> Creation informations ...");
 System.out.println(">> Creation visibilite ...");
                 sgbd.setRequeteCreationVisible(adresseMail);
                 setValide(sgbd.executeUpdate("CREA"));
-System.out.println(">> Creation CPT_LIKE ...");
-                sgbd.setRequeteCreationLike(adresseMail);
-                setValide(sgbd.executeLike());
                 if (valide != 0) {
 System.out.println("[SRV] creerCompte FIN -----");
                     return "Votre compte a bien ete creer, vous pouvez maintenant vous connecter.";
@@ -192,12 +189,22 @@ System.out.println("[SRV] envoiMessage FIN -----");
                     return "Erreur d'envoi : votre message n'a pas ete envoye."; }
         }
     }
-     public String recupererMessage(String mail) {
+    
+    public String recupererMessage(String mail) {
 System.err.println("[SRV] recupererMessage");
         //Execution de la requete
         reponse = sgbd.getMessage(mail);
 System.out.println(">> REPONSE = " + reponse);
 System.out.println("[SRV] recupererMessage FIN -----");
         return reponse;         
-     }
+    }
+    
+    public String marquerCommeLu(String id_mail) {
+System.err.println("[SRV] marquerCommeLu");
+        //Execution de la requete
+        reponse = sgbd.getLu(id_mail);
+System.out.println(">> REPONSE = " + reponse);
+System.out.println("[SRV] marquerCommeLu FIN -----");
+        return reponse;  
+    }
 }

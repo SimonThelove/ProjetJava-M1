@@ -130,13 +130,19 @@ System.err.println("---- CASE RECH ----");
                 break;
             case "MSSG":
 System.err.println("---- CASE MSSG ----");
-                if (req[1].compareTo("ENVOI") == 0)
-                {
-                reponse = ("MSG|" + serveur.envoiMessage(req[3], req[5], req[7]));
-                }
-                else if (req[1].compareTo("RECUP") == 0)
-                {
-                    reponse = ("MSSG|" + serveur.recupererMessage(req[3]));
+                switch(req[1]) {
+                    case "ENVOI" :
+                        reponse = ("MSG|" + serveur.envoiMessage(req[3], req[5], req[7]));
+                        break;
+                    case "RECUP" :
+                        reponse = ("MSSG|" + serveur.recupererMessage(req[3]));
+                        break;
+                    case "LECT" :
+                        reponse = ("MSG|" + serveur.marquerCommeLu(req[3]));
+                        break;
+                    default :
+                        reponse = ("MSG|Erreur requête Messagerie serveur");
+                        break;
                 }
                 break; 
             case "P2PH":
