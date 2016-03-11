@@ -94,6 +94,29 @@ System.err.println("#### Construct BDD_2...");
         }
     }
 
+    // Connexion a la  BDD pour la V2 (messagerie differee)
+    public void bdd3() {
+        try {
+System.err.println("#### Construct BDD_3...");            
+           con = DriverManager.getConnection("jdbc:mysql://mysql-stri.alwaysdata.net/stri_connect_like","stri","STRISTRI");
+        } catch (SQLException ex) {
+            // TODO Auto-generated catch block
+            Logger.getLogger(SGBD.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            st = con.createStatement();
+        } catch (SQLException ex) {
+            // TODO Auto-generated catch block
+            Logger.getLogger(SGBD.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            visibilite = con.createStatement();
+        } catch (SQLException ex) {
+            // TODO Auto-generated catch block
+            Logger.getLogger(SGBD.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     public void setResultats(ResultSet rslt, ResultSetMetaData rsmd, String[] visibilite) {
 System.err.println("[SGBD] Setter Resultats");
         // Intialisation des compteurs
@@ -262,6 +285,12 @@ System.err.println("[SGBD] Setter CREA Messsage");
 System.out.println("[SGBD] REQUETE = " + requeteCreation);            
     }
     
+    public void setRequeteCreationInitialLike (String mail) {
+System.err.println("[SGBD] Setter CREA CPT_LIKE");        
+            this.requeteCreation = "INSERT INTO CPT_LIKE VALUES ('"+ mail +"','0');";
+System.out.println("[SGBD] REQUETE = " + requeteCreation);            
+    }
+    
     //Requete recuperation de message client
     public void setRequeteRecupMessage(String mail) {
 System.err.println("[SGBD] Setter MSSG Recup");        
@@ -274,6 +303,33 @@ System.out.println("[SGBD] REQUETE = " + requeteConsultation);
 System.err.println("[SGBD] Setter MSSG Recup");        
         this.requeteModification = "UPDATE DEPOT_MSG SET lu = '1' WHERE id_mail =  '" + id_mail + "';";
 System.out.println("[SGBD] REQUETE = " + requeteModification);
+    }
+    
+    //Requete d'ajout de la personne qui like un profil
+    public void setRequeteCreationLike (String cible, String auteur) {
+System.err.println("[SGBD] Setter CREA AJOUT LIKE");        
+            this.requeteCreation = "INSERT INTO LIKES VALUES ('"+ cible +"','" + auteur + "');";
+System.out.println("[SGBD] REQUETE = " + requeteCreation);            
+    }
+    
+    //Requete de suppression d'un like d'un profil
+    public void setRequeteDeleteLike (String cible, String auteur) {
+System.err.println("[SGBD] Setter CREA AJOUT LIKE");        
+            this.requeteModification = "DELETE FROM LIKES WHERE cible = '"+ cible +"' AND auteur = '" + auteur + "';";
+System.out.println("[SGBD] REQUETE = " + requeteCreation);            
+    }
+    //Requete de récuperation de like d'un profil
+    public void setRequeteRecupCptLike (String cible) {
+System.err.println("[SGBD] Setter CREA CPT_LIKE");        
+            this.requeteConsultation = "SELECT nb_like FROM CPT_LIKE WHERE cible = '"+ cible +"';";
+System.out.println("[SGBD] REQUETE = " + requeteConsultation);            
+    }
+  
+    //Requete de modification du compteur de like d'un profil
+    public void setRequeteModificationCptLike (String cible, String nb_like) {
+System.err.println("[SGBD] Setter CREA CPT_LIKE");        
+            this.requeteModification = "UPDATE CPT_LIKE SET nb_like = '"+ nb_like +"' WHERE cible = '" + cible + "';";
+System.out.println("[SGBD] REQUETE = " + requeteModification);            
     }
     
     // Requete de modification dans la base de donnees
@@ -502,7 +558,7 @@ System.out.println("Execution requete CONS OK...");
 
     // Requete de recherche d'utilisateurs selon des mots cles
     public String getMessage(String mail) {
-System.err.println("[SGBD] Getter MSSG");            
+        System.err.println("[SGBD] Getter MSSG");            
         bdd2();
         String message = "";
 System.out.println("Construction requete...");
@@ -548,6 +604,78 @@ System.out.println("Construction requete...");
         return message;
     }
     
+    public void modifierCptLike(String cible, String auteur, String test){
+        System.err.println("[SGBD] Ajouter d'un auteur like et modification compteur");            
+        String valeur;
+        int cpt_like = 0;
+        
+        if(test.compareTo("1") == 1)
+        {
+            //Ajout de l'auteur du like
+            setRequeteCreationLike(cible, auteur);
+            executeLike(); 
+
+    System.out.println("Construction requete...");
+            // On fabrique la requete
+            setRequeteRecupCptLike(cible);
+            // On l'execute sur la BDD et on recupere les informations sur ces resultats
+            try {
+                bdd3();
+                rslt = st.executeQuery(requeteConsultation);
+                rsmd = rslt.getMetaData();
+    System.out.println("Execution requete RECUP CPT LIKE ok...");
+                rslt.next();
+                valeur = rslt.getString(1);
+        System.out.println("Champs : " + valeur);
+
+                //Mise a jours du compteur de like
+                cpt_like = Integer.parseInt(valeur) + 1 ;
+                System.out.println("CPT : " + cpt_like);
+                valeur = Integer.toString(cpt_like);
+                //Faire l'envoit du new cpt
+                setRequeteModificationCptLike(cible, valeur);
+                updateLike();
+                con.close();
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                Logger.getLogger(SGBD.class.getName()).log(Level.SEVERE, null, e);
+            }
+        }
+        else
+        {
+            //Ajout de l'auteur du like
+            setRequeteDeleteLike(cible, auteur);
+            updateLike(); 
+
+    System.out.println("Construction requete...");
+            // On fabrique la requete
+            setRequeteRecupCptLike(cible);
+            // On l'execute sur la BDD et on recupere les informations sur ces resultats
+            try {
+                bdd3();
+                rslt = st.executeQuery(requeteConsultation);
+                rsmd = rslt.getMetaData();
+    System.out.println("Execution requete RECUP CPT LIKE ok...");
+                rslt.next();
+                valeur = rslt.getString(1);
+        System.out.println("Champs : " + valeur);
+
+                //Mise a jours du compteur de like
+                cpt_like = Integer.parseInt(valeur) - 1 ;
+                System.out.println("CPT : " + cpt_like);
+                valeur = Integer.toString(cpt_like);
+                //Faire l'envoit du new cpt
+                setRequeteModificationCptLike(cible, valeur);
+                updateLike();
+                con.close();
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                Logger.getLogger(SGBD.class.getName()).log(Level.SEVERE, null, e);
+            }
+        }
+    }
+    
+    
     // Mise à jour de la BDD = Action d'ecriture donc besoin de gestion des acces concurrents
     // Creation ou Modification (Synchronized)
     public synchronized int executeUpdate(String type) {
@@ -589,5 +717,34 @@ System.out.println("Update Message...");
         }
         return i;
     }  
+    
+    //Connexion pour la creation d'un like
+    public synchronized int executeLike() {
+System.err.println("[SGBD] Exec UPDATE MSSG");            
+        bdd3();
+        try {
+System.out.println("Update Crea Like ...");                
+            i = st.executeUpdate(requeteCreation);
+            con.close();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            Logger.getLogger(SGBD.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return i;
+    }
+    
+    //Connexion pour la modification d'un like
+    public synchronized int updateLike() {
+System.err.println("[SGBD] Exec UPDATE MSSG");            
+        bdd3();
+        try {
+System.out.println("Update CPT_Like nb_like ...");                
+            i = st.executeUpdate(requeteModification);
+            con.close();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            Logger.getLogger(SGBD.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return i;
+    }  
 }
-

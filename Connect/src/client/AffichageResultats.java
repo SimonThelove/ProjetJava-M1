@@ -32,7 +32,7 @@ import socketsTCP.SocketClient;
  */
 public class AffichageResultats extends GridPane {
 
-    private Button retour, consulter;
+    private Button retour, consulter, like;
     private ListView resultats;
     private Text titre;
     private Label nom, mail, tel, diplome, competences;
@@ -119,6 +119,7 @@ System.out.println(">> Fermeture AffichageResultats.java (Retour depuis résulta
         );
     }
     
+    //AFFICHAGE EN MODE PROFIL (1 seul résultat ou consultation)
     public void afficherProfil(Stage fenetre_menu, Scene rootScene, Client clientConnecte, GestionProtocoleClient gp, SocketClient socket)
     {
   System.out.println("Affichage d'un profil...");      
@@ -156,18 +157,65 @@ System.out.println(">> Fermeture AffichageResultats.java (Retour depuis résulta
         competences.setText("Compétences : " + client.getCompetences());
         this.add(competences, 0, 4, 3, 1);
         
+        //Creation du bouton like uniquement si le client est connecte
+        if(clientConnecte.getMail()!=null)
+        {
+            //CREER UN TEST POUR SAVOIR SI LE CLIENT CO AIME DEJA LES COMPETENCES
+            
+            
+            //Creation du bouton like
+            like = new Button("Liker");
+            HBox hbLike = new HBox(10);
+            hbLike.setAlignment(Pos.BOTTOM_RIGHT);
+            hbLike.getChildren().add(like);
+            this.add(hbLike, 0, 6);
+            
+            //LIKE FONCTIONNEL
+            /*
+            //Action lors de l'appui sur le bouton retour
+            like.setOnAction(new EventHandler<ActionEvent>()
+                {
+                    String likeOrUnlike = "1"; /////////////////////////
+                    @Override
+                    public void handle (ActionEvent e)
+                    {
+System.out.println(">> Debut like profil");                
+System.out.println("Envoi requête..."); 
+                        
+                        //Appel a la fonction de rechercheMotsCles
+                        gp.requeteLike(likeOrUnlike, client, clientConnecte);
+
+System.out.println(">> Fin like");
+                        
+                    }
+                }
+            );*/
+            
+            //Action lors de l'appui sur le bouton retour
+            like.setOnAction(new EventHandler<ActionEvent>()
+                {
+                    String likeOrUnlike = "0";///////////////////////////
+                    @Override
+                    public void handle (ActionEvent e)
+                    {
+System.out.println(">> Debut unlike profil");                
+System.out.println("Envoi requête..."); 
+                        
+                        //Appel a la fonction de rechercheMotsCles
+                        gp.requeteLike(likeOrUnlike, client, clientConnecte);
+
+System.out.println(">> Fin unlick OK)");
+                    }
+                }
+            );
+        }
+        
         //Creation du bouton retour
         retour = new Button("Retour");
         HBox hbBtn = new HBox(10);
         hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
         hbBtn.getChildren().add(retour);
         this.add(hbBtn, 5, 7);
-        
-        /**
-         * 
-         * AFFICHAGE EN MODE PROFIL (1 seul résultat ou consultation)
-         * 
-         */
         
         //Action lors de l'appui sur le bouton retour
         retour.setOnAction(new EventHandler<ActionEvent>()

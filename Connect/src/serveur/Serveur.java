@@ -77,6 +77,9 @@ System.out.println(">> Creation informations ...");
 System.out.println(">> Creation visibilite ...");
                 sgbd.setRequeteCreationVisible(adresseMail);
                 setValide(sgbd.executeUpdate("CREA"));
+System.out.println(">> Creation CPT_LIKE ...");
+                sgbd.setRequeteCreationInitialLike(adresseMail);
+                setValide(sgbd.executeLike());
                 if (valide != 0) {
 System.out.println("[SRV] creerCompte FIN -----");
                     return "Votre compte a bien ete creer, vous pouvez maintenant vous connecter.";
@@ -114,6 +117,7 @@ System.out.println("[SRV] seConnecter FIN -----");
         }
     }
 
+    // Methode de deconnexion au serveur d'annuaire
     public String seDeconnecter() {
 System.err.println("[SRV] seDeconnecter");
 System.out.println(">> Deconnexion client ...");
@@ -190,6 +194,7 @@ System.out.println("[SRV] envoiMessage FIN -----");
         }
     }
     
+    // Methode de recuperation d'un message hors ligne
     public String recupererMessage(String mail) {
 System.err.println("[SRV] recupererMessage");
         //Execution de la requete
@@ -206,5 +211,27 @@ System.err.println("[SRV] marquerCommeLu");
 System.out.println(">> REPONSE = " + reponse);
 System.out.println("[SRV] marquerCommeLu FIN -----");
         return reponse;  
+    }
+    
+    // Methode pour liker des competences
+    public String like(String likeOrUnlike, String cible, String auteur) {
+System.err.println("[SRV] Liker un profil");
+
+System.out.println(">> Creation message ...");
+        sgbd.modifierCptLike(cible, auteur, likeOrUnlike);
+        
+System.out.println("[SRV] like FIN -----");
+                    return "Votre Like a bien ete pris en compte.";
+    }
+    
+    // Methode pour liker des competences
+    public String unlike(String likeOrUnlike, String cible, String auteur) {
+System.err.println("[SRV] Unliker un profil");
+
+System.out.println(">> Creation message ...");
+        sgbd.modifierCptLike(cible, auteur, likeOrUnlike);
+            
+System.out.println("[SRV] like FIN -----");
+                    return "Votre Unlike a bien ete pris en compte.";
     }
 }

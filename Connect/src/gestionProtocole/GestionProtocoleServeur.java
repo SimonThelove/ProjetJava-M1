@@ -157,6 +157,10 @@ System.err.println("---- CASE DECO ----");
                 setReponse("DECO|" + serveur.seDeconnecter());
                 break;
             //Fermeture d'un socket de connexion anonyme
+            case "LIKE":
+System.err.println("---- CASE LIKE ----");
+                reponse = ("MSG|" + serveur.like(req[2], req[4],req[6]));
+                break;
             case "QUIT":
 System.err.println("---- CASE QUIT ----");
                 setReponse("QUIT|");

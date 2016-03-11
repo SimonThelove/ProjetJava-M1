@@ -295,6 +295,20 @@ System.err.println("[GPC] receptionP2P");
 System.out.println("[GPC] receptionP2P FIN -----");
     }
     
+    //Methode ce concatenation de la requete Like
+    public void requeteLike(String likeOrUnlike, Client client, Client clientConnecte)
+    {
+System.err.println("[GPC] requeteLike"); 
+        //Creation de la requete
+        message = "LIKE|TYPE|" + likeOrUnlike + "|CIBLE|" + client.getMail() + "|AUTEUR|" + clientConnecte.getMail();
+        System.err.println(message);
+        //Envoi du message a SocketClient
+        message = soc.echangeServeur(message);
+        //Decoupage de la reponse pour un affichage client
+        decoupage(message, client);
+System.out.println("[GPC] requeteLike FIN -----");       
+    }
+    
     //Methode de concatenation de la requete deconnexion
     public void requeteDeco(Client client){
 System.err.println("[GPC] requeteDeco");         
