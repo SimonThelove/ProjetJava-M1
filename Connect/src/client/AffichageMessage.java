@@ -30,8 +30,9 @@ import socketsTCP.SocketClient;
  */
 public class AffichageMessage extends GridPane {
     
-        // On reprend le code de la classe envoyer message
-        // on pré-remplit les affichages et on ne permet pas leur édition
+    // On reprend le code de la classe envoyer message
+    // on pré-remplit les affichages et on ne permet pas leur édition
+    // Seules quelques modifications ont été apportées, notamment au niveau des boutons
     
     private GestionProtocoleClient gp;
     private Text titre;

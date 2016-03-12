@@ -30,6 +30,10 @@ import socketsTCP.SocketClient;
  * @author lamoure
  */
 public class Modification extends GridPane {
+    
+    // Cette classe, accessible par les utilisateurs connectés
+    // permet de modifier les informations de leur profil
+    // SEULS LE MAIL ET LE MOT DE PASSE NE SONT PAS MODIFIABLES
         
     private GestionProtocoleClient gp;
     private Text titre;

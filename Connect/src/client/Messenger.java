@@ -31,6 +31,10 @@ import socketsTCP.SocketEcouteMsgr;
  */
 public class Messenger extends GridPane {
     
+    // Cette classe accessible à tous les utilisateurs permet d'utiliser les fonctions Peer-to-Peer
+    // Elle permet en passant par le serveur au départ, de créer une conversation directe avec un autre client
+    // La seule condition est que ce client soit connecté au Messenger au moment de la conversation
+    
     private GestionProtocoleClient gp, gpMsgr;
     private ObservableList<String> connectes;
     

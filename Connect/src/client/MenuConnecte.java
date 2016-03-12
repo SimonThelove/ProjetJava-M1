@@ -32,6 +32,9 @@ import socketsTCP.SocketEcouteMsgr;
  */
 public class MenuConnecte extends GridPane {
     
+    // Cette classe, comme le menuAnonyme donne accès aux fonctionnalités de l'application
+    // Uniquement pour les utilisateurs identifiés
+    
 
     public void menuConnecte(Stage fenetre_menuC, Scene rootScene, Client clientConnecte, GestionProtocoleClient gp, SocketClient socket) {
         

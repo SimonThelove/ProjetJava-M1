@@ -34,6 +34,9 @@ import socketsTCP.SocketClient;
 
 public class Connexion extends GridPane {
     
+    // Cette classe correspond à la fonction de connexion
+    // Elle est accessible depuis le menuAnonyme et peut donner accès au menuConnecte
+    
     private GestionProtocoleClient gp;
     private SocketClient soc;
     private Text titre;

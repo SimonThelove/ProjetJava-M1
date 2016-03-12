@@ -17,6 +17,14 @@ import socketsTCP.SocketClient;
  */
 public class LanceurClient extends Application {
     
+    // Cette classe correspond au main Client
+    // Elle permet d'initialiser la fenêtre (Stage)
+    // Elle crée également un premier objet de la classe Client
+    // Il sera implémenté au fur et à mesure de l'utilisation de l'application
+    // Elle crée également un objet de la classe SocketClient
+    // afin de permettre la communication avec le serveur
+    
+    
     private MenuAnonyme menuA;
     private final Client client = new Client();
     private final SocketClient soc = new SocketClient();

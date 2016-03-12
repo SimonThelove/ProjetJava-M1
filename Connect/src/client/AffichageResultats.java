@@ -31,6 +31,9 @@ import socketsTCP.SocketClient;
  * @author lamoure
  */
 public class AffichageResultats extends GridPane {
+    
+    // Cette classe permet l'affichage des résultats d'une recherche (afficherResultats)
+    // Elle permet egalement l'affichage d'un profil utilisateur (afficherProfil)
 
     private Button retour, consulter, like;
     private ListView resultats;

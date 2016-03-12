@@ -12,8 +12,11 @@ package client;
  */
 public class Client {
     
+    // Cette classe correspond à la structure client
+    // elle permet de gérer les informations de chaque client
+    // en instanciant simplement un nouvel objet de la classe
+    
     private String nom, prenom, mail, tel, diplome, annee, competences, mdp;
-    //private String mailCo, nomCo, prenomCo; //Ces variable permettent d'identifier la personnes connectee
     private String chaine;
     
     private Client client;
@@ -108,27 +111,15 @@ public class Client {
          this.chaine = chaine;
     }
     
-    /*public String getMailCo() {
-    return mailCo;
+    public void resetClient() {
+        this.annee = null;
+        this.chaine = null;
+        this.competences = null;
+        this.diplome = null;
+        this.mail = null;
+        this.mdp = null;
+        this.nom = null;
+        this.prenom = null;
+        this.tel = null;
     }
-    
-    public void setMailCo(String mailCo) {
-    this.mailCo = mailCo;
-    }
-    
-    public String getNomCo() {
-    return nomCo;
-    }
-    
-    public void setNomCo(String nomCo) {
-    this.nomCo = nomCo;
-    }
-    
-    public String getPrenomCo() {
-    return prenomCo;
-    }
-    
-    public void setPrenomCo(String prenomCo) {
-    this.prenomCo = prenomCo;
-    }*/
 }

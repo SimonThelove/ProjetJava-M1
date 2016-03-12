@@ -31,6 +31,10 @@ import socketsTCP.SocketClient;
  * @author lamoure
  */
 public class Recherche extends GridPane {
+    
+    // La classe recherche, accessible pour tous les utilisateurs,
+    // permet la recherche d'un utilisateur dans la base de données
+    // cette dernière étant accessible depuis le serveur
         
     private GestionProtocoleClient gp;
     private Client clientRecherche;

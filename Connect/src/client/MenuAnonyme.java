@@ -36,7 +36,14 @@ public class MenuAnonyme extends GridPane {
         this.setVgap(10);
         this.setPadding(new Insets(25, 25, 25, 25));
         
-System.out.println(">>>> Lancement MenuAnonyme.java");        
+System.out.println(">>>> Lancement MenuAnonyme.java");
+
+        //Avant de commencer on met à null tous les attributs de l'objet client
+        //Cela évite les erreurs au niveau du passage d'informations
+        //Sachant que le menuAnonyme ne concerne que les clients non identifies
+        //Aucune information d'identite n'a besoin d'etre conservee
+        //La seule variable qui n'est pas re-initialisee est la table clients_co sur le serveur
+        client.resetClient();
         
         Text titre = new Text("Menu Principal");
         titre.setFont(Font.font("Calibri", FontWeight.NORMAL, 16));

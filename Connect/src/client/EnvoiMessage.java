@@ -31,6 +31,9 @@ import socketsTCP.SocketClient;
  * @author Yohann
  */
 public class EnvoiMessage extends GridPane {
+    
+    // Cette classe permet l'envoi de messages de type mail à un autre client
+    // Ces messages sont stockés dans une base de données accessible par le serveur
         
     private GestionProtocoleClient gp;
     private Text titre;

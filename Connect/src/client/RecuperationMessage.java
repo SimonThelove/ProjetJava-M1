@@ -30,6 +30,8 @@ import socketsTCP.SocketClient;
  * @author Yohann
  */
 public class RecuperationMessage extends GridPane {
+    
+    // Cette classe permet la gestion de la boite de recepetion des messages de type mail
 
     private GestionProtocoleClient gp;
     private Text titre;

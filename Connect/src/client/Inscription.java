@@ -33,6 +33,11 @@ import socketsTCP.SocketClient;
  */
 public class Inscription extends GridPane {
     
+    // Cette classe permet l'inscription d'un nouvel utilisateur
+    // Elle est accessible depuis le menuAnonyme et ne permet pas l'accès au menuConnecte
+    // Pour remplir l'intégralité des informations de son profil l'utilisateur devra se connecter
+    // Les détails d'un profil ne sont gérables que depuis la classe Modifier
+    
     private GestionProtocoleClient gp;
     private Text titre;
     private Label nom, prenom, mail, mdp;
