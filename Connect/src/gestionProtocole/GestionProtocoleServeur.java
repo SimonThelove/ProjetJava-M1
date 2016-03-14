@@ -159,7 +159,20 @@ System.err.println("---- CASE DECO ----");
             //Fermeture d'un socket de connexion anonyme
             case "LIKE":
 System.err.println("---- CASE LIKE ----");
-                reponse = ("MSG|" + serveur.like(req[2], req[4],req[6]));
+System.out.println(req[1]);
+                //Si on trouve le mot TYPE, alors se sera un ajout ou suppression d'un like
+                if(req[1].compareTo("TYPE") == 0)
+                {
+                    System.out.println("test1"
+                            + "");
+                    reponse = ("MSG|" + serveur.like(req[2], req[4],req[6]));
+                }
+                //Sinon si on trouve le mot MAIL, alors se sera un affichage d'une recherche (recuperation des informations des likes)
+                else if(req[1].compareTo("CIBLE") == 0)
+                {
+                    System.out.println("test2");
+                    reponse = (serveur.nbLike(req[2], req[4]));
+                }
                 break;
             case "QUIT":
 System.err.println("---- CASE QUIT ----");

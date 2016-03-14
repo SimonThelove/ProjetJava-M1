@@ -169,21 +169,26 @@ System.err.println("[GPC] requeteRechNom");
 	//Appelle a la methode pour creer un affichage au client
 	decoupage(message, client);
 System.out.println("[GPC] requeteRechNom FIN -----");         
-
     }
 
     //Methode de concatenation de la requete consultation
     public void requeteCons(int index, Client client){
 System.err.println("[GPC] requeteCons");         
-
         // Creation de la requete
         message = "CONS|MAIL|" + clients.get(index).getMail() + "|0|";
-
 	//Envoi du message a SocketClient
 	message = soc.echangeServeur(message);
 	//Appelle a la methode pour creer un affichage au client
 	decoupage(message, client);
-System.out.println("[GPC] requeteConx FIN -----");         
+System.out.println("[GPC] requeteConx FIN -----");
+System.err.println("[GPC] requeteNbLike");         
+        // Creation de la requete
+        message = "LIKE|CIBLE|" + clients.get(index).getMail() + "|AUTEUR|" + client.getMail();
+	//Envoi du message a SocketClient
+	message = soc.echangeServeur(message);
+	//Appelle a la methode pour creer un affichage au client
+	decoupage(message, client);
+System.out.println("[GPC] requeteNbLike FIN -----");  
 
     }
 	
@@ -485,7 +490,12 @@ System.err.println("---- CASE P2PN ----");
             clientConnecte.setChaine(message);
 System.out.println("# P2PN - Message reçu");
             break;
-            
+        case "LIKE" :
+System.err.println("---- CASE LIKE ----");
+            // Notification de réception
+            System.out.println(req[2] + "   " + req[4]);
+System.out.println("# P2PN - Message reçu");
+            break;
         case "DECO" :
 System.err.println("---- CASE DECO ----");
 System.out.println("# DECO - Fermeture connexion");

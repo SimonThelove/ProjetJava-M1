@@ -318,6 +318,7 @@ System.err.println("[SGBD] Setter CREA AJOUT LIKE");
             this.requeteModification = "DELETE FROM LIKES WHERE cible = '"+ cible +"' AND auteur = '" + auteur + "';";
 System.out.println("[SGBD] REQUETE = " + requeteCreation);            
     }
+    
     //Requete de récuperation de like d'un profil
     public void setRequeteRecupCptLike (String cible) {
 System.err.println("[SGBD] Setter CREA CPT_LIKE");        
@@ -325,6 +326,13 @@ System.err.println("[SGBD] Setter CREA CPT_LIKE");
 System.out.println("[SGBD] REQUETE = " + requeteConsultation);            
     }
   
+     //Requete de récuperation si l'utilisateur like un profil
+    public void setRequeteRecupIfClientLike (String cible, String auteur) {
+System.err.println("[SGBD] Setter CREA LIKES");        
+            this.requeteConsultation = "SELECT * FROM LIKES where cible = '"+ cible +"' AND auteur = '"+ auteur +"';";
+System.out.println("[SGBD] REQUETE = " + requeteConsultation);            
+    }
+    
     //Requete de modification du compteur de like d'un profil
     public void setRequeteModificationCptLike (String cible, String nb_like) {
 System.err.println("[SGBD] Setter CREA CPT_LIKE");        
@@ -609,7 +617,7 @@ System.out.println("Construction requete...");
         String valeur;
         int cpt_like = 0;
         
-        if(test.compareTo("1") == 1)
+        if(test.compareTo("1") == 0)
         {
             //Ajout de l'auteur du like
             setRequeteCreationLike(cible, auteur);
@@ -675,6 +683,43 @@ System.out.println("Construction requete...");
         }
     }
     
+    public String recupLike(String cible, String auteur){
+        System.err.println("[SGBD] Recuperer les informations des likes");            
+        String message = "";
+System.out.println("Construction requete...");
+        try {
+            bdd3();
+            // On fabrique la requete
+            setRequeteRecupCptLike(cible);
+            // On l'execute sur la BDD et on recupere les informations sur ces resultats
+            rslt = st.executeQuery(requeteConsultation);
+            rsmd = rslt.getMetaData();
+System.out.println("Execution requete RECUP CPT LIKE ok...");
+            rslt.next();
+            message = "LIKE|CPTLIKE|" + rslt.getString(1);
+System.out.println("Message : " + message);
+System.out.println("Nb de like du profil : " + rslt.getString(1));
+            setRequeteRecupIfClientLike(cible, auteur);
+            rslt = st.executeQuery(requeteConsultation);
+            rsmd = rslt.getMetaData();
+System.out.println("Execution requete RECUP CPT LIKE ok...");
+            //Si la requete SQL renvoit une ligne, alors le client like deja le profil
+            if(rslt.next()!= false)
+            {               
+                message += "|LIKEORUNLIKE|1";
+            }
+            //Sinon il ne like pas le profil
+            else
+            {
+                message += "|LIKEORUNLIKE|0";
+            }
+            con.close();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            Logger.getLogger(SGBD.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return message;
+    }
     
     // Mise à jour de la BDD = Action d'ecriture donc besoin de gestion des acces concurrents
     // Creation ou Modification (Synchronized)

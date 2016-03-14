@@ -234,4 +234,15 @@ System.out.println(">> Creation message ...");
 System.out.println("[SRV] like FIN -----");
                     return "Votre Unlike a bien ete pris en compte.";
     }
+    
+    // Methode pour liker des competences
+    public String nbLike(String cible, String auteur) {
+System.err.println("[SRV] Recuperation du nombre de like d'un profil");
+
+System.out.println(">> Creation message ...");
+        reponse = sgbd.recupLike(cible, auteur);
+            
+System.out.println("[SRV] nbLike FIN -----");
+        return reponse;
+    } 
 }

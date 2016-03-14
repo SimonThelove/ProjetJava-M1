@@ -174,7 +174,7 @@ System.out.println(">> Fermeture AffichageResultats.java (Retour depuis résulta
             this.add(hbLike, 0, 6);
             
             //LIKE FONCTIONNEL
-            /*
+            
             //Action lors de l'appui sur le bouton retour
             like.setOnAction(new EventHandler<ActionEvent>()
                 {
@@ -192,8 +192,8 @@ System.out.println(">> Fin like");
                         
                     }
                 }
-            );*/
-            
+            );
+            /*
             //Action lors de l'appui sur le bouton retour
             like.setOnAction(new EventHandler<ActionEvent>()
                 {
@@ -210,7 +210,7 @@ System.out.println("Envoi requête...");
 System.out.println(">> Fin unlick OK)");
                     }
                 }
-            );
+            );*/
         }
         
         //Creation du bouton retour
