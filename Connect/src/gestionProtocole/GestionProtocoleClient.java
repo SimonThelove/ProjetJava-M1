@@ -23,6 +23,7 @@ public class GestionProtocoleClient {
     private final ObservableList<String> clients_co;
     private final ObservableList<String> messagerie, messages;
     
+    private String like, nbLike;
     private SocketClient soc; //recuperation du socket d'echange
     private SocketEcouteMsgr socMsgr; //recuperation du socket P2P
     private String message = null;//Variable ou est stockee la requete
@@ -37,7 +38,7 @@ public class GestionProtocoleClient {
     private String id_mail;     //Identifiant du message reçu
     private int messagesNonLus; //Nombre de messages non lus
     private int nbMessages;     //Nombre de messages au total
-
+    
     public GestionProtocoleClient(SocketClient socket) {
 System.err.println("#### Construct GPC vers Serveur");         
         this.soc = socket;
@@ -101,7 +102,14 @@ System.err.println("#### Construct GPC pour P2P");
     public void setClientRecherche(Client clientRecherche) {
         this.clientRecherche = clientRecherche;
     }
-
+    
+    public String getLike() {
+        return like;
+    }
+    
+    public String getNbLike() {
+        return nbLike;
+    }
     // Methode de conception de requete (utilise depuis Modification.java)
     public void setMessage(Client client) {
 System.err.println("[GPC] setMessage");         
@@ -492,8 +500,11 @@ System.out.println("# P2PN - Message reçu");
             break;
         case "LIKE" :
 System.err.println("---- CASE LIKE ----");
-            // Notification de réception
-            System.out.println(req[2] + "   " + req[4]);
+            // Recuperation du nombre de like
+            nbLike = req[2];
+            // Recuperation de l'information si le client like ou non le profil
+            like = req[4];
+System.out.println("Nb de like : " + req[2] + " like=1|unlike=0 : " + req[4]);
 System.out.println("# P2PN - Message reçu");
             break;
         case "DECO" :
