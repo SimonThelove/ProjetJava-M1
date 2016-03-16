@@ -165,27 +165,7 @@ System.out.println(">> Fermeture AffichageResultats.java (Retour depuis résulta
         if(clientConnecte.getMail()!=null)
         {
             // Si l'utilisateur n'aime pas le profil, alors creation du bouton like
-            if(gp.getLike().compareTo("0") == 0)
-            {
-                //Creation du bouton like
-                like = new Button("Liker");
-                HBox hbLike = new HBox(10);
-                hbLike.setAlignment(Pos.BOTTOM_RIGHT);
-                hbLike.getChildren().add(like);
-                this.add(hbLike, 0, 6);
-                likeOrUnlike = "1";
-            }
-            //Sinon creation du bouton unlike
-            else if (gp.getLike().compareTo("1") == 0)
-            {
-                //Creation du bouton unlike
-                like = new Button("UnLike");
-                HBox hbLike = new HBox(10);
-                hbLike.setAlignment(Pos.BOTTOM_RIGHT);
-                hbLike.getChildren().add(like);
-                this.add(hbLike, 0, 6);
-                likeOrUnlike = "0";
-            }
+            liker(gp);
 
             //Action lors de l'appui sur le bouton like ou unlike
             like.setOnAction(new EventHandler<ActionEvent>()
@@ -197,6 +177,9 @@ System.out.println(">> Debut like ou unlike profil");
 System.out.println("Envoi requête..."); 
                         //Appel a la fonction de rechercheMotsCles
                         gp.requeteLike(likeOrUnlike, client, clientConnecte);
+                        
+                        // Acutalisation du bouton like
+                        liker(gp);
 System.out.println(">> Fin like ou unlike");
                     }
                 }
@@ -237,5 +220,31 @@ System.out.println(">> Fermeture d'AffichageResultats.java (Retour depuis profil
                 }
             }
         );
+    }
+    
+    // Méthode de gestion du texte sur le bouton like
+    public void liker (GestionProtocoleClient gp) {
+        
+        if(gp.getLike().compareTo("0") == 0)
+            {
+                //Creation du bouton like
+                like = new Button("Liker");
+                HBox hbLike = new HBox(10);
+                hbLike.setAlignment(Pos.BOTTOM_RIGHT);
+                hbLike.getChildren().add(like);
+                this.add(hbLike, 0, 6);
+                likeOrUnlike = "1";
+            }
+            //Sinon creation du bouton unlike
+            else if (gp.getLike().compareTo("1") == 0)
+            {
+                //Creation du bouton unlike
+                like = new Button("UnLike");
+                HBox hbLike = new HBox(10);
+                hbLike.setAlignment(Pos.BOTTOM_RIGHT);
+                hbLike.getChildren().add(like);
+                this.add(hbLike, 0, 6);
+                likeOrUnlike = "0";
+            }
     }
 }

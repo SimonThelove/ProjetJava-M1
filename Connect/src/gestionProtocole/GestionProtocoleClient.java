@@ -110,6 +110,7 @@ System.err.println("#### Construct GPC pour P2P");
     public String getNbLike() {
         return nbLike;
     }
+    
     // Methode de conception de requete (utilise depuis Modification.java)
     public void setMessage(Client client) {
 System.err.println("[GPC] setMessage");         

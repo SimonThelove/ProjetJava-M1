@@ -63,8 +63,9 @@ System.out.println(">>>> Lancement EnvoiMessage.java");
         this.add(mail, 0, 1);
 
         saisie_mail = new TextField();
-        //Dans le cas d'une réponse, on pré-rempllit le mail
-        if(!mailDestinataire.isEmpty())
+        
+        //Dans le cas d'une réponse, on pré-remplit le mail
+        if(!mailDestinataire.isEmpty() || mailDestinataire == null)
             saisie_mail.setText(mailDestinataire);
         this.add(saisie_mail, 1, 1);
 
