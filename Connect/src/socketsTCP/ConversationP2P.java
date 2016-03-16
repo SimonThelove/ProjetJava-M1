@@ -76,7 +76,7 @@ System.err.println("@echanger FIN -----");
         }
         catch (IOException ex) 
         {
-            Logger.getLogger(SocketEcouteMsgr.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SocketMessenger.class.getName()).log(Level.SEVERE, null, ex);
             done = true;
         }
     }

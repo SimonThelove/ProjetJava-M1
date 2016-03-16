@@ -11,7 +11,7 @@ import client.Client;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TextArea;
-import socketsTCP.SocketEcouteMsgr;
+import socketsTCP.SocketMessenger;
 
 /**
  *
@@ -25,7 +25,7 @@ public class GestionProtocoleClient {
     
     private String like, nbLike;
     private SocketClient soc; //recuperation du socket d'echange
-    private SocketEcouteMsgr socMsgr; //recuperation du socket P2P
+    private SocketMessenger socMsgr; //recuperation du socket P2P
     private String message = null;//Variable ou est stockee la requete
     private int nbPersonne = 0;//Nombre de profil que renvoit les requetes de recherche
     private String req[] = null;//Requete de retour du serveur
@@ -49,7 +49,7 @@ System.err.println("#### Construct GPC vers Serveur");
         this.clientRecherche = new Client();
     }
     
-    public GestionProtocoleClient(SocketEcouteMsgr socket) {
+    public GestionProtocoleClient(SocketMessenger socket) {
 System.err.println("#### Construct GPC pour P2P");         
         this.socMsgr = socket;
         this.clients = FXCollections.observableArrayList();
@@ -267,7 +267,7 @@ System.out.println("[GPC] requeteRecupMsg FIN -----");
     }
     
     //Méthode de récupération de la liste des clients connectés
-    public void requeteP2P (Client client){
+    public void requeteP2PH (Client client){
 System.err.println("[GPC] requeteP2P");         
     
         //Creation de la requete
@@ -283,19 +283,15 @@ System.out.println("[GPC] requeteP2P FIN -----");
     }
     
     //Methode de demande de connexion PeerToPeer
-    public void echangerP2P (String msg) {
-System.err.println("[GPC] echangerP2P");         
-        
-        //Creation de la requete
-        if (msg.substring(0, 4).equalsIgnoreCase("P2PC")) {
-            message = msg;
-        } else
-            message = "P2PM|" + msg;
-        //Envoi du message a SocketClient
-        message = socMsgr.echangeP2P(message);
-        //appel a la methode pour creer un affchage client
-        decoupage(message, clientContacte);
-System.out.println("[GPC] echangerP2P FIN -----"); 
+    public void connexionP2P (String demande, Client client) {
+System.err.println("[GPC] connexionP2P");
+        // Creation de la requete
+        message = "P2PN|" + demande;
+        // Envoi d message à SocketClient
+        message = soc.echangeServeur(message);
+        // Appel a la methode decoupage pour prise en charge client
+        decoupage(message, client);
+System.out.println("[GPC] connexionP2P FIN -----"); 
     }
     
     // Methode de gestion des messages P2P reçus
@@ -476,7 +472,7 @@ System.out.println("# P2PH - Vidage de la table clients_co");
             }
 System.out.println("# Clients ajoutés à la liste");            
             break;
-            
+        /*    
         case "P2PC" :
 System.err.println("---- CASE P2PC ----");
             // Fermeture de la conversation
@@ -484,7 +480,7 @@ System.err.println("---- CASE P2PC ----");
             conversation.setText(conversation.getText() + clientConnecte.getChaine() + System.lineSeparator());
 System.out.println("# P2PC - Fermeture de la conversation");
             break;
-            
+        */    
         case "P2PM" :
 System.err.println("---- CASE P2PM ----");            
             // Reception message P2P
@@ -495,7 +491,27 @@ System.out.println("# P2PM - Message reçu = " + req[1]);
         case "P2PN" :
 System.err.println("---- CASE P2PN ----");
             // Notification de réception
-            clientConnecte.setChaine(message);
+            switch (req[1]){
+                            case "ok":
+                                // Retour du serveur pour demande de conversation P2P
+                                clientConnecte.setChaine("Demande de connexion envoyée.");
+            System.out.println("# P2PN - Confirmation de lancement de la conversation");
+                                break;
+                            case "hello":
+                                // Reception d'une demande pour lancer une conversation P2P
+                                clientConnecte.setChaine("Demande de connexion reçue.");
+            System.out.println("# P2PN - Lancement de la conversation");
+                                break;
+                            case "close":
+                                // Fermer la conversation P2P avec le client distant
+                                clientConnecte.setChaine("Le client distant a quitté la conversation.");
+            System.out.println("# P2PN - Fermeture de la conversation");
+                                break;
+                            default:
+                                // Reception d'une notification inconnue
+                                clientConnecte.setChaine("Erreur notification P2P.");
+            System.out.println("# P2PN - Erreur notification P2P");
+                        }
 System.out.println("# P2PN - Message reçu");
             break;
         case "LIKE" :

@@ -21,7 +21,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import socketsTCP.SocketClient;
-import socketsTCP.SocketEcouteMsgr;
+import socketsTCP.SocketMessenger;
 
 /**
  *
@@ -134,12 +134,12 @@ System.out.println(">> Fermeture MenuAnonyme.java (Rechercher)");
 System.out.println(">> Fermeture MenuAnonyme.java (Messenger)");
                     
                     // Creation d'un socket d'ecoute pour connexion P2P
-                    SocketEcouteMsgr ecoute = new SocketEcouteMsgr();
+                    SocketMessenger ecoute = new SocketMessenger();
                     
                     // Ouverture de la scene messenger
                     Messenger discuter = new Messenger();
                     Scene scene_discuter = new Scene(discuter);
-                    discuter.dialoguer(fenetre_menu, scene_discuter, client, soc, ecoute);
+                    discuter.dialoguer(fenetre_menu, scene_discuter, client, soc);
                     fenetre_menu.setScene(scene_discuter);
                     
                    

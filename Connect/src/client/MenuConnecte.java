@@ -24,7 +24,7 @@ import javafx.scene.control.Alert;
 import socketsTCP.SocketClient;
 import gestionProtocole.GestionProtocoleClient;
 import javafx.scene.paint.Color;
-import socketsTCP.SocketEcouteMsgr;
+import socketsTCP.SocketMessenger;
 
 /**
  *
@@ -65,12 +65,12 @@ System.out.println(">>>> Lancement MenuConnecte.java");
 System.out.println(">> Fermeture MenuConnecte.java (Messenger)");
                     
                     // Creation d'un socket d'ecoute pour connexion P2P
-                    SocketEcouteMsgr ecoute = new SocketEcouteMsgr();
+                    SocketMessenger ecoute = new SocketMessenger();
                     
                     // Ouverture de la scene messenger
                     Messenger discuter = new Messenger();
                     Scene scene_discuter = new Scene(discuter);
-                    discuter.dialoguer(fenetre_menuC, scene_discuter, clientConnecte, socket, ecoute);
+                    discuter.dialoguer(fenetre_menuC, scene_discuter, clientConnecte, socket);
                     fenetre_menuC.setScene(scene_discuter);
                     
                    
