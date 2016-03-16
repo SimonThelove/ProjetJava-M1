@@ -139,7 +139,7 @@ System.out.println(">> Fermeture MenuConnecte.java (Rechercher)");
                 public void handle(ActionEvent e) {
 System.out.println(">> Fermeture MenuConnecte.java (Envoi Message)");
                     
-                    String mailDestinataire = ""; // On transmet un String de longueur 0 pour remplacer le mail pré-rempli lors d'une réponse
+                    String mailDestinataire = ""; // On transmet un String de longueur 0 pour remplacer le mail pre-rempli lors d'une reponse
                     EnvoiMessage envoiMessage = new EnvoiMessage();
                     Scene scene_envoiMessage = new Scene(envoiMessage);
                     envoiMessage.envoyerMessage(fenetre_menuC, scene_envoiMessage, clientConnecte, socket, mailDestinataire);
