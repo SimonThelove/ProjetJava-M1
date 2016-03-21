@@ -58,9 +58,9 @@ System.out.println("## Creation OK... " + socketReception);
         }
         catch (IOException ex) // Creation impossible sur le port par défaut
         {
-            try // On demande un port anonyme
+            try // On demande le port suivant
             {
-                socketReception = new ServerSocket();
+                socketReception = new ServerSocket(12346);
                 portReception = socketReception.getLocalPort();
 System.err.println("## PORT ECOUTE P2P = " + portReception + " <!> DIFFERENT DU PORT PAR DEFAUT <!>");
             }
@@ -87,11 +87,11 @@ System.out.println("## Creation OK... " + socket);
     
     public void envoyer(String message) {
 System.err.println("@SocketMessenger envoyer");
-System.out.println("## ENTREE = ");
+System.out.println("## ENTREE = " + message);
 
         sortieSocket.println(message);          // Envoi des données au client distant
             
-System.out.println("## SORTIE = ");
+System.out.println("## SORTIE = " + message);
 System.err.println("@envoyer FIN -----");
     }
     

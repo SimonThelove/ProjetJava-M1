@@ -283,16 +283,6 @@ System.err.println("[GPC] requeteP2P");
 System.out.println("[GPC] requeteP2P FIN -----");         
     }
     
-    // Methode de gestion des messages P2P reçus
-    public void receptionP2P(String entree, TextArea msgs) {
-System.err.println("[GPC] receptionP2P");
-        // Récupération de l'affichage
-        this.conversation = msgs;
-        // traitement du message reçu
-        decoupage (entree, clientContacte);
-System.out.println("[GPC] receptionP2P FIN -----");
-    }
-    
     //Methode ce concatenation de la requete Like
     public void requeteLike(String likeOrUnlike, Client client, Client clientConnecte)
     {
@@ -461,15 +451,7 @@ System.out.println("# P2PH - Vidage de la table clients_co");
             }
 System.out.println("# Clients ajoutés à la liste");            
             break;
-        /*    
-        case "P2PC" :
-System.err.println("---- CASE P2PC ----");
-            // Fermeture de la conversation
-            clientConnecte.setChaine("----- Connexion fermée -----");
-            conversation.setText(conversation.getText() + clientConnecte.getChaine() + System.lineSeparator());
-System.out.println("# P2PC - Fermeture de la conversation");
-            break;
-        */    
+        /*
         case "P2PM" :
 System.err.println("---- CASE P2PM ----");            
             // Reception message P2P
@@ -503,6 +485,7 @@ System.err.println("---- CASE P2PN ----");
                         }
 System.out.println("# P2PN - Message reçu");
             break;
+            */
         case "LIKE" :
 System.err.println("---- CASE LIKE ----");
             // Recuperation du nombre de like
