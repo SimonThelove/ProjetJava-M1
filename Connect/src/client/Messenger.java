@@ -9,7 +9,6 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
@@ -204,10 +203,10 @@ System.out.println(">> Fermeture Messenger.java (Retour)");
                 + " : " + saisie_msg.getText()                // On ajoute un séparateur suivi du message envoyé
                 + System.lineSeparator());                    // On fait un retour à la ligne
         
-        String retour = socketMsgr.recevoir();                // On attend une réponse ou une notification
+        String reception = socketMsgr.recevoir();                // On attend une réponse ou une notification
         
         conversation.setText(conversation.getText()           // On récupère la conversation affichée pour la mettre à jour
-        + retour                                              // On ajoute le message reçu
+        + reception                                              // On ajoute le message reçu
         + System.lineSeparator());                            // On fait un retour à la ligne
         
     }

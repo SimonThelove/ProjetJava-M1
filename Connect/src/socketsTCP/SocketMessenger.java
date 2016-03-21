@@ -91,7 +91,6 @@ System.out.println("## ENTREE = " + message);
 
         sortieSocket.println(message);          // Envoi des données au client distant
             
-System.out.println("## SORTIE = " + message);
 System.err.println("@envoyer FIN -----");
     }
     
@@ -110,6 +109,7 @@ System.out.println("## Attente de connexion sur le port : " + portReception);
 
             }
         } while(retour == null);
+System.out.println("## SORTIE = " + retour);
 System.err.println("@recevoir FIN -----");   
         return retour;
     }
