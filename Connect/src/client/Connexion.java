@@ -26,6 +26,7 @@ import gestionProtocole.GestionProtocoleClient;
 import javafx.scene.control.Alert;
 
 import socketsTCP.SocketClient;
+import socketsTCP.SocketMessenger;
 
 /**
  *
@@ -46,7 +47,7 @@ public class Connexion extends GridPane {
     private Button seConnecter, retour;
        
     //Creation de la fenetre connexion au client
-    public void seConnecter (Stage fenetre_menu, Scene rootScene, Client client, SocketClient socket){
+    public void seConnecter (Stage fenetre_menu, Scene rootScene, Client client, SocketClient socket, SocketMessenger socMsgr){
         
         this.setAlignment(Pos.CENTER);
         this.setHgap(10);
@@ -143,7 +144,7 @@ System.out.println(">> Fermeture de Connexion.java (Connexion OK)");
                             //Creation du menu connecter
                             MenuConnecte menuC = new MenuConnecte();
                             Scene scene_menuC = new Scene(menuC);
-                            menuC.menuConnecte(fenetre_menu, scene_menuC, gp.getClients().get(0), gp, soc);
+                            menuC.menuConnecte(fenetre_menu, scene_menuC, gp.getClients().get(0), gp, soc, socMsgr);
                             fenetre_menu.setScene(scene_menuC);
                         }
                         //Sinon on le renvoit au menu principal anonyme
@@ -153,7 +154,7 @@ System.out.println(">> Fermeture de Connexion.java (Echec Connexion)");
                             
                             MenuAnonyme menuA = new MenuAnonyme();
                             Scene scene_menuA = new Scene(menuA);
-                            menuA.menuAnonyme(fenetre_menu, scene_menuA, client, soc);
+                            menuA.menuAnonyme(fenetre_menu, scene_menuA, client, soc, socMsgr);
                             fenetre_menu.setScene(scene_menuA);
                         }
                     }
@@ -178,7 +179,7 @@ System.out.println(">> Fermeture de Connexion.java (Retour)");
                     
                     MenuAnonyme menuA = new MenuAnonyme();
                     Scene scene_menuA = new Scene(menuA);
-                    menuA.menuAnonyme(fenetre_menu, scene_menuA, client, socket);
+                    menuA.menuAnonyme(fenetre_menu, scene_menuA, client, socket, socMsgr);
                     fenetre_menu.setScene(scene_menuA);
                 }
             }

@@ -29,7 +29,7 @@ import socketsTCP.SocketMessenger;
  */
 public class MenuAnonyme extends GridPane {
 
-    public void menuAnonyme (Stage fenetre_menu, Scene rootScene, Client client, SocketClient soc) {
+    public void menuAnonyme (Stage fenetre_menu, Scene rootScene, Client client, SocketClient soc, SocketMessenger socMsgr) {
         
         this.setAlignment(Pos.CENTER);
         this.setHgap(10);
@@ -66,7 +66,7 @@ System.out.println(">> Fermeture MenuAnonyme.java (Inscription)");
                     
                     Inscription inscription = new Inscription();
                     Scene scene_insciption = new Scene(inscription);
-                    inscription.sInscrire(fenetre_menu, scene_insciption, client, soc);
+                    inscription.sInscrire(fenetre_menu, scene_insciption, client, soc, socMsgr);
                     fenetre_menu.setScene(scene_insciption);
                 }
             }
@@ -89,7 +89,7 @@ System.out.println(">> Fermeture MenuAnonyme.java (Connexion)");
                     
                     Connexion connexion = new Connexion();
                     Scene scene_connexion = new Scene(connexion);
-                    connexion.seConnecter(fenetre_menu, scene_connexion, client, soc);
+                    connexion.seConnecter(fenetre_menu, scene_connexion, client, soc, socMsgr);
                     fenetre_menu.setScene(scene_connexion);
                 }
             }
@@ -112,7 +112,7 @@ System.out.println(">> Fermeture MenuAnonyme.java (Rechercher)");
                     
                     Recherche recherche = new Recherche();
                     Scene scene_recherche = new Scene(recherche);
-                    recherche.rechercher(fenetre_menu, scene_recherche, client, soc);
+                    recherche.rechercher(fenetre_menu, scene_recherche, client, soc, socMsgr);
                     fenetre_menu.setScene(scene_recherche);
                 }
             }
@@ -139,7 +139,7 @@ System.out.println(">> Fermeture MenuAnonyme.java (Messenger)");
                     // Ouverture de la scene messenger
                     Messenger discuter = new Messenger();
                     Scene scene_discuter = new Scene(discuter);
-                    discuter.dialoguer(fenetre_menu, scene_discuter, client, soc);
+                    discuter.dialoguer(fenetre_menu, scene_discuter, client, soc, socMsgr);
                     fenetre_menu.setScene(scene_discuter);
                     
                    

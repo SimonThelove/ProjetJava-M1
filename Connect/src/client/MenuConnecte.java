@@ -35,8 +35,7 @@ public class MenuConnecte extends GridPane {
     // Cette classe, comme le menuAnonyme donne accès aux fonctionnalités de l'application
     // Uniquement pour les utilisateurs identifiés
     
-
-    public void menuConnecte(Stage fenetre_menuC, Scene rootScene, Client clientConnecte, GestionProtocoleClient gp, SocketClient socket) {
+    public void menuConnecte(Stage fenetre_menuC, Scene rootScene, Client clientConnecte, GestionProtocoleClient gp, SocketClient socket, SocketMessenger socMsgr) {
         
         this.setAlignment(Pos.CENTER);
         this.setHgap(10);
@@ -70,7 +69,7 @@ System.out.println(">> Fermeture MenuConnecte.java (Messenger)");
                     // Ouverture de la scene messenger
                     Messenger discuter = new Messenger();
                     Scene scene_discuter = new Scene(discuter);
-                    discuter.dialoguer(fenetre_menuC, scene_discuter, clientConnecte, socket);
+                    discuter.dialoguer(fenetre_menuC, scene_discuter, clientConnecte, socket, socMsgr);
                     fenetre_menuC.setScene(scene_discuter);
                     
                    
@@ -95,7 +94,7 @@ System.out.println(">> Fermeture MenuConnecte.java (Modification)");
                     
                     Modification modifier = new Modification();
                     Scene scene_modifier = new Scene(modifier);
-                    modifier.modifier(fenetre_menuC,scene_modifier, clientConnecte, socket);
+                    modifier.modifier(fenetre_menuC,scene_modifier, clientConnecte, socket, socMsgr);
                     fenetre_menuC.setScene(scene_modifier);
                 }
             }
@@ -118,7 +117,7 @@ System.out.println(">> Fermeture MenuConnecte.java (Rechercher)");
                     
                     Recherche recherche = new Recherche();
                     Scene scene_recherche = new Scene(recherche);
-                    recherche.rechercher(fenetre_menuC, scene_recherche, clientConnecte, socket);
+                    recherche.rechercher(fenetre_menuC, scene_recherche, clientConnecte, socket, socMsgr);
                     fenetre_menuC.setScene(scene_recherche);
                 }
             }
@@ -142,7 +141,7 @@ System.out.println(">> Fermeture MenuConnecte.java (Envoi Message)");
                     String mailDestinataire = ""; // On transmet un String de longueur 0 pour remplacer le mail pre-rempli lors d'une reponse
                     EnvoiMessage envoiMessage = new EnvoiMessage();
                     Scene scene_envoiMessage = new Scene(envoiMessage);
-                    envoiMessage.envoyerMessage(fenetre_menuC, scene_envoiMessage, clientConnecte, socket, mailDestinataire);
+                    envoiMessage.envoyerMessage(fenetre_menuC, scene_envoiMessage, clientConnecte, socket, mailDestinataire, socMsgr);
                     fenetre_menuC.setScene(scene_envoiMessage);
                 }
             }
@@ -180,7 +179,7 @@ System.out.println(">> Fermeture MenuConnecte.java (Recuperation Message)");
                     
                     RecuperationMessage recuperationMessage = new RecuperationMessage();
                     Scene scene_recuperationMessagee = new Scene(recuperationMessage);
-                    recuperationMessage.recupererMessage(fenetre_menuC, scene_recuperationMessagee, gp, clientConnecte, socket);
+                    recuperationMessage.recupererMessage(fenetre_menuC, scene_recuperationMessagee, gp, clientConnecte, socket, socMsgr);
                     fenetre_menuC.setScene(scene_recuperationMessagee);
                 }
             }
@@ -217,7 +216,7 @@ System.out.println(">> Fermeture MenuConnecte.java (Deconnexion)");
                     //Affichage du menu Anonyme
                     MenuAnonyme menuA = new MenuAnonyme();
                     Scene scene_menuA = new Scene(menuA);
-                    menuA.menuAnonyme(fenetre_menuC, scene_menuA, clientConnecte, socket);
+                    menuA.menuAnonyme(fenetre_menuC, scene_menuA, clientConnecte, socket, socMsgr);
                     fenetre_menuC.setScene(scene_menuA);
                 }
             }

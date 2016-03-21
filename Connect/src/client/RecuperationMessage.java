@@ -24,6 +24,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
 
 import socketsTCP.SocketClient;
+import socketsTCP.SocketMessenger;
 
 /**
  *
@@ -42,7 +43,7 @@ public class RecuperationMessage extends GridPane {
         this.messages = FXCollections.observableArrayList();
     }
     
-    public void recupererMessage (Stage fenetre_menu, Scene rootScene, GestionProtocoleClient gp, Client client, SocketClient socket) {
+    public void recupererMessage (Stage fenetre_menu, Scene rootScene, GestionProtocoleClient gp, Client client, SocketClient socket, SocketMessenger socMsgr) {
         
         this.setAlignment(Pos.CENTER);
         this.setHgap(10);
@@ -80,7 +81,7 @@ System.out.println(">> Fermeture de ReceptionMessage.java (AfficherMessage)");
 
                     AffichageMessage afficher = new AffichageMessage();
                     Scene scene_afficher = new Scene(afficher);
-                    afficher.afficherMessage(fenetre_menu, scene_afficher, gp, client, socket, liste_messages.getSelectionModel().getSelectedIndex() + 1);
+                    afficher.afficherMessage(fenetre_menu, scene_afficher, gp, client, socket, liste_messages.getSelectionModel().getSelectedIndex() + 1, socMsgr);
                     fenetre_menu.setScene(scene_afficher);
                 }
             }
@@ -103,7 +104,7 @@ System.out.println(">> Fermeture de ReceptionMessage.java (Retour)");
                     
                     MenuConnecte menuC = new MenuConnecte();
                     Scene scene_menuC = new Scene(menuC);
-                    menuC.menuConnecte(fenetre_menu, scene_menuC, client, gp, socket);
+                    menuC.menuConnecte(fenetre_menu, scene_menuC, client, gp, socket, socMsgr);
                     fenetre_menu.setScene(scene_menuC);
                 }
             }

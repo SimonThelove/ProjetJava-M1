@@ -25,6 +25,7 @@ import gestionProtocole.GestionProtocoleClient;
 import javafx.scene.control.Alert;
 import javafx.scene.paint.Color;
 import socketsTCP.SocketClient;
+import socketsTCP.SocketMessenger;
 
 /**
  *
@@ -51,7 +52,7 @@ public class Recherche extends GridPane {
         this.clientRecherche = new Client();
     }
 
-    public void rechercher(Stage fenetre_menu, Scene rootScene, Client clientConnecte, SocketClient socket) {
+    public void rechercher(Stage fenetre_menu, Scene rootScene, Client clientConnecte, SocketClient socket, SocketMessenger socMsgr) {
         
         this.setAlignment(Pos.CENTER);
         this.setHgap(10);
@@ -86,7 +87,7 @@ System.out.println("Recherche avancée...");
                     
                     Recherche recherche = new Recherche();
                     Scene scene_recherche = new Scene(recherche);
-                    recherche.rechercheAvancee(fenetre_menu, scene_recherche, clientConnecte, socket);
+                    recherche.rechercheAvancee(fenetre_menu, scene_recherche, clientConnecte, socket, socMsgr);
                     fenetre_menu.setScene(scene_recherche);
                 }
             }
@@ -134,7 +135,7 @@ System.out.println(">> Fermeture Recherche.java (Exec OK)");
                         //On affiche le(s) resultat(s) de la recherche
                         AffichageResultats affichage = new AffichageResultats();
                         Scene scene_affichage = new Scene(affichage);
-                        affichage.afficherResultats(fenetre_menu, scene_affichage, clientConnecte, gp, socket);
+                        affichage.afficherResultats(fenetre_menu, scene_affichage, clientConnecte, gp, socket, socMsgr);
                         fenetre_menu.setScene(scene_affichage);
                     }
                 }
@@ -160,7 +161,7 @@ System.out.println(">> Fermeture Recherche.java (Retour)");
                     {
                         MenuConnecte menuC = new MenuConnecte();
                         Scene scene_menuC = new Scene(menuC);
-                        menuC.menuConnecte(fenetre_menu, scene_menuC, clientConnecte, gp, socket);
+                        menuC.menuConnecte(fenetre_menu, scene_menuC, clientConnecte, gp, socket, socMsgr);
                         fenetre_menu.setScene(scene_menuC);
                     }
                     //Sinon on le renvoit au menuAnonyme
@@ -168,7 +169,7 @@ System.out.println(">> Fermeture Recherche.java (Retour)");
                     {
                         MenuAnonyme menuA = new MenuAnonyme();
                         Scene scene_menuA = new Scene(menuA);
-                        menuA.menuAnonyme(fenetre_menu, scene_menuA, clientConnecte, socket);
+                        menuA.menuAnonyme(fenetre_menu, scene_menuA, clientConnecte, socket, socMsgr);
                         fenetre_menu.setScene(scene_menuA);
                     }
                 }
@@ -176,7 +177,7 @@ System.out.println(">> Fermeture Recherche.java (Retour)");
         );
     }
     
-    public void rechercheAvancee (Stage fenetre_menu, Scene rootScene, Client clientConnecte, SocketClient socket) {
+    public void rechercheAvancee (Stage fenetre_menu, Scene rootScene, Client clientConnecte, SocketClient socket, SocketMessenger socMsgr) {
         
         this.setAlignment(Pos.CENTER);
         this.setHgap(10);
@@ -289,7 +290,7 @@ System.out.println(">> Fermeture Recherche.java (Exec OK)");
                         //Affichage des resultats de la requete
                         AffichageResultats affichage = new AffichageResultats();
                         Scene scene_affichage = new Scene(affichage);
-                        affichage.afficherResultats(fenetre_menu, scene_affichage, clientConnecte, gp, socket);
+                        affichage.afficherResultats(fenetre_menu, scene_affichage, clientConnecte, gp, socket, socMsgr);
                         fenetre_menu.setScene(scene_affichage);
                     }
                 }
@@ -315,7 +316,7 @@ System.out.println(">> Fermeture Recherche.java (Retour)");
                     {
                         MenuConnecte menuC = new MenuConnecte();
                         Scene scene_menuC = new Scene(menuC);
-                        menuC.menuConnecte(fenetre_menu, scene_menuC, clientConnecte, gp, socket);
+                        menuC.menuConnecte(fenetre_menu, scene_menuC, clientConnecte, gp, socket, socMsgr);
                         fenetre_menu.setScene(scene_menuC);
                     }
                     //Sinon on le renvoit au menuAnonyme
@@ -323,7 +324,7 @@ System.out.println(">> Fermeture Recherche.java (Retour)");
                     {
                         MenuAnonyme menuA = new MenuAnonyme();
                         Scene scene_menuA = new Scene(menuA);
-                        menuA.menuAnonyme(fenetre_menu, scene_menuA, clientConnecte, socket);
+                        menuA.menuAnonyme(fenetre_menu, scene_menuA, clientConnecte, socket, socMsgr);
                         fenetre_menu.setScene(scene_menuA);
                     }
                 }

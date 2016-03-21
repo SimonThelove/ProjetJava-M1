@@ -26,6 +26,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.paint.Color;
 
 import socketsTCP.SocketClient;
+import socketsTCP.SocketMessenger;
 
 /**
  *
@@ -45,7 +46,7 @@ public class Inscription extends GridPane {
     private PasswordField saisie_mdp;
     private Button sInscrire, retour;
     
-    public void sInscrire (Stage fenetre_menu, Scene rootScene, Client client, SocketClient socket) {
+    public void sInscrire (Stage fenetre_menu, Scene rootScene, Client client, SocketClient socket, SocketMessenger socMsgr) {
         
         this.setAlignment(Pos.CENTER);
         this.setHgap(10);
@@ -174,7 +175,7 @@ System.out.println(">> Fermeture Inscription.java (Exec OK)");
                         //Retour au menu anonyme
                         MenuAnonyme menuA = new MenuAnonyme();
                         Scene scene_menuA = new Scene(menuA);
-                        menuA.menuAnonyme(fenetre_menu, scene_menuA, client, socket);
+                        menuA.menuAnonyme(fenetre_menu, scene_menuA, client, socket, socMsgr);
                         fenetre_menu.setScene(scene_menuA);
                     }
                 }
@@ -198,7 +199,7 @@ System.out.println(">> Fermeture Inscription.java (Retour)");
                     
                     MenuAnonyme menuA = new MenuAnonyme();
                     Scene scene_menuA = new Scene(menuA);
-                    menuA.menuAnonyme(fenetre_menu, scene_menuA, client, socket);
+                    menuA.menuAnonyme(fenetre_menu, scene_menuA, client, socket, socMsgr);
                     fenetre_menu.setScene(scene_menuA);
                 }
             }

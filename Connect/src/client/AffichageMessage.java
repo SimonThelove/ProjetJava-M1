@@ -23,6 +23,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import socketsTCP.SocketClient;
+import socketsTCP.SocketMessenger;
 
 /**
  *
@@ -43,7 +44,7 @@ public class AffichageMessage extends GridPane {
     private int index;
     private Button repondre, retour;
     
-    public void afficherMessage (Stage fenetre_menu, Scene rootScene, GestionProtocoleClient gp, Client client, SocketClient socket, int messageSelectionne) {
+    public void afficherMessage (Stage fenetre_menu, Scene rootScene, GestionProtocoleClient gp, Client client, SocketClient socket, int messageSelectionne, SocketMessenger socMsgr) {
         
         this.setAlignment(Pos.CENTER);
         this.setHgap(10);
@@ -107,7 +108,7 @@ System.out.println(">> Fermeture AffichageMessage.java (Répondre)");
                     // Affichage de l'interface envoiMessage
                     EnvoiMessage envoiMessage = new EnvoiMessage();
                     Scene scene_envoiMessage = new Scene(envoiMessage);
-                    envoiMessage.envoyerMessage(fenetre_menu, scene_envoiMessage, client, socket, mailExp);
+                    envoiMessage.envoyerMessage(fenetre_menu, scene_envoiMessage, client, socket, mailExp, socMsgr);
                     fenetre_menu.setScene(scene_envoiMessage);
                 }
             }
@@ -130,7 +131,7 @@ System.out.println(">> Fermeture AffichageMessage.java (Retour)");
                     
                     RecuperationMessage recuperationMessage = new RecuperationMessage();
                     Scene scene_recuperationMessagee = new Scene(recuperationMessage);
-                    recuperationMessage.recupererMessage(fenetre_menu, scene_recuperationMessagee, gp, client, socket);
+                    recuperationMessage.recupererMessage(fenetre_menu, scene_recuperationMessagee, gp, client, socket, socMsgr);
                     fenetre_menu.setScene(scene_recuperationMessagee);
                 }
             }

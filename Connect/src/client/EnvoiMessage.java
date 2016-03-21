@@ -25,6 +25,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
 import javafx.scene.paint.Color;
 import socketsTCP.SocketClient;
+import socketsTCP.SocketMessenger;
 
 /**
  *
@@ -43,7 +44,7 @@ public class EnvoiMessage extends GridPane {
     private String mailDest, messageEnvoyer;
     private Button modifier, retour;
     
-    public void envoyerMessage (Stage fenetre_menu, Scene rootScene, Client client, SocketClient socket, String mailDestinataire) {
+    public void envoyerMessage (Stage fenetre_menu, Scene rootScene, Client client, SocketClient socket, String mailDestinataire, SocketMessenger socMsgr) {
         
         this.setAlignment(Pos.CENTER);
         this.setHgap(10);
@@ -133,7 +134,7 @@ System.out.println(">> Fermeture de EnvoiMessage.java (Exec OK)");
                         // Retour au menu connecte
                         MenuConnecte menuC = new MenuConnecte();
                         Scene scene_menuC = new Scene(menuC);
-                        menuC.menuConnecte(fenetre_menu, scene_menuC, client, gp, socket);
+                        menuC.menuConnecte(fenetre_menu, scene_menuC, client, gp, socket, socMsgr);
                         fenetre_menu.setScene(scene_menuC);
                     }
                 }
@@ -157,7 +158,7 @@ System.out.println(">> Fermeture de EnvoiMessage.java (Retour)");
                     
                     MenuConnecte menuC = new MenuConnecte();
                     Scene scene_menuC = new Scene(menuC);
-                    menuC.menuConnecte(fenetre_menu, scene_menuC, client, gp, socket);
+                    menuC.menuConnecte(fenetre_menu, scene_menuC, client, gp, socket, socMsgr);
                     fenetre_menu.setScene(scene_menuC);
                 }
             }

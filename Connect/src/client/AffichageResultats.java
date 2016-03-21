@@ -25,6 +25,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
 import socketsTCP.SocketClient;
+import socketsTCP.SocketMessenger;
 
 /**
  *
@@ -42,7 +43,7 @@ public class AffichageResultats extends GridPane {
     private String likeOrUnlike, nbLike;
     
     //Creation du menu Resultats
-    public void afficherResultats(Stage fenetre_menu, Scene rootScene, Client clientConnecte, GestionProtocoleClient gp, SocketClient socket) {
+    public void afficherResultats(Stage fenetre_menu, Scene rootScene, Client clientConnecte, GestionProtocoleClient gp, SocketClient socket, SocketMessenger socMsgr) {
         
         this.setAlignment(Pos.CENTER);
         this.setHgap(10);
@@ -82,7 +83,7 @@ System.out.println("Selection d'un profil...");
                     gp.requeteCons(resultats.getSelectionModel().getSelectedIndex(), clientConnecte);
                     AffichageResultats affichage = new AffichageResultats();
                     Scene scene_affichage = new Scene(affichage);
-                    affichage.afficherProfil(fenetre_menu, scene_affichage,clientConnecte, gp, socket);
+                    affichage.afficherProfil(fenetre_menu, scene_affichage,clientConnecte, gp, socket, socMsgr);
                     fenetre_menu.setScene(scene_affichage);
                 }
             }
@@ -107,7 +108,7 @@ System.out.println(">> Fermeture AffichageResultats.java (Retour depuis résulta
                     {
                         MenuConnecte menuC = new MenuConnecte();
                         Scene scene_menuC = new Scene(menuC);
-                        menuC.menuConnecte(fenetre_menu, scene_menuC, clientConnecte, gp, socket);
+                        menuC.menuConnecte(fenetre_menu, scene_menuC, clientConnecte, gp, socket, socMsgr);
                         fenetre_menu.setScene(scene_menuC);
                     }
                     //Sinon on le renvoit au menuAnonyme
@@ -115,7 +116,7 @@ System.out.println(">> Fermeture AffichageResultats.java (Retour depuis résulta
                     {
                         MenuAnonyme menuA = new MenuAnonyme();
                         Scene scene_menuA = new Scene(menuA);
-                        menuA.menuAnonyme(fenetre_menu, scene_menuA, clientConnecte, socket);
+                        menuA.menuAnonyme(fenetre_menu, scene_menuA, clientConnecte, socket, socMsgr);
                         fenetre_menu.setScene(scene_menuA);
                     }
                 }
@@ -124,7 +125,7 @@ System.out.println(">> Fermeture AffichageResultats.java (Retour depuis résulta
     }
     
     //AFFICHAGE EN MODE PROFIL (1 seul résultat ou consultation)
-    public void afficherProfil(Stage fenetre_menu, Scene rootScene, Client clientConnecte, GestionProtocoleClient gp, SocketClient socket)
+    public void afficherProfil(Stage fenetre_menu, Scene rootScene, Client clientConnecte, GestionProtocoleClient gp, SocketClient socket, SocketMessenger socMsgr)
     {
   System.out.println("Affichage d'un profil...");      
         
@@ -232,7 +233,7 @@ System.out.println(">> Fermeture d'AffichageResultats.java (Retour depuis profil
                     {
                         MenuConnecte menuC = new MenuConnecte();
                         Scene scene_menuC = new Scene(menuC);
-                        menuC.menuConnecte(fenetre_menu, scene_menuC, clientConnecte, gp, socket);
+                        menuC.menuConnecte(fenetre_menu, scene_menuC, clientConnecte, gp, socket, socMsgr);
                         fenetre_menu.setScene(scene_menuC);
                     }
                     //Sinon on le renvoit au menuAnonyme
@@ -240,7 +241,7 @@ System.out.println(">> Fermeture d'AffichageResultats.java (Retour depuis profil
                     {
                         MenuAnonyme menuA = new MenuAnonyme();
                         Scene scene_menuA = new Scene(menuA);
-                        menuA.menuAnonyme(fenetre_menu, scene_menuA, clientConnecte, socket);
+                        menuA.menuAnonyme(fenetre_menu, scene_menuA, clientConnecte, socket, socMsgr);
                         fenetre_menu.setScene(scene_menuA);
                     }
                 }

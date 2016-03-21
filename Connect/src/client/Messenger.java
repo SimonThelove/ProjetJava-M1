@@ -69,7 +69,6 @@ public class Messenger extends GridPane {
 
     public Messenger() {
         this.clients_co = FXCollections.observableArrayList();
-        this.socketMsgr = new SocketMessenger();
         
     }
     
@@ -79,7 +78,7 @@ public class Messenger extends GridPane {
     // Le SocketClient pour échanger avec le serveur
     // Le SocketMessenger pour échanger en P2P
     
-    public void dialoguer(Stage fenetre_menu, Scene rootScene, Client clientConnecte, SocketClient socClient) {
+    public void dialoguer(Stage fenetre_menu, Scene rootScene, Client clientConnecte, SocketClient socClient, SocketMessenger socMsgr) {
         
         // On commence par initialiser la variable fenetre
         // pour pouvoir afficher des alertes basées sur la fenêtre parente
@@ -89,9 +88,10 @@ public class Messenger extends GridPane {
         // pour la différencier d'un autre objet Client potentiel
         this.clientLocal = clientConnecte;
         
-        // On initialise également le socket client local
+        // On initialise également les socket locaux
         // pour pouvoir les utiliser dans toutes les méthodes de la classe
         this.socketClient = socClient;
+        this.socketMsgr = socMsgr;
         
         // On instancie les variables non initialisées
         this.gpClient = new GestionProtocoleClient(socClient);
@@ -278,7 +278,7 @@ System.out.println("[DEBUG] Messenger.java - contacter : " + clientLocal.getChai
         {
             MenuConnecte menuC = new MenuConnecte();
             Scene scene_menuC = new Scene(menuC);
-            menuC.menuConnecte(fenetre_menu, scene_menuC, clientLocal, gpClient, socketClient);
+            menuC.menuConnecte(fenetre_menu, scene_menuC, clientLocal, gpClient, socketClient, socketMsgr);
             fenetre_menu.setScene(scene_menuC);
         }
         // Sinon il retourne au menuAnonyme
@@ -286,7 +286,7 @@ System.out.println("[DEBUG] Messenger.java - contacter : " + clientLocal.getChai
         {
             MenuAnonyme menuA = new MenuAnonyme();
             Scene scene_menuA = new Scene(menuA);
-            menuA.menuAnonyme(fenetre_menu, scene_menuA, clientLocal, socketClient);
+            menuA.menuAnonyme(fenetre_menu, scene_menuA, clientLocal, socketClient, socketMsgr);
             fenetre_menu.setScene(scene_menuA);
         }
     } 

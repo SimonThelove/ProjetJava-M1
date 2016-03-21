@@ -24,6 +24,7 @@ import gestionProtocole.GestionProtocoleClient;
 import javafx.scene.control.Alert;
 import javafx.scene.paint.Color;
 import socketsTCP.SocketClient;
+import socketsTCP.SocketMessenger;
 
 /**
  *
@@ -41,7 +42,7 @@ public class Modification extends GridPane {
     private TextField saisie_nom, saisie_prenom, saisie_telephone, saisie_diplome, saisie_annee, saisie_competences;
     private Button modifier, retour;
     
-    public void modifier (Stage fenetre_menu, Scene rootScene, Client client, SocketClient socket) {
+    public void modifier (Stage fenetre_menu, Scene rootScene, Client client, SocketClient socket, SocketMessenger socMsgr) {
         
         this.setAlignment(Pos.CENTER);
         this.setHgap(10);
@@ -169,7 +170,7 @@ System.out.println(">> Fermeture de Modification.java (Exec OK)");
                         // Retour au menu connecte
                         MenuConnecte menuC = new MenuConnecte();
                         Scene scene_menuC = new Scene(menuC);
-                        menuC.menuConnecte(fenetre_menu, scene_menuC, client, gp, socket);
+                        menuC.menuConnecte(fenetre_menu, scene_menuC, client, gp, socket, socMsgr);
                         fenetre_menu.setScene(scene_menuC);
                     }
                 }
@@ -193,7 +194,7 @@ System.out.println(">> Fermeture de Modification.java (Retour)");
                     
                     MenuConnecte menuC = new MenuConnecte();
                     Scene scene_menuC = new Scene(menuC);
-                    menuC.menuConnecte(fenetre_menu, scene_menuC, client, gp, socket);
+                    menuC.menuConnecte(fenetre_menu, scene_menuC, client, gp, socket, socMsgr);
                     fenetre_menu.setScene(scene_menuC);
                 }
             }
