@@ -121,7 +121,7 @@ System.out.println(">> Lancement de Messenger.java");
         this.clients_co = gpClient.getClients_co();     // Initialisation de la ObservableList clients_co locale
         liste_clients.setItems(clients_co);             // Initialisation des objets dans la vue
         liste_clients.setPrefSize(200, 550);            // Taille de la liste 200 x 550
-        this.add(liste_clients, 2, 0, 3, 1);            // Ajout au GridPane en position (2,0) sur 3 col, 1 ligne
+        this.add(liste_clients, 2, 0, 2, 1);            // Ajout au GridPane en position (2,0) sur 2 col, 1 ligne
         
 // Affichage debug
 System.out.println("Création affichage OK...");
@@ -133,24 +133,17 @@ System.out.println("Création affichage OK...");
         hbEnvoi.getChildren().add(envoyer);             // Ajout du bouton dans la boîte
         this.add(hbEnvoi, 1, 1);                        // Ajout de la boîte au GridPane en position (1,1)
         
-        
-        contacter = new Button("Contacter");            // Construction d'un bouton envoyer
-        HBox hbContact = new HBox(10);                  // Construction d'une boîte pour affichage
-        hbContact.setAlignment(Pos.BOTTOM_RIGHT);       // Positionnement dans la boite en bas à droite
-        hbContact.getChildren().add(contacter);         // Ajout du bouton dans la boîte
-        this.add(hbContact, 2, 1);                      // Ajout de la boîte au GridPane en position (2,1)
-        
         actualiser = new Button("Actualiser");          // Construction d'un bouton envoyer
         HBox hbActualise = new HBox(10);                // Construction d'une boîte pour affichage
         hbActualise.setAlignment(Pos.BOTTOM_RIGHT);     // Positionnement dans la boite en bas à droite
         hbActualise.getChildren().add(actualiser);      // Ajout du bouton dans la boîte
-        this.add(hbActualise, 3, 1);                    // Ajout de la boîte au GridPane en position (3,1)
+        this.add(hbActualise, 2, 1);                    // Ajout de la boîte au GridPane en position (2,1)
         
         retour = new Button("Retour");                  // Construction d'un bouton envoyer
         HBox hbRetour = new HBox(10);                   // Construction d'une boîte pour affichage
         hbRetour.setAlignment(Pos.BOTTOM_RIGHT);        // Positionnement dans la boite en bas à droite
         hbRetour.getChildren().add(retour);             // Ajout du bouton dans la boîte
-        this.add(hbRetour, 4, 1);                       // Ajout de la boîte au GridPane en position (4,1)
+        this.add(hbRetour, 3, 1);                       // Ajout de la boîte au GridPane en position (3,1)
         
 // Affichage debug
 System.out.println("Création boutons OK...");
@@ -165,25 +158,8 @@ System.out.println("Création boutons OK...");
 System.out.println("Envoi du message saisi...");
 
                 // Appel d'une méthode de la classe
-                // Envoi du message saisi vers le client sélectionné
                 envoyer(saisie_msg.getText());
-            } 
-        });
-        
-        // Actions effectuées par le bouton CONTACTER
-        contacter.setOnAction(new EventHandler<ActionEvent>(){
-            
-            @Override
-            public void handle(ActionEvent event)
-            {
-// Affichage debug 
-System.out.println("Demande de conversation...");
                 
-                // Récupération du nom du client sélectionné
-                clientSelectionne = liste_clients.getSelectionModel().getSelectedItem();
-
-                // Appel d'une méthode de la classe
-                contacter(clientSelectionne);
             } 
         });
         
@@ -222,33 +198,17 @@ System.out.println(">> Fermeture Messenger.java (Retour)");
     public void envoyer (String messageSaisi) {
         
         socketMsgr.envoyer(messageSaisi);                     // On transmet un message P2P
-        socketMsgr.recevoir();                                // On attend une réponse ou une notification
         
-    }
-    
-    // Méthode appelée depuis le bouton CONTACTER
-    // Permet de contacter le client P2P sélectionné en passant par le serveur
-    // Obligatoire pour établir une connexion propre entre deux clients
-    public void contacter (String clientSelectionne) {
+        conversation.setText(conversation.getText()           // On récupère la conversation affichée pour la mettre à jour
+                + clientLocal.getPrenom()                     // On insère le nom du client local
+                + " : " + saisie_msg.getText()                // On ajoute un séparateur suivi du message envoyé
+                + System.lineSeparator());                    // On fait un retour à la ligne
         
-        String portLocal = Integer.toString(0);               // On formate le port d'écoute local pour pouvoir le joindre à la demande
-        String demande = portLocal + "|" + clientSelectionne; // On construit la demande avec le portLocal et le nom du client sélectionné
-        gpClient.connexionP2P(demande, clientLocal);          // On envoie la demande au serveur pour qu'il la transmette au client concerné
+        String retour = socketMsgr.recevoir();                // On attend une réponse ou une notification
         
-// Affichage debug
-System.out.println("[DEBUG] Messenger.java - contacter : " + clientLocal.getChaine());
-
-        
-        // Pop-up de l'état de la demande
-        final Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.initOwner(fenetre);
-        alert.setTitle("Connect - information");
-        alert.setHeaderText("Message");
-        alert.setContentText(clientLocal.getChaine());
-        alert.showAndWait();
-        
-        // On attend de recevoir la notification de conversation depuis l'autre client
-        socketMsgr.recevoir();
+        conversation.setText(conversation.getText()           // On récupère la conversation affichée pour la mettre à jour
+        + retour                                              // On ajoute le message reçu
+        + System.lineSeparator());                            // On fait un retour à la ligne
         
     }
     

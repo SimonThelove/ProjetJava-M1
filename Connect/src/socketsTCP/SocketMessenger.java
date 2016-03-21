@@ -95,7 +95,7 @@ System.out.println("## SORTIE = ");
 System.err.println("@envoyer FIN -----");
     }
     
-    public void recevoir() {
+    public String recevoir() {
         
 System.err.println("@SocketMessenger recevoir");
 System.out.println("## Attente de connexion sur le port : " + portReception);
@@ -110,6 +110,7 @@ System.out.println("## Attente de connexion sur le port : " + portReception);
 
             }
         } while(retour == null);
-System.err.println("@recevoir FIN -----");        
+System.err.println("@recevoir FIN -----");   
+        return retour;
     }
 }

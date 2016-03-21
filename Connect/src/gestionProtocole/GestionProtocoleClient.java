@@ -283,18 +283,6 @@ System.err.println("[GPC] requeteP2P");
 System.out.println("[GPC] requeteP2P FIN -----");         
     }
     
-    //Methode de demande de connexion PeerToPeer
-    public void connexionP2P (String demande, Client client) {
-System.err.println("[GPC] connexionP2P");
-        // Creation de la requete
-        message = "P2PN|" + demande;
-        // Envoi d message à SocketClient
-        message = soc.echangeServeur(message);
-        // Appel a la methode decoupage pour prise en charge client
-        decoupage(message, client);
-System.out.println("[GPC] connexionP2P FIN -----"); 
-    }
-    
     // Methode de gestion des messages P2P reçus
     public void receptionP2P(String entree, TextArea msgs) {
 System.err.println("[GPC] receptionP2P");

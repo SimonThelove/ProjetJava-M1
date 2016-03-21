@@ -63,9 +63,6 @@ System.out.println(">>>> Lancement MenuConnecte.java");
                 public void handle(ActionEvent e) {
 System.out.println(">> Fermeture MenuConnecte.java (Messenger)");
                     
-                    // Creation d'un socket d'ecoute pour connexion P2P
-                    SocketMessenger ecoute = new SocketMessenger();
-                    
                     // Ouverture de la scene messenger
                     Messenger discuter = new Messenger();
                     Scene scene_discuter = new Scene(discuter);
