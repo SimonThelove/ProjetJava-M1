@@ -35,7 +35,8 @@ public class ConversationServeur extends Thread {
     private String          entree;
     private String          sortie;
     private String          mailCo;
-    private Integer          portClient;
+    private Integer         portClient;
+    private String          portMsgr;
     
     // Constructeur pour les echanges client / serveur
     public ConversationServeur(Socket soc, GestionProtocoleServeur gp, Hashtable clients_co) {
@@ -75,8 +76,16 @@ System.out.println("++ ENTREE - Port Cli > Srv = " + portClient);
                     clients_co.put(portClient, "anon_" + portClient);                    
 System.out.println("++ Creation client connecte");
 
-                    if (entree.startsWith("P2PH") && !entree.substring(5).matches("null")){
-                        clients_co.replace(portClient, clients_co.get(portClient), entree.substring(5));
+                    if (entree.startsWith("P2PH")){
+                        this.portMsgr = entree.substring(5, entree.indexOf("|", 5));
+                        String client = entree.substring(entree.indexOf("|", 5) + 1);
+                        if (!client.equalsIgnoreCase("null")) {
+                            clients_co.remove(portClient);
+                            clients_co.put(portMsgr, client);
+                        } else {
+                            clients_co.remove(portClient);
+                            clients_co.put(portMsgr, "anon_" + portClient);
+                        }
                     }
                     
 System.out.println("++ ENTREE = " + entree);
@@ -99,7 +108,10 @@ System.out.println("++! Recuperation mail utilisateur connecté");
 System.out.println("++! Modification Hashtable clients connectés");
                             String nom = gp.getServeur().consulter(mailCo, "1", null).get(6);
                             String prenom = gp.getServeur().consulter(mailCo, "1", null).get(4);
-                            clients_co.replace(portClient, nom + " " + prenom);
+                            if (clients_co.containsKey(portClient))
+                                clients_co.replace(portClient, nom + " " + prenom);
+                            else
+                                clients_co.replace(portMsgr, nom + " " + prenom);
                         } catch (SQLException ex) 
                         {
                             Logger.getLogger(ConversationServeur.class.getName()).log(Level.SEVERE, null, ex);

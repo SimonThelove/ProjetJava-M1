@@ -8,6 +8,7 @@ package gestionProtocole;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -147,8 +148,13 @@ System.err.println("---- CASE MSSG ----");
                 break; 
             case "P2PH":
 System.err.println("---- CASE P2PH ----");
-                // UPDATE EN COURS ...
-                setReponse("P2PH|" + String.join("|", clients_co.values()));
+                Enumeration keys = clients_co.keys();
+                String connectes = "P2PH";
+                while (keys.hasMoreElements()){
+                   Integer key = Integer.parseInt((String) keys.nextElement());
+                   connectes += "|" + key + "|" + clients_co.get(key);
+                }
+                setReponse(connectes);
                 break;
             //Requete de deconnexion
             case "DECO":

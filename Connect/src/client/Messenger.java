@@ -40,7 +40,7 @@ public class Messenger extends GridPane {
     // Elle permet de fermer une conversation avec un client sans passer par le serveur
     
     // Gestion des protocoles d'échange
-    private GestionProtocoleClient gpClient;
+    private GestionProtocoleClient gpClient, gpMsgr;
     
     // Sockets de communications
     private SocketClient socketClient;
@@ -52,12 +52,12 @@ public class Messenger extends GridPane {
     // Liste observable des clients connectés
     private ObservableList<String> clients_co;
     
-    // Variable locale pour la gestion de l'index du client sélectionné
-    private String clientSelectionne;
+    // Variables locales
+    private String clientSelectionne, value;
+    private Integer key;
     
     // Objets d'affichage
-    private Stage fenetre;
-    private Button actualiser, contacter, envoyer, retour;
+    private Button actualiser, envoyer, retour;
     private TextArea conversation;
     private TextField saisie_msg;
     private ListView<String> liste_clients;
@@ -79,11 +79,7 @@ public class Messenger extends GridPane {
     
     public void dialoguer(Stage fenetre_menu, Scene rootScene, Client clientConnecte, SocketClient socClient, SocketMessenger socMsgr) {
         
-        // On commence par initialiser la variable fenetre
-        // pour pouvoir afficher des alertes basées sur la fenêtre parente
-        this.fenetre = fenetre_menu;
-        
-        // On initialise ensuite la variable clientLocal
+        // On initialise la variable clientLocal
         // pour la différencier d'un autre objet Client potentiel
         this.clientLocal = clientConnecte;
         
@@ -92,8 +88,9 @@ public class Messenger extends GridPane {
         this.socketClient = socClient;
         this.socketMsgr = socMsgr;
         
-        // On instancie les variables non initialisées
-        this.gpClient = new GestionProtocoleClient(socClient);
+        // On instancie les variables non initialisées (GPC)
+        this.gpClient = new GestionProtocoleClient(socketClient);
+        this.gpMsgr = new GestionProtocoleClient(socketMsgr);
         
         // On initialise ensuite les attributs nécessaires à l'affichage
         this.setPrefSize(600, 600);                     // Taille de 600 x 600
@@ -116,7 +113,7 @@ System.out.println(">> Lancement de Messenger.java");
         this.add(saisie_msg, 0, 1);                     // Ajout au GridPane en position (0,1)
         
         liste_clients = new ListView<>(clients_co);     // Construction d'une vue de la ObservableList clients_co
-        gpClient.requeteP2PH(clientLocal);              // Récupération des clients connectés auprès du serveur
+        gpClient.requeteP2PH(clientLocal, socketMsgr);  // Récupération des clients connectés auprès du serveur
         this.clients_co = gpClient.getClients_co();     // Initialisation de la ObservableList clients_co locale
         liste_clients.setItems(clients_co);             // Initialisation des objets dans la vue
         liste_clients.setPrefSize(200, 550);            // Taille de la liste 200 x 550
@@ -196,18 +193,31 @@ System.out.println(">> Fermeture Messenger.java (Retour)");
     // Permet l'envoi d'un message saisi vers le client P2P sélectionné
     public void envoyer (String messageSaisi) {
         
-        socketMsgr.envoyer(messageSaisi);                     // On transmet un message P2P
+        // On récupère le nom du client auquel on veut envoyer un message
+        clientSelectionne = liste_clients.getSelectionModel().getSelectedItem();
         
-        conversation.setText(conversation.getText()           // On récupère la conversation affichée pour la mettre à jour
-                + clientLocal.getPrenom()                     // On insère le nom du client local
-                + " : " + saisie_msg.getText()                // On ajoute un séparateur suivi du message envoyé
-                + System.lineSeparator());                    // On fait un retour à la ligne
+        // On récupère le port sur lequel on lui envoie un message
+        do {
+            value = (String) gpClient.getP2PH().elements().nextElement();                    // On parcourt les valeurs de la hashtable
+            key = Integer.parseInt((String) gpClient.getP2PH().keys().nextElement());        // On parcourt les clés de la hashtable
+        } while (!value.equalsIgnoreCase(clientSelectionne));                                // Jusqu'à ce qu'on trouve le client sélectionné
+
+System.out.println("[DEBUG] Client selectionne : " + value);
+System.out.println("[DEBUG] Port distant : " + key);
+
+        conversation.setText(conversation.getText()                         // On récupère la conversation affichée pour la mettre à jour
+                + value + " : "                                             // On insère le nom du client local (récupéré dans la hashtable)
+                + saisie_msg.getText()                                      // On ajoute un séparateur suivi du message envoyé
+                + System.lineSeparator());                                  // On fait un retour à la ligne
+
+System.out.println("[DEBUG] Préparation pour envoi...");        
+        socketMsgr.envoyer(messageSaisi, key);                              // On transmet un message P2P sur le port d'écoute du client distant
         
-        String reception = socketMsgr.recevoir();                // On attend une réponse ou une notification
+        String reception = socketMsgr.recevoir();                           // On attend une réponse ou une notification
         
-        conversation.setText(conversation.getText()           // On récupère la conversation affichée pour la mettre à jour
-        + reception                                              // On ajoute le message reçu
-        + System.lineSeparator());                            // On fait un retour à la ligne
+        conversation.setText(conversation.getText()                         // On récupère la conversation affichée pour la mettre à jour
+        + reception                                                         // On ajoute le message reçu
+        + System.lineSeparator());                                          // On fait un retour à la ligne
         
     }
     
@@ -218,19 +228,16 @@ System.out.println(">> Fermeture Messenger.java (Retour)");
         this.clients_co.clear();
         
         // On ré-exécute la demande de la liste des clients connectés au serveur
-        gpClient.requeteP2PH(clientLocal);              // Récupération des clients connectés auprès du serveur
-        this.clients_co = gpClient.getClients_co();     // Initialisation de la ObservableList clients_co locale
-        liste_clients.setItems(clients_co);             // Initialisation des objets dans la vue
+        gpClient.requeteP2PH(clientLocal, socketMsgr);              // Récupération des clients connectés auprès du serveur
+        this.clients_co = gpClient.getClients_co();                 // Initialisation de la ObservableList clients_co locale
+        liste_clients.setItems(clients_co);                         // Initialisation des objets dans la vue
         
         
     }
     
     // Méthode appelée depuis le bouton RETOUR
     public void retour (Stage fenetre_menu) {
-        
-        // ACTION POUR LE CLIENT DISTANT :
-        socketMsgr.envoyer("P2PN|close|" + clientSelectionne);  // On transmet une notification de fermeture de la conversation P2P
-        
+
         // ACTION POUR LE CLIENT LOCAL :
         // S'il est connecté, il retourne au menuConnecte
         if(clientLocal.getMail()!=null)

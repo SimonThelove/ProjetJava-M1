@@ -8,6 +8,7 @@ package gestionProtocole;
 
 import socketsTCP.SocketClient;
 import client.Client;
+import java.util.Hashtable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TextArea;
@@ -19,19 +20,20 @@ import socketsTCP.SocketMessenger;
  */
 public class GestionProtocoleClient {
     
-    private final ObservableList<Client> clients;
-    private final ObservableList<String> clients_co;
-    private final ObservableList<String> messagerie, messages;
+    private final ObservableList<Client> clients;               // Resultats d'une recherche
+    private final ObservableList<String> clients_co;            // Clients connectes sur Messenger
+    private final ObservableList<String> messagerie, messages;  // En-tetes et contenus des messages de type mail
     
     private String like, nbLike;
-    private SocketClient soc; //recuperation du socket d'echange
-    private SocketMessenger socMsgr; //recuperation du socket P2P
-    private String message = null;//Variable ou est stockee la requete
-    private int nbPersonne = 0;//Nombre de profil que renvoit les requetes de recherche
-    private String req[] = null;//Requete de retour du serveur
+    private SocketClient soc;           //recuperation du socket d'echange
+    private SocketMessenger socMsgr;    //recuperation du socket P2P
+    private String message = null;      //Variable ou est stockee la requete
+    private int nbPersonne = 0;         //Nombre de profil que renvoit les requetes de recherche
+    private String req[] = null;        //Requete de retour du serveur
     private Client clientRecherche;
     private Client clientContacte;
     private TextArea conversation;
+    private Hashtable P2PH;
 
     private String expediteur;  //Expediteur du message
     private String mailRecu;    //Contenu du message reçu
@@ -47,6 +49,7 @@ System.err.println("#### Construct GPC vers Serveur");
         this.messagerie = FXCollections.observableArrayList();
         this.messages = FXCollections.observableArrayList();
         this.clientRecherche = new Client();
+        this.P2PH = new Hashtable();
     }
     
     public GestionProtocoleClient(SocketMessenger socket) {
@@ -57,6 +60,7 @@ System.err.println("#### Construct GPC pour P2P");
         this.messagerie = FXCollections.observableArrayList();
         this.messages = FXCollections.observableArrayList();
         this.clientContacte = new Client();
+        this.P2PH = new Hashtable();
     }
 
     public ObservableList<String> getClients_co() {
@@ -77,6 +81,10 @@ System.err.println("#### Construct GPC pour P2P");
     
     public TextArea getConversation() {
         return conversation;
+    }
+    
+    public Hashtable getP2PH(){
+        return P2PH;
     }
         
     public String getMessage() {
@@ -268,18 +276,20 @@ System.out.println("[GPC] requeteRecupMsg FIN -----");
     }
     
     //Méthode de récupération de la liste des clients connectés
-    public void requeteP2PH (Client client){
+    public void requeteP2PH (Client client, SocketMessenger socket){
 System.err.println("[GPC] requeteP2P");         
     
         //Creation de la requete
         if (client.getMail() != null)
-            message = "P2PH|" + client.getPrenom() + " " + client.getNom();
+            message = "P2PH|" + socket.getPortReception() + "|" + client.getPrenom() + " " + client.getNom();
         else
-            message = "P2PH|null";
+            message = "P2PH|" + socket.getPortReception() + "|null";
+        
         //Envoi du message a SocketClient
         message = soc.echangeServeur(message);
         //appel a la methode pour creer un affchage client
         decoupage(message, client);       
+
 System.out.println("[GPC] requeteP2P FIN -----");         
     }
     
@@ -444,10 +454,12 @@ System.out.println("# MSSG - Expéditeur : " + req[i+3] + " - message n° " + nb
 System.err.println("---- CASE P2PH ----");            
             // Retour de la hashtable depuis le serveur
 System.out.println("# P2PH - Clients connectés = " + req[1]);
-System.out.println("# P2PH - Vidage de la table clients_co");            
+System.out.println("# P2PH - Vidage de la table clients_co");
+            P2PH.clear();
             clients_co.clear();
-            for (int i = 1; i < req.length; i++){
-                clients_co.add(req[i]);
+            for (int i = 1; i < req.length; i += 2){
+                P2PH.put(req[i], req[i+1]);
+                clients_co.add(req[i+1]);
             }
 System.out.println("# Clients ajoutés à la liste");            
             break;

@@ -44,6 +44,11 @@ public class SocketMessenger {
     public int portReception;
     private ServerSocket socketReception = null;
     
+    // Getter du port d'écoute Messenger
+    public int getPortReception(){
+        return portReception;
+    }
+    
     // Constructeur du socket P2P
     // On construit en même temps le socket d'émission et de réception
     public SocketMessenger() {
@@ -58,7 +63,7 @@ System.out.println("## Creation OK... " + socketReception);
         }
         catch (IOException ex) // Creation impossible sur le port par défaut
         {
-            try // On demande le port suivant
+            try // On demande le port suivant : 12346
             {
                 socketReception = new ServerSocket(12346);
                 portReception = socketReception.getLocalPort();
@@ -70,10 +75,16 @@ System.err.println("## PORT ECOUTE P2P = " + portReception + " <!> DIFFERENT DU 
                 System.err.println("SocketMessenger - Creation impossible " + ex2);
             }
         }
+    }
+    
+    public void envoyer(String message, int port) {
+System.err.println("@SocketMessenger envoyer");
+System.out.println("## ENTREE = " + message);
+
         
         try {
 System.err.println("#### Constructeur Socket emission P2P");            
-            socket = new Socket("localhost", 12345);
+            socket = new Socket("localhost", port);
 System.out.println("## Creation Buffer/Stream...");
 
             this.sortieSocket = new PrintStream(socket.getOutputStream());
@@ -83,11 +94,6 @@ System.out.println("## Creation OK... " + socket);
         } catch (IOException ex) {
             Logger.getLogger(SocketMessenger.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-    
-    public void envoyer(String message) {
-System.err.println("@SocketMessenger envoyer");
-System.out.println("## ENTREE = " + message);
 
         sortieSocket.println(message);          // Envoi des données au client distant
             
@@ -98,7 +104,7 @@ System.err.println("@envoyer FIN -----");
         
 System.err.println("@SocketMessenger recevoir");
 System.out.println("## Attente de connexion sur le port : " + portReception);
-        
+        /* -- PROBLEME DE RECEPTION AVEC CETTE BOUCLE : Test sans boucle ok pour reception
         do {
             try {
 
@@ -106,9 +112,10 @@ System.out.println("## Attente de connexion sur le port : " + portReception);
             }
             catch (IOException ex) {
                 Logger.getLogger(SocketMessenger.class.getName()).log(Level.SEVERE, null, ex);
-
             }
         } while(retour == null);
+        */
+        retour = "TEST";
 System.out.println("## SORTIE = " + retour);
 System.err.println("@recevoir FIN -----");   
         return retour;
